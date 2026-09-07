@@ -16,15 +16,18 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
+import kotlin.math.abs
+import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
 fun AudioWaveformPreview(
     amplitudes: List<Float>?,
+    seed: Int = 0,
     modifier: Modifier = Modifier
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
-    val placeholderColor = primaryColor.copy(alpha = 0.22f)
+    val placeholderColor = primaryColor.copy(alpha = 0.28f)
     val bgColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
 
     Box(
@@ -42,7 +45,10 @@ fun AudioWaveformPreview(
             val spacing = 2.dp.toPx()
             val barWidth = ((w - (totalBars - 1) * spacing) / totalBars).coerceAtLeast(2f)
 
-            if (amplitudes != null && amplitudes.isNotEmpty()) {
+            val hasRealData = amplitudes != null && amplitudes.isNotEmpty() &&
+                ((amplitudes.maxOrNull() ?: 0f) - (amplitudes.minOrNull() ?: 0f) > 0.05f)
+
+            if (hasRealData) {
                 amplitudes.forEachIndexed { i, amp ->
                     val barHeight = (h * amp.coerceIn(0.08f, 1f)).coerceAtLeast(3.dp.toPx())
                     val top = (h - barHeight) / 2f
@@ -55,9 +61,11 @@ fun AudioWaveformPreview(
                     )
                 }
             } else {
+                val seedOffset = abs(seed) % 100
                 for (i in 0 until totalBars) {
-                    val wave = (0.25f + 0.2f * sin(i * 0.35).toFloat()).coerceIn(0.1f, 0.6f)
-                    val barHeight = h * wave
+                    val t = (i + seedOffset) * 0.32
+                    val wave = (0.15f + 0.55f * abs(sin(t) * cos(t * 0.65 + seedOffset * 0.1))).toFloat().coerceIn(0.12f, 0.9f)
+                    val barHeight = (h * wave).coerceAtLeast(3.dp.toPx())
                     val top = (h - barHeight) / 2f
                     val left = i * (barWidth + spacing)
                     drawRoundRect(

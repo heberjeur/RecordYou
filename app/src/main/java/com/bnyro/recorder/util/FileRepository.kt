@@ -141,7 +141,9 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                             for (j in 0 until waveArr.length()) {
                                 list.add(waveArr.optDouble(j, 0.1).toFloat())
                             }
-                            list
+                            val min = list.minOrNull() ?: 0f
+                            val max = list.maxOrNull() ?: 0f
+                            if (max - min > 0.05f) list else null
                         } else null
                         if (wave != null) {
                             audioWaveformCache.put(doc.uri.toString(), wave)

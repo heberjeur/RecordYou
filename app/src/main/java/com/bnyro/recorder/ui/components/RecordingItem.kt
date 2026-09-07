@@ -123,6 +123,7 @@ fun RecordingItem(
                 } else if (isAudio) {
                     AudioWaveformPreview(
                         amplitudes = waveform,
+                        seed = name.hashCode(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)

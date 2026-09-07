@@ -10,6 +10,7 @@ import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.math.abs
+import kotlin.math.sqrt
 
 object AudioWaveformExtractor {
     fun extractWaveform(context: Context, uri: Uri, targetBars: Int = 50): List<Float>? {
@@ -52,6 +53,7 @@ object AudioWaveformExtractor {
             raw[i] = f
             if (f > maxGlobal) maxGlobal = f
         }
+        if (maxGlobal <= 10f) return null
         return raw.map { (it / maxGlobal).coerceIn(0.08f, 1f) }
     }
 
@@ -81,19 +83,17 @@ object AudioWaveformExtractor {
             codec.start()
 
             val raw = FloatArray(targetBars)
-            var maxGlobal = 1f
-            val stepUs = durationUs / targetBars
             val bufferInfo = MediaCodec.BufferInfo()
+            var sawInputEos = false
+            var sawOutputEos = false
+            var maxGlobal = 1f
+            var totalBuffersDecoded = 0
+            val maxBuffersToDecode = 3000
 
             try {
-                for (i in 0 until targetBars) {
-                    val targetUs = i * stepUs
-                    extractor.seekTo(targetUs, MediaExtractor.SEEK_TO_CLOSEST_SYNC)
-                    codec.flush()
-                    var peak = 0
-                    var samplesRead = 0
-                    while (samplesRead < 2) {
-                        val inIdx = codec.dequeueInputBuffer(4000L)
+                while (!sawOutputEos && totalBuffersDecoded < maxBuffersToDecode) {
+                    if (!sawInputEos) {
+                        val inIdx = codec.dequeueInputBuffer(8000L)
                         if (inIdx >= 0) {
                             val inBuf = codec.getInputBuffer(inIdx)
                             val sampleSize = if (inBuf != null) extractor.readSampleData(inBuf, 0) else -1
@@ -102,32 +102,53 @@ object AudioWaveformExtractor {
                                 extractor.advance()
                             } else {
                                 codec.queueInputBuffer(inIdx, 0, 0, 0L, MediaCodec.BUFFER_FLAG_END_OF_STREAM)
+                                sawInputEos = true
                             }
-                        }
-                        val outIdx = codec.dequeueOutputBuffer(bufferInfo, 4000L)
-                        if (outIdx >= 0) {
-                            val outBuf = codec.getOutputBuffer(outIdx)
-                            if (outBuf != null) {
-                                val shorts = outBuf.order(ByteOrder.LITTLE_ENDIAN).asShortBuffer()
-                                while (shorts.hasRemaining()) {
-                                    val s = abs(shorts.get().toInt())
-                                    if (s > peak) peak = s
-                                }
-                            }
-                            codec.releaseOutputBuffer(outIdx, false)
-                            samplesRead++
-                        } else {
-                            samplesRead++
                         }
                     }
-                    val f = peak.toFloat()
-                    raw[i] = f
-                    if (f > maxGlobal) maxGlobal = f
+
+                    val outIdx = codec.dequeueOutputBuffer(bufferInfo, 8000L)
+                    if (outIdx >= 0) {
+                        totalBuffersDecoded++
+                        val outBuf = codec.getOutputBuffer(outIdx)
+                        if (outBuf != null && bufferInfo.size > 0) {
+                            val timeUs = bufferInfo.presentationTimeUs
+                            val barIdx = ((timeUs * targetBars) / durationUs).toInt().coerceIn(0, targetBars - 1)
+                            val shorts = outBuf.order(ByteOrder.LITTLE_ENDIAN).asShortBuffer()
+                            var peak = 0
+                            while (shorts.hasRemaining()) {
+                                val s = abs(shorts.get().toInt())
+                                if (s > peak) peak = s
+                            }
+                            val f = peak.toFloat()
+                            if (f > raw[barIdx]) {
+                                raw[barIdx] = f
+                            }
+                            if (f > maxGlobal) {
+                                maxGlobal = f
+                            }
+                        }
+                        codec.releaseOutputBuffer(outIdx, false)
+                        if ((bufferInfo.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
+                            sawOutputEos = true
+                        }
+                    }
                 }
             } finally {
                 kotlin.runCatching { codec.stop() }
                 kotlin.runCatching { codec.release() }
             }
+
+            if (maxGlobal <= 50f) return null
+
+            for (i in 0 until targetBars) {
+                if (raw[i] <= 0f) {
+                    val prev = if (i > 0) raw[i - 1] else 0f
+                    val next = if (i < targetBars - 1) raw[i + 1] else 0f
+                    raw[i] = ((prev + next) / 2f).coerceAtLeast(maxGlobal * 0.08f)
+                }
+            }
+
             return raw.map { (it / maxGlobal).coerceIn(0.08f, 1f) }
         } catch (e: Exception) {
             return null
@@ -141,25 +162,36 @@ object AudioWaveformExtractor {
         val size = channel.size()
         if (size <= 0L) return List(targetBars) { 0.15f }
         val step = (size / targetBars).coerceAtLeast(1L)
-        val buf = ByteBuffer.allocate(64)
+        val chunkSize = 512.coerceAtMost(step.toInt().coerceAtLeast(64))
+        val buf = ByteBuffer.allocate(chunkSize)
         val raw = FloatArray(targetBars)
         var maxVal = 1f
+        var minVal = Float.MAX_VALUE
         for (i in 0 until targetBars) {
-            val pos = (i * step).coerceAtMost(size - 1)
+            val pos = (i * step).coerceAtMost(size - chunkSize)
             channel.position(pos)
             buf.clear()
             val read = channel.read(buf)
-            var sum = 0f
             if (read > 0) {
                 buf.flip()
+                var sum = 0.0
+                var sumSq = 0.0
+                var count = 0
                 while (buf.hasRemaining()) {
-                    sum += abs(buf.get().toInt())
+                    val b = buf.get().toInt() and 0xFF
+                    sum += b
+                    sumSq += b * b
+                    count++
                 }
-                sum /= read
+                val mean = sum / count
+                val variance = (sumSq / count) - (mean * mean)
+                val energy = sqrt(variance.coerceAtLeast(0.0)).toFloat()
+                raw[i] = energy
+                if (energy > maxVal) maxVal = energy
+                if (energy < minVal) minVal = energy
             }
-            raw[i] = sum
-            if (sum > maxVal) maxVal = sum
         }
-        return raw.map { (it / maxVal).coerceIn(0.08f, 1f) }
+        val diff = (maxVal - minVal).coerceAtLeast(1f)
+        return raw.map { ((it - minVal) / diff).coerceIn(0.12f, 1f) }
     }
 }
