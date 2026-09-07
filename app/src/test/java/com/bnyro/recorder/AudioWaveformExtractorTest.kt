@@ -1,8 +1,9 @@
 package com.bnyro.recorder
 
+import com.bnyro.recorder.util.AudioWaveformExtractor
 import com.bnyro.recorder.util.PcmConverter
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -56,14 +57,30 @@ class AudioWaveformExtractorTest {
                 if (f > maxGlobal) maxGlobal = f
             }
 
-            val normalized = rawAmps.map { (it / maxGlobal).coerceIn(0.08f, 1f) }
+            val normalized = rawAmps.map { (it / maxGlobal).coerceIn(0.04f, 1f) }
             assertEquals(targetBars, normalized.size)
             normalized.forEach {
-                assertTrue(it in 0.08f..1.0f)
+                assertTrue(it in 0.04f..1.0f)
             }
         } finally {
             raw.delete()
         }
+    }
+
+    @Test
+    fun testFlatWaveformDetection() {
+        val flatList = List(160) { if (it < 3) 1.0f else 0.12f }
+        assertTrue(AudioWaveformExtractor.isFlatWaveform(flatList))
+
+        val uniformList = List(160) { 0.5f }
+        assertTrue(AudioWaveformExtractor.isFlatWaveform(uniformList))
+
+        val nullList: List<Float>? = null
+        assertTrue(AudioWaveformExtractor.isFlatWaveform(nullList))
+
+        val synthetic = AudioWaveformExtractor.createSyntheticWaveform(42, 160)
+        assertEquals(160, synthetic.size)
+        assertFalse(AudioWaveformExtractor.isFlatWaveform(synthetic))
     }
 
     @Test

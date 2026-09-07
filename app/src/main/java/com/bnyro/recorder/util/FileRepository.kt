@@ -141,9 +141,7 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                             for (j in 0 until waveArr.length()) {
                                 list.add(waveArr.optDouble(j, 0.1).toFloat())
                             }
-                            val min = list.minOrNull() ?: 0f
-                            val max = list.maxOrNull() ?: 0f
-                            if (max - min > 0.05f) list else null
+                            if (!AudioWaveformExtractor.isFlatWaveform(list)) list else null
                         } else null
                         if (wave != null) {
                             audioWaveformCache.put(doc.uri.toString(), wave)
@@ -225,7 +223,10 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
 
     override fun loadAudioWaveform(file: DocumentFile): List<Float>? {
         val uriStr = file.uri.toString()
-        audioWaveformCache.get(uriStr)?.let { return it }
+        val cached = audioWaveformCache.get(uriStr)
+        if (cached != null && !AudioWaveformExtractor.isFlatWaveform(cached)) {
+            return cached
+        }
         val wave = AudioWaveformExtractor.extractWaveform(context, file.uri) ?: return null
         audioWaveformCache.put(uriStr, wave)
         cachedAudio = cachedAudio?.map {

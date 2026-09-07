@@ -13,7 +13,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
+import com.bnyro.recorder.util.AudioWaveformExtractor
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
@@ -26,10 +30,11 @@ fun AudioWaveformPreview(
     modifier: Modifier = Modifier
 ) {
     val cyanColor = Color(0xFF00E5C0)
+    val cyanContourColor = Color(0xFF14FFE0)
     val gridColor = Color(0x33627282)
     val centerGridColor = Color(0x557A8B9E)
-    val bgDark = Color(0xFF0F1115)
-    val playedRegionTint = Color(0x406B2626)
+    val bgDark = Color(0xFF0F1216)
+    val playedOverlayColor = Color(0x40000000)
 
     Box(
         modifier = modifier
@@ -42,15 +47,6 @@ fun AudioWaveformPreview(
             val w = size.width
             val h = size.height
             val centerY = h / 2f
-
-            if (progress != null && progress > 0f) {
-                val playedWidth = w * progress.coerceIn(0f, 1f)
-                drawRect(
-                    color = playedRegionTint,
-                    topLeft = Offset.Zero,
-                    size = Size(playedWidth, h)
-                )
-            }
 
             val verticalDivisions = 8
             val colWidth = w / verticalDivisions
@@ -74,7 +70,7 @@ fun AudioWaveformPreview(
                 color = centerGridColor,
                 start = Offset(0f, centerY),
                 end = Offset(w, centerY),
-                strokeWidth = 1f
+                strokeWidth = 1.2f
             )
             drawLine(
                 color = gridColor,
@@ -83,43 +79,69 @@ fun AudioWaveformPreview(
                 strokeWidth = 1f
             )
 
-            val data = amplitudes
-            if (data != null && data.isNotEmpty() &&
-                ((data.maxOrNull() ?: 0f) - (data.minOrNull() ?: 0f) > 0.05f)
-            ) {
-                val count = data.size
-                val stepX = w / count.coerceAtLeast(1)
-                val strokeW = stepX.coerceAtLeast(1.4f)
-                for (i in 0 until count) {
-                    val x = i * stepX + stepX / 2f
-                    val amp = data[i].coerceIn(0.04f, 1f)
-                    val halfSpike = (h * 0.46f) * amp
-                    drawLine(
-                        color = cyanColor,
-                        start = Offset(x, centerY - halfSpike),
-                        end = Offset(x, centerY + halfSpike),
-                        strokeWidth = strokeW
-                    )
-                }
+            val rawData = if (!AudioWaveformExtractor.isFlatWaveform(amplitudes)) {
+                amplitudes!!
             } else {
-                val count = 160
-                val stepX = w / count
-                val strokeW = stepX.coerceAtLeast(1.4f)
-                val seedOffset = abs(seed) % 100
-                for (i in 0 until count) {
-                    val x = i * stepX + stepX / 2f
-                    val t = (i + seedOffset) * 0.18
-                    val burst = abs(sin(t * 0.45) * cos(t * 0.85 + seedOffset * 0.05))
-                    val microNoise = (abs(sin(i * 3.7)) * 0.12f).toFloat()
-                    val wave = (0.05f + 0.75f * burst.toFloat() + microNoise).coerceIn(0.04f, 0.95f)
-                    val halfSpike = (h * 0.46f) * wave
-                    drawLine(
-                        color = cyanColor.copy(alpha = 0.85f),
-                        start = Offset(x, centerY - halfSpike),
-                        end = Offset(x, centerY + halfSpike),
-                        strokeWidth = strokeW
-                    )
-                }
+                AudioWaveformExtractor.createSyntheticWaveform(seed)
+            }
+
+            val numPoints = (w / 1.5f).toInt().coerceIn(120, 600)
+            val dataSize = rawData.size
+            val halfSpikes = FloatArray(numPoints + 1)
+
+            for (p in 0..numPoints) {
+                val u = (p.toFloat() / numPoints) * (dataSize - 1)
+                val idx = u.toInt().coerceIn(0, dataSize - 1)
+                val nextIdx = (idx + 1).coerceAtMost(dataSize - 1)
+                val frac = u - idx
+                val baseAmp = rawData[idx] * (1f - frac) + rawData[nextIdx] * frac
+                val microNoise = abs(sin(p * 12.9898) * cos(p * 4.1415)).toFloat()
+                val amp = (baseAmp * (0.80f + 0.38f * microNoise)).coerceIn(0.015f, 0.95f)
+                halfSpikes[p] = (h * 0.46f) * amp
+            }
+
+            val solidPath = Path()
+            solidPath.moveTo(0f, centerY)
+            for (p in 0..numPoints) {
+                val x = p * (w / numPoints)
+                solidPath.lineTo(x, centerY - halfSpikes[p])
+            }
+            solidPath.lineTo(w, centerY)
+            for (p in numPoints downTo 0) {
+                val x = p * (w / numPoints)
+                solidPath.lineTo(x, centerY + halfSpikes[p])
+            }
+            solidPath.close()
+
+            drawPath(solidPath, color = cyanColor, style = Fill)
+
+            val topPath = Path()
+            topPath.moveTo(0f, centerY - halfSpikes[0])
+            for (p in 1..numPoints) {
+                topPath.lineTo(p * (w / numPoints), centerY - halfSpikes[p])
+            }
+            drawPath(topPath, color = cyanContourColor, style = Stroke(width = 1f))
+
+            val bottomPath = Path()
+            bottomPath.moveTo(0f, centerY + halfSpikes[0])
+            for (p in 1..numPoints) {
+                bottomPath.lineTo(p * (w / numPoints), centerY + halfSpikes[p])
+            }
+            drawPath(bottomPath, color = cyanContourColor, style = Stroke(width = 1f))
+
+            if (progress != null && progress > 0f) {
+                val playX = (w * progress.coerceIn(0f, 1f))
+                drawRect(
+                    color = playedOverlayColor,
+                    topLeft = Offset.Zero,
+                    size = Size(playX, h)
+                )
+                drawLine(
+                    color = Color.White,
+                    start = Offset(playX, 0f),
+                    end = Offset(playX, h),
+                    strokeWidth = 2f
+                )
             }
         }
     }
