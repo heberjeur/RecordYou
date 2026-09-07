@@ -37,10 +37,9 @@ private val LightColorScheme = lightColorScheme(
      */
 )
 
-private val AmoledDarkColorScheme = darkColorScheme(
-    primary = Color(0xFFEE665B),
-    background = Color(0xFF000000),
-    onPrimary = Color(0xFFFFFFFF)
+private val AmoledDarkColorScheme = DarkColorScheme.copy(
+    background = Color.Black,
+    surface = Color.Black
 )
 
 @Composable

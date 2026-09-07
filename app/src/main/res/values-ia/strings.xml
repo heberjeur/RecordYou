@@ -85,5 +85,5 @@
     <string name="language">Lingua</string>
     <string name="system_default">Predefinite del systema</string>
     <string name="audio_directory">Directorio de audio</string>
-    <string name="video_directory">Directorio de registration de schermo</string>
+    <string name="video_directory">Directorio de video</string>
 </resources>

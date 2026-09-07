@@ -85,5 +85,5 @@
     <string name="language">Bahasa</string>
     <string name="system_default">Default sistem</string>
     <string name="audio_directory">Direktori audio</string>
-    <string name="video_directory">Direktori rekaman layar</string>
+    <string name="video_directory">Direktori video</string>
 </resources>

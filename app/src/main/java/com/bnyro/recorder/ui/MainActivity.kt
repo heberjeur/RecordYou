@@ -55,12 +55,12 @@ class MainActivity : ComponentActivity() {
             val isDark = when (themeModel.themeMode) {
                 ThemeMode.SYSTEM -> isSystemDark
                 ThemeMode.DARK -> true
-                ThemeMode.AMOLED -> isSystemDark
+                ThemeMode.AMOLED -> true
                 ThemeMode.LIGHT -> false
             }
             RecordYouTheme(
                 darkTheme = isDark,
-                amoledDark = isDark && themeModel.themeMode == ThemeMode.AMOLED
+                amoledDark = themeModel.themeMode == ThemeMode.AMOLED
             ) {
                 val navController = rememberNavController()
                 Surface(

@@ -14,9 +14,13 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
+import android.graphics.Bitmap
+import android.os.Build
+
 interface FileRepository {
     suspend fun getVideoRecordingItems(sortOrder: SortOrder): List<RecordingItemData>
     suspend fun getAudioRecordingItems(sortOrder: SortOrder): List<RecordingItemData>
+    fun loadVideoThumbnail(file: DocumentFile): Bitmap?
     suspend fun deleteFiles(files: List<DocumentFile>)
     suspend fun deleteAllFiles()
     fun getTempOutputFile(extension: String): java.io.File
@@ -94,19 +98,35 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
             }
         }.distinctBy { it.uri }
 
+    private val videoThumbnailCache = android.util.LruCache<String, Bitmap>(50)
+
+    override fun loadVideoThumbnail(file: DocumentFile): Bitmap? {
+        val uriStr = file.uri.toString()
+        videoThumbnailCache.get(uriStr)?.let { return it }
+        return kotlin.runCatching {
+            val retriever = MediaMetadataRetriever()
+            try {
+                retriever.setDataSource(context, file.uri)
+                val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                    retriever.getScaledFrameAtTime(-1, MediaMetadataRetriever.OPTION_CLOSEST_SYNC, 320, 320)
+                        ?: retriever.frameAtTime
+                } else {
+                    retriever.frameAtTime
+                }
+                if (bitmap != null) {
+                    videoThumbnailCache.put(uriStr, bitmap)
+                }
+                bitmap
+            } finally {
+                retriever.release()
+            }
+        }.getOrNull()
+    }
+
     override suspend fun getVideoRecordingItems(sortOrder: SortOrder): List<RecordingItemData> {
         return withContext(Dispatchers.IO) {
             getVideoFiles().sortedBy(sortOrder).map {
-                val thumbnail = kotlin.runCatching {
-                    val retriever = MediaMetadataRetriever()
-                    try {
-                        retriever.setDataSource(context, it.uri)
-                        retriever.frameAtTime
-                    } finally {
-                        retriever.release()
-                    }
-                }.getOrNull()
-                RecordingItemData(it, RecorderType.VIDEO, thumbnail)
+                RecordingItemData(it, RecorderType.VIDEO, videoThumbnailCache.get(it.uri.toString()))
             }
         }
     }

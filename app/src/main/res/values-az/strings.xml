@@ -56,5 +56,5 @@
     <string name="language">Dil</string>
     <string name="system_default">Sistem susmaya görə</string>
     <string name="audio_directory">Audio qovluğu</string>
-    <string name="video_directory">Ekran qeydi qovluğu</string>
+    <string name="video_directory">Video qovluğu</string>
 </resources>

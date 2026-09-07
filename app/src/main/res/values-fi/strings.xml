@@ -85,5 +85,5 @@
     <string name="language">Kieli</string>
     <string name="system_default">Järjestelmän oletus</string>
     <string name="audio_directory">Äänihakemisto</string>
-    <string name="video_directory">Näytöntallennushakemisto</string>
+    <string name="video_directory">Videohakemisto</string>
 </resources>

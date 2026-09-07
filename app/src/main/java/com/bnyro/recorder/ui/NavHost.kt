@@ -51,7 +51,7 @@ fun AppNavHost(
                     targetOffset = { it / 4 }) + fadeOut()
             }
         ) {
-            SettingsScreen()
+            SettingsScreen(onNavigateUp = { navController.navigateUp() })
         }
 
         composable(route = Destination.RecordingPlayer.route,
@@ -64,7 +64,10 @@ fun AppNavHost(
                 slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down,
                     targetOffset = { it / 4 }) + fadeOut()
             }) {
-            PlayerScreen(showVideoModeInitially = false)
+            PlayerScreen(
+                showVideoModeInitially = false,
+                onNavigateUp = { navController.navigateUp() }
+            )
         }
     }
 }

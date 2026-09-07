@@ -54,5 +54,5 @@
     <string name="language">Wika</string>
     <string name="system_default">Default ng system</string>
     <string name="audio_directory">Direktoryo ng audio</string>
-    <string name="video_directory">Direktoryo ng screen recording</string>
+    <string name="video_directory">Direktoryo ng video</string>
 </resources>

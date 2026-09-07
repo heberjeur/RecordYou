@@ -46,5 +46,5 @@
     <string name="language">Språk</string>
     <string name="system_default">Systemstandard</string>
     <string name="audio_directory">Ljudkatalog</string>
-    <string name="video_directory">Skärminspelningskatalog</string>
+    <string name="video_directory">Videokatalog</string>
 </resources>

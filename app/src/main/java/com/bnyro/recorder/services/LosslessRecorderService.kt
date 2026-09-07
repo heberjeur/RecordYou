@@ -144,11 +144,11 @@ class LosslessRecorderService : RecorderService() {
 
     private fun convertToWav() {
         val inputStream = contentResolver.openInputStream(outputFile?.uri ?: return) ?: return
-        val outputStream = (application as App).fileRepository
+        val wavDoc = (application as App).fileRepository
             .getOutputFile(FILE_NAME_EXTENSION_WAV)
-            ?.let {
-                contentResolver.openOutputStream(it.uri)
-            }
+        val outputStream = wavDoc?.let {
+            contentResolver.openOutputStream(it.uri)
+        }
 
         if (outputStream == null) {
             Toast.makeText(this, R.string.cant_access_selected_folder, Toast.LENGTH_LONG).show()
@@ -157,12 +157,14 @@ class LosslessRecorderService : RecorderService() {
 
         pcmConverter?.convertToWave(inputStream, outputStream, BUFFER_SIZE_IN_BYTES)
         outputFile?.delete()
+        outputFile = wavDoc
     }
 
     private fun convertToMp3() {
         val pcmFile = File(filesDir, "temp.pcm")
         if (!pcmFile.exists() || pcmFile.length() == 0L) {
             outputFile?.delete()
+            outputFile = null
             return
         }
         val tempWav = File(cacheDir, "temp_${System.currentTimeMillis()}.wav")
@@ -183,17 +185,16 @@ class LosslessRecorderService : RecorderService() {
                 tempMp3.absolutePath
             )
             Jump3rMain().run(args)
+            outputFile?.delete()
             if (tempMp3.exists() && tempMp3.length() > 0L) {
-                (application as App).fileRepository.commitOutputFile(tempMp3, FILE_NAME_EXTENSION_MP3)
+                outputFile = (application as App).fileRepository.commitOutputFile(tempMp3, FILE_NAME_EXTENSION_MP3)
             } else {
-                android.util.Log.e("LosslessRecorderService", "MP3 encoding produced empty file")
+                outputFile = null
             }
-        } catch (e: Exception) {
-            android.util.Log.e("LosslessRecorderService", "Error encoding MP3", e)
         } finally {
             tempWav.delete()
             tempMp3.delete()
-            outputFile?.delete()
+            pcmFile.delete()
         }
     }
 

@@ -1,6 +1,6 @@
 package com.bnyro.recorder.ui.components
 
-import android.text.format.DateUtils
+import com.bnyro.recorder.util.TimeFormatHelper
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -100,7 +100,7 @@ fun AudioVisualizer(
                                 )
                                 drawText(
                                     measurer,
-                                    DateUtils.formatElapsedTime(timeStamp / 10),
+                                    TimeFormatHelper.formatDuration(timeStamp / 10),
                                     topLeft = Offset(x - 54f, -y - 60f),
                                     style = TextStyle(primaryMuted)
                                 )

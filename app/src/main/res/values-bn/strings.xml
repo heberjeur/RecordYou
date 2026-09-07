@@ -27,5 +27,5 @@
     <string name="language">ভাষা</string>
     <string name="system_default">সিস্টেম ডিফল্ট</string>
     <string name="audio_directory">অডিও ডিরেক্টরি</string>
-    <string name="video_directory">স্ক্রিন রেকর্ডিং ডিরেক্টরি</string>
+    <string name="video_directory">ভিডিও ডিরেক্টরি</string>
 </resources>

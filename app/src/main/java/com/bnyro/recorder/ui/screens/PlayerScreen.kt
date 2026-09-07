@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
@@ -33,7 +34,8 @@ import com.bnyro.recorder.ui.models.PlayerModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlayerScreen(
-    showVideoModeInitially: Boolean
+    showVideoModeInitially: Boolean,
+    onNavigateUp: (() -> Unit)? = null
 ) {
     var showDeleteDialog by remember {
         mutableStateOf(false)
@@ -54,6 +56,16 @@ fun PlayerScreen(
         topBar = {
             LargeTopAppBar(
                 title = { Text(stringResource(R.string.recordings)) },
+                navigationIcon = {
+                    onNavigateUp?.let {
+                        ClickableIcon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        ) {
+                            it.invoke()
+                        }
+                    }
+                },
                 actions = {
                     Box {
                         var showDropDown by remember {

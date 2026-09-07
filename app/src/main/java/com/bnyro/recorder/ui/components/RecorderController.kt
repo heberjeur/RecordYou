@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.media.projection.MediaProjectionManager
 import android.os.Build
-import android.text.format.DateUtils
 import androidx.activity.ComponentActivity
+import com.bnyro.recorder.util.TimeFormatHelper
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -83,7 +83,7 @@ fun RecorderController(
             Spacer(modifier = Modifier.height(20.dp))
         } ?: recorderModel.recordedTime?.let {
             Text(
-                text = DateUtils.formatElapsedTime(it / 10),
+                text = TimeFormatHelper.formatDuration(it / 10),
                 style = MaterialTheme.typography.displayLarge
             )
             Spacer(modifier = Modifier.height(20.dp))

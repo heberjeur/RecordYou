@@ -85,5 +85,5 @@
     <string name="language">言語</string>
     <string name="system_default">システムデフォルト</string>
     <string name="audio_directory">音声ディレクトリ</string>
-    <string name="video_directory">画面録画ディレクトリ</string>
+    <string name="video_directory">動画ディレクトリ</string>
 </resources>

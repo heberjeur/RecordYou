@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -25,8 +25,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import com.bnyro.recorder.R
 import com.bnyro.recorder.util.Preferences
 
@@ -50,20 +48,22 @@ fun CustomNumInputPref(
         mutableStateOf((pref ?: defValue).toString())
     }
 
-    Button(
+    val valueText = if (pref != null) "$pref" else stringResource(R.string.auto)
+
+    ElevatedFilterChip(
         modifier = modifier,
+        selected = pref != null,
         onClick = {
             view.playSoundEffect(SoundEffectConstants.CLICK)
             showDialog = true
+        },
+        label = {
+            Text(
+                text = "$title: $valueText",
+                maxLines = 1
+            )
         }
-    ) {
-        Text(
-            text = title,
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
+    )
 
     if (showDialog) {
         AlertDialog(

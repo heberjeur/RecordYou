@@ -1,6 +1,6 @@
 package com.bnyro.recorder.ui.components
 
-import android.text.format.DateUtils
+import com.bnyro.recorder.util.TimeFormatHelper
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +33,7 @@ fun PlayerController(exoPlayer: ExoPlayer) {
         ) {
             val positionAndDuration by positionAndDurationState()
             Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-                Text(DateUtils.formatElapsedTime(positionAndDuration.first / 1000))
+                Text(TimeFormatHelper.formatDuration(positionAndDuration.first / 1000))
                 var tempSliderPosition by remember { mutableStateOf<Float?>(null) }
                 Slider(
                     modifier = Modifier.weight(1f),
@@ -50,7 +50,7 @@ fun PlayerController(exoPlayer: ExoPlayer) {
                     }
                 )
                 Text(
-                    positionAndDuration.second?.let { DateUtils.formatElapsedTime(it / 1000) }
+                    positionAndDuration.second?.let { TimeFormatHelper.formatDuration(it / 1000) }
                         ?: ""
                 )
             }

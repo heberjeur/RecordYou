@@ -81,5 +81,5 @@
     <string name="language">ဘာသာစကား</string>
     <string name="system_default">စနစ်မူရင်း</string>
     <string name="audio_directory">အသံလမ်းညွှန်</string>
-    <string name="video_directory">စခရင်မှတ်တမ်းတင်လမ်းညွှန်</string>
+    <string name="video_directory">ဗီဒီယိုလမ်းညွှန်</string>
 </resources>

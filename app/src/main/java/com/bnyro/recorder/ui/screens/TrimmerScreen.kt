@@ -1,8 +1,8 @@
 package com.bnyro.recorder.ui.screens
 
 import android.os.Build
-import android.text.format.DateUtils
 import androidx.annotation.RequiresApi
+import com.bnyro.recorder.util.TimeFormatHelper
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
@@ -124,7 +124,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                 }) {
                     Text(
                         text = "${stringResource(R.string.start_timestamp)} ${
-                            DateUtils.formatElapsedTime(
+                            TimeFormatHelper.formatDuration(
                                 trimmerModel.startTimeStamp / 1000
                             )
                         }"
@@ -182,7 +182,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                     Text(
                         text = "${stringResource(R.string.stop_timestamp)} ${
                             trimmerModel.endTimeStamp?.let {
-                                DateUtils.formatElapsedTime(it / 1000)
+                                TimeFormatHelper.formatDuration(it / 1000)
                             } ?: stringResource(R.string.not_set)
                         }"
 

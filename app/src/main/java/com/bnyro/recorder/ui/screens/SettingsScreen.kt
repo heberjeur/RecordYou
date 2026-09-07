@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
@@ -25,6 +27,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.bnyro.recorder.util.LanguageHelper
@@ -61,7 +64,7 @@ import com.bnyro.recorder.util.Preferences
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
     val themeModel: ThemeModel = viewModel(LocalContext.current as ComponentActivity)
     var audioFormat by remember {
         mutableStateOf(AudioFormat.getCurrent())
@@ -128,6 +131,16 @@ fun SettingsScreen() {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(
             title = { Text(stringResource(R.string.settings)) },
+            navigationIcon = {
+                onNavigateUp?.let {
+                    ClickableIcon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back)
+                    ) {
+                        it.invoke()
+                    }
+                }
+            },
             actions = {
                 ClickableIcon(
                     imageVector = Icons.Default.Language,
@@ -210,10 +223,11 @@ fun SettingsScreen() {
                 }
             ) {
                 val currentCode = Preferences.prefs.getString(Preferences.languageKey, "") ?: ""
-                val currentName = LanguageHelper.languages.find { it.code == currentCode }?.name
-                    ?: stringResource(R.string.system_default)
+                val currentOption = LanguageHelper.languages.find { it.code == currentCode }
+                val currentName = currentOption?.name ?: stringResource(R.string.system_default)
+                val currentIcon = currentOption?.icon ?: "🌐"
                 Text(
-                    text = "${stringResource(R.string.language)}: $currentName",
+                    text = "$currentIcon ${stringResource(R.string.language)}: $currentName",
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -232,22 +246,25 @@ fun SettingsScreen() {
                 }
             }
             Spacer(modifier = Modifier.height(10.dp))
-            Row(
+            LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                CustomNumInputPref(
-                    modifier = Modifier.weight(1f),
-                    key = Preferences.audioSampleRateKey,
-                    title = stringResource(R.string.sample_rate),
-                    defValue = 44_100
-                )
-                CustomNumInputPref(
-                    modifier = Modifier.weight(1f),
-                    key = Preferences.audioBitrateKey,
-                    title = stringResource(R.string.bitrate),
-                    defValue = 192_000
-                )
+                item {
+                    CustomNumInputPref(
+                        key = Preferences.audioSampleRateKey,
+                        title = stringResource(R.string.sample_rate),
+                        defValue = 44_100
+                    )
+                }
+                item {
+                    CustomNumInputPref(
+                        key = Preferences.audioBitrateKey,
+                        title = stringResource(R.string.bitrate),
+                        defValue = 192_000
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(10.dp))
             val audioDeviceSourceValues = AudioDeviceSource.values().map { it.value }
@@ -394,11 +411,13 @@ fun SettingsScreen() {
         val entries = LanguageHelper.languages.map { lang ->
             if (lang.code.isEmpty()) stringResource(R.string.system_default) else lang.name
         }
+        val icons = LanguageHelper.languages.map { it.icon }
         val currentContext = LocalContext.current
         SelectionDialog(
             onDismissRequest = { showLanguagePref = false },
             title = stringResource(R.string.language),
-            entries = entries
+            entries = entries,
+            icons = icons
         ) { index ->
             val langCode = values[index]
             LanguageHelper.setLanguage(currentContext, langCode)

@@ -85,5 +85,5 @@
     <string name="language">Lingua</string>
     <string name="system_default">Predefinito di sistema</string>
     <string name="audio_directory">Cartella audio</string>
-    <string name="video_directory">Cartella registrazione schermo</string>
+    <string name="video_directory">Cartella video</string>
 </resources>

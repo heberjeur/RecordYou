@@ -81,5 +81,5 @@
     <string name="language">Мова</string>
     <string name="system_default">Сістэмныя па змаўчанні</string>
     <string name="audio_directory">Каталог аўдыё</string>
-    <string name="video_directory">Каталог запісу экрана</string>
+    <string name="video_directory">Каталог відэа</string>
 </resources>

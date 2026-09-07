@@ -85,5 +85,5 @@
     <string name="language">Dil</string>
     <string name="system_default">Sistem varsayılanı</string>
     <string name="audio_directory">Ses dizini</string>
-    <string name="video_directory">Ekran kaydı dizini</string>
+    <string name="video_directory">Video dizini</string>
 </resources>

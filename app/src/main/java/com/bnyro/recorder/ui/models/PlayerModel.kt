@@ -16,6 +16,7 @@ import com.bnyro.recorder.App
 import com.bnyro.recorder.enums.SortOrder
 import com.bnyro.recorder.obj.RecordingItemData
 import com.bnyro.recorder.util.FileRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PlayerModel(context: Context, private val fileRepository: FileRepository) : ViewModel() {
@@ -36,9 +37,27 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
     }
 
     fun loadFiles() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             audioRecordingItems = fileRepository.getAudioRecordingItems(sortOrder)
-            screenRecordingItems = fileRepository.getVideoRecordingItems(sortOrder)
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val videoItems = fileRepository.getVideoRecordingItems(sortOrder)
+            screenRecordingItems = videoItems
+
+            videoItems.forEach { item ->
+                if (item.thumbnail == null) {
+                    val thumb = fileRepository.loadVideoThumbnail(item.recordingFile)
+                    if (thumb != null) {
+                        screenRecordingItems = screenRecordingItems.map {
+                            if (it.recordingFile.uri == item.recordingFile.uri) {
+                                it.copy(thumbnail = thumb)
+                            } else {
+                                it
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

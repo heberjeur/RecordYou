@@ -69,5 +69,5 @@
     <string name="language">Limbă</string>
     <string name="system_default">Implicit de sistem</string>
     <string name="audio_directory">Director audio</string>
-    <string name="video_directory">Director înregistrare ecran</string>
+    <string name="video_directory">Director video</string>
 </resources>

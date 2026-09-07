@@ -17,11 +17,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bnyro.recorder.R
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.Alignment
+
 @Composable
 fun SelectionDialog(
     onDismissRequest: () -> Unit,
     title: String,
     entries: List<String>,
+    icons: List<String>? = null,
     onSelect: (index: Int) -> Unit
 ) {
     val view = LocalView.current
@@ -36,7 +42,7 @@ fun SelectionDialog(
         text = {
             LazyColumn {
                 itemsIndexed(entries) { index, entry ->
-                    Text(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(20.dp))
@@ -46,8 +52,14 @@ fun SelectionDialog(
                                 onDismissRequest.invoke()
                             }
                             .padding(vertical = 12.dp, horizontal = 10.dp),
-                        text = entry
-                    )
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        icons?.getOrNull(index)?.let { icon ->
+                            Text(text = icon)
+                            Spacer(modifier = Modifier.width(12.dp))
+                        }
+                        Text(text = entry)
+                    }
                 }
             }
         }

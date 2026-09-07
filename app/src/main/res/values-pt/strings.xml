@@ -82,5 +82,5 @@
     <string name="language">Idioma</string>
     <string name="system_default">Padrão do sistema</string>
     <string name="audio_directory">Diretório de áudio</string>
-    <string name="video_directory">Diretório de gravação de tela</string>
+    <string name="video_directory">Diretório de vídeo</string>
 </resources>
