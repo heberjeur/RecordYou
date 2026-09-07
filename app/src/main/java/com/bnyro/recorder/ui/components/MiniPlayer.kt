@@ -32,7 +32,17 @@ import androidx.media3.common.Player
 import com.bnyro.recorder.ui.models.PlayerModel
 
 @Composable
-fun MiniPlayer(inputFile: DocumentFile, playerModel: PlayerModel = viewModel()) {
+fun MiniPlayer(
+    inputFile: DocumentFile,
+    playerModel: PlayerModel = run {
+        val activity = androidx.compose.ui.platform.LocalContext.current as? androidx.activity.ComponentActivity
+        if (activity != null) {
+            viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
+        } else {
+            viewModel(factory = PlayerModel.Factory)
+        }
+    }
+) {
     val view = LocalView.current
     DisposableEffect(inputFile) {
         with(playerModel.player) {

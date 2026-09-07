@@ -60,7 +60,11 @@ object AudioWaveformExtractor {
     private fun extractMediaWaveform(pfd: ParcelFileDescriptor, targetBars: Int): List<Float>? {
         val extractor = MediaExtractor()
         try {
-            extractor.setDataSource(pfd.fileDescriptor)
+            if (pfd.statSize > 0) {
+                extractor.setDataSource(pfd.fileDescriptor, 0, pfd.statSize)
+            } else {
+                extractor.setDataSource(pfd.fileDescriptor)
+            }
             var trackIndex = -1
             var format: MediaFormat? = null
             for (i in 0 until extractor.trackCount) {

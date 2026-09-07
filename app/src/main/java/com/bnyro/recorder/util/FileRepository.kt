@@ -228,6 +228,10 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         audioWaveformCache.get(uriStr)?.let { return it }
         val wave = AudioWaveformExtractor.extractWaveform(context, file.uri) ?: return null
         audioWaveformCache.put(uriStr, wave)
+        cachedAudio = cachedAudio?.map {
+            if (it.recordingFile.uri == file.uri) it.copy(waveform = wave) else it
+        }
+        writeCache()
         return wave
     }
 
@@ -254,13 +258,18 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         return withContext(Dispatchers.IO) {
             val items = getAudioFiles().map {
                 val uriStr = it.uri.toString()
+                val wave = audioWaveformCache.get(uriStr)
+                    ?: cachedAudio?.firstOrNull { c -> c.recordingFile.uri == it.uri }?.waveform
+                if (wave != null) {
+                    audioWaveformCache.put(uriStr, wave)
+                }
                 RecordingItemData(
                     recordingFile = it,
                     recorderType = RecorderType.AUDIO,
                     name = it.name.orEmpty(),
                     lastModified = it.lastModified(),
                     size = it.length(),
-                    waveform = audioWaveformCache.get(uriStr)
+                    waveform = wave
                 )
             }
             cachedAudio = items

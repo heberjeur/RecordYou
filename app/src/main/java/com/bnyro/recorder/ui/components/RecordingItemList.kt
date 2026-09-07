@@ -89,7 +89,7 @@ fun RecordingItemList(
                         .padding(bottom = 10.dp),
                     visible = showMiniPlayer
                 ) {
-                    MiniPlayer(chosenFile!!)
+                    MiniPlayer(chosenFile!!, playerModel = playerModel)
                 }
             }
         }
