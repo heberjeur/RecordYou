@@ -8,4 +8,8 @@
     <string name="play">ଚଲାନ୍ତୁ</string>
     <string name="countdown_timer">କାଉଣ୍ଟଡାଉନ୍ ଟାଇମର୍</string>
     <string name="off">ବନ୍ଦ</string>
+    <string name="language">ଭାଷା</string>
+    <string name="system_default">ସିଷ୍ଟମ ଡିଫଲ୍ଟ</string>
+    <string name="audio_directory">ଅଡିଓ ଡିରେକ୍ଟୋରୀ</string>
+    <string name="video_directory">ସ୍କ୍ରିନ୍ ରେକର୍ଡିଂ ଡିରେକ୍ଟୋରୀ</string>
 </resources>

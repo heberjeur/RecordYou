@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">沒有相應的權限，無法開始錄製</string>
     <string name="countdown_timer">倒數計時</string>
     <string name="off">關閉</string>
+    <string name="language">語言</string>
+    <string name="system_default">系統預設</string>
+    <string name="audio_directory">音訊目錄</string>
+    <string name="video_directory">螢幕錄影目錄</string>
 </resources>

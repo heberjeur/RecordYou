@@ -49,6 +49,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.jump3r)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.service)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -51,4 +51,8 @@
     <string name="cancel">Batal</string>
     <string name="countdown_timer">Pemasa undur</string>
     <string name="off">Mati</string>
+    <string name="language">Bahasa</string>
+    <string name="system_default">Lalai sistem</string>
+    <string name="audio_directory">Direktori audio</string>
+    <string name="video_directory">Direktori rakaman skrin</string>
 </resources>

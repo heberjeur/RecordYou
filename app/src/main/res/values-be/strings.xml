@@ -78,4 +78,8 @@
     <string name="trim_failed">Не ўдалося абрэзаць</string>
     <string name="countdown_timer">Таймер зваротнага адліку</string>
     <string name="off">Выключана</string>
+    <string name="language">Мова</string>
+    <string name="system_default">Сістэмныя па змаўчанні</string>
+    <string name="audio_directory">Каталог аўдыё</string>
+    <string name="video_directory">Каталог запісу экрана</string>
 </resources>

@@ -24,6 +24,10 @@ interface FileRepository {
     fun getOutputFile(extension: String, prefix: String = ""): DocumentFile?
     fun getOutputDir(): DocumentFile
     fun getOutputDirs(): List<DocumentFile>
+    fun getAudioOutputDir(): DocumentFile
+    fun getVideoOutputDir(): DocumentFile
+    fun getAudioOutputDirs(): List<DocumentFile>
+    fun getVideoOutputDirs(): List<DocumentFile>
 
     companion object {
         const val DEFAULT_NAMING_PATTERN = "%d_%t"
@@ -77,18 +81,18 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
     }
 
     private fun getVideoFiles(): List<DocumentFile> =
-        getOutputDirs().flatMap {
+        getVideoOutputDirs().flatMap {
             it.listFiles().filter { file ->
                 file.isFile && commonVideoExtensions.any { file.name?.endsWith(it) ?: false }
             }
-        }
+        }.distinctBy { it.uri }
 
     private fun getAudioFiles(): List<DocumentFile> =
-        getOutputDirs().flatMap {
+        getAudioOutputDirs().flatMap {
             it.listFiles().filter { file ->
                 file.isFile && commonAudioExtensions.any { file.name?.endsWith(it) ?: false }
             }
-        }
+        }.distinctBy { it.uri }
 
     override suspend fun getVideoRecordingItems(sortOrder: SortOrder): List<RecordingItemData> {
         return withContext(Dispatchers.IO) {
@@ -123,7 +127,7 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
 
     override suspend fun deleteAllFiles() {
         withContext(Dispatchers.IO) {
-            getOutputDirs().map { files ->
+            (getAudioOutputDirs() + getVideoOutputDirs() + getOutputDirs()).distinctBy { it.uri }.forEach { files ->
                 files.listFiles().forEach {
                     if (it.isFile) it.delete()
                 }
@@ -178,7 +182,8 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
             currentTimeMillis.time
         )
 
-        val outputDir = getOutputDir()
+        val isAudio = commonAudioExtensions.contains(".$extension")
+        val outputDir = if (isAudio) getAudioOutputDir() else getVideoOutputDir()
         if (!outputDir.exists() || !outputDir.canRead() || !outputDir.canWrite()) return null
 
         val fullFileName = "$prefix$fileName.$extension"
@@ -187,10 +192,10 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         return existingFile ?: outputDir.createFile(getMimeType(extension), fullFileName)
     }
 
-    override fun getOutputDir(): DocumentFile = getOutputDirs().last()
-
-    override fun getOutputDirs(): List<DocumentFile> {
-        val prefDir = Preferences.prefs.getString(Preferences.targetFolderKey, "")
+    private fun resolveDirs(prefKey: String): List<DocumentFile> {
+        val prefDir = Preferences.prefs.getString(prefKey, "")
+            .takeIf { !it.isNullOrBlank() }
+            ?: Preferences.prefs.getString(Preferences.targetFolderKey, "")
         val externalFilesDir = run {
             val dir = context.getExternalFilesDir(null) ?: context.filesDir
             DocumentFile.fromFile(dir)
@@ -207,6 +212,15 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
             listOf(externalFilesDir)
         }
     }
+
+    override fun getAudioOutputDir(): DocumentFile = getAudioOutputDirs().last()
+    override fun getVideoOutputDir(): DocumentFile = getVideoOutputDirs().last()
+
+    override fun getAudioOutputDirs(): List<DocumentFile> = resolveDirs(Preferences.audioTargetFolderKey)
+    override fun getVideoOutputDirs(): List<DocumentFile> = resolveDirs(Preferences.videoTargetFolderKey)
+
+    override fun getOutputDir(): DocumentFile = getOutputDirs().last()
+    override fun getOutputDirs(): List<DocumentFile> = resolveDirs(Preferences.targetFolderKey)
 
     companion object {
         const val DEFAULT_NAMING_PATTERN = FileRepository.DEFAULT_NAMING_PATTERN

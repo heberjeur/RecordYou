@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">لا توجد أذونات كافية لبدء التسجيل</string>
     <string name="countdown_timer">مؤقت العد التنازلي</string>
     <string name="off">معطل</string>
+    <string name="language">اللغة</string>
+    <string name="system_default">افتراضي للنظام</string>
+    <string name="audio_directory">دليل الصوت</string>
+    <string name="video_directory">دليل تسجيل الشاشة</string>
 </resources>

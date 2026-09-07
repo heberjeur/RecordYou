@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">Tidak ada perizinan yang cukup untuk merekam</string>
     <string name="countdown_timer">Penghitung waktu mundur</string>
     <string name="off">Nonaktif</string>
+    <string name="language">Bahasa</string>
+    <string name="system_default">Default sistem</string>
+    <string name="audio_directory">Direktori audio</string>
+    <string name="video_directory">Direktori rekaman layar</string>
 </resources>

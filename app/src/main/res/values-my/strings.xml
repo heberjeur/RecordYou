@@ -78,4 +78,8 @@
     <string name="erase_mode">ခဲဖျက်မုဒ်</string>
     <string name="countdown_timer">အချိန်ရေတွက်မှု</string>
     <string name="off">ပိတ်</string>
+    <string name="language">ဘာသာစကား</string>
+    <string name="system_default">စနစ်မူရင်း</string>
+    <string name="audio_directory">အသံလမ်းညွှန်</string>
+    <string name="video_directory">စခရင်မှတ်တမ်းတင်လမ်းညွှန်</string>
 </resources>

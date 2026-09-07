@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">रिकॉर्डिंग प्रारंभ करने के लिए पर्याप्त अनुमतियां नहीं</string>
     <string name="countdown_timer">उल्टी गिनती टाइमर</string>
     <string name="off">बंद</string>
+    <string name="language">भाषा</string>
+    <string name="system_default">सिस्टम डिफ़ॉल्ट</string>
+    <string name="audio_directory">ऑडियो निर्देशिका</string>
+    <string name="video_directory">स्क्रीन रिकॉर्डिंग निर्देशिका</string>
 </resources>

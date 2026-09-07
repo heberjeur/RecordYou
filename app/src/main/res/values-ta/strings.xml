@@ -82,4 +82,8 @@
     <string name="internal_audio">உள் ஆடியோ (ரூட்)</string>
     <string name="countdown_timer">கவுண்ட்டவுன் டைமர்</string>
     <string name="off">முடக்கு</string>
+    <string name="language">மொழி</string>
+    <string name="system_default">கணினி இயல்புநிலை</string>
+    <string name="audio_directory">ஆடியோ அடைவு</string>
+    <string name="video_directory">திரைப்பதிவு அடைவு</string>
 </resources>

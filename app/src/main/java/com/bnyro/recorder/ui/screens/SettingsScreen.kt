@@ -5,10 +5,12 @@ import android.os.Build
 import android.view.SoundEffectConstants
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -17,11 +19,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import com.bnyro.recorder.util.LanguageHelper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -89,9 +95,26 @@ fun SettingsScreen() {
         mutableStateOf(Preferences.prefs.getInt(Preferences.countdownSecondsKey, 0))
     }
 
-    val directoryPicker = rememberLauncherForActivityResult(PickFolderContract()) {
-        it ?: return@rememberLauncherForActivityResult
-        Preferences.edit { putString(Preferences.targetFolderKey, it.toString()) }
+    var showLanguagePref by remember {
+        mutableStateOf(false)
+    }
+    var audioTargetFolder by remember {
+        mutableStateOf(Preferences.prefs.getString(Preferences.audioTargetFolderKey, ""))
+    }
+    var videoTargetFolder by remember {
+        mutableStateOf(Preferences.prefs.getString(Preferences.videoTargetFolderKey, ""))
+    }
+
+    val audioDirectoryPicker = rememberLauncherForActivityResult(PickFolderContract()) { uri ->
+        uri ?: return@rememberLauncherForActivityResult
+        audioTargetFolder = uri.toString()
+        Preferences.edit { putString(Preferences.audioTargetFolderKey, uri.toString()) }
+    }
+
+    val videoDirectoryPicker = rememberLauncherForActivityResult(PickFolderContract()) { uri ->
+        uri ?: return@rememberLauncherForActivityResult
+        videoTargetFolder = uri.toString()
+        Preferences.edit { putString(Preferences.videoTargetFolderKey, uri.toString()) }
     }
     var showAbout by remember {
         mutableStateOf(false)
@@ -106,6 +129,12 @@ fun SettingsScreen() {
         TopAppBar(
             title = { Text(stringResource(R.string.settings)) },
             actions = {
+                ClickableIcon(
+                    imageVector = Icons.Default.Language,
+                    contentDescription = stringResource(R.string.language)
+                ) {
+                    showLanguagePref = true
+                }
                 ClickableIcon(
                     imageVector = Icons.Default.DarkMode,
                     contentDescription = stringResource(R.string.theme)
@@ -135,15 +164,60 @@ fun SettingsScreen() {
                 fontSize = 18.sp
             )
             Spacer(modifier = Modifier.height(5.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
+                        val lastDir = audioTargetFolder.takeIf { !it.isNullOrBlank() }
+                            ?: Preferences.prefs.getString(Preferences.targetFolderKey, "").takeIf { !it.isNullOrBlank() }
+                        audioDirectoryPicker.launch(lastDir?.let { Uri.parse(it) })
+                    }
+                ) {
+                    Text(
+                        text = stringResource(R.string.audio_directory),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
+                        val lastDir = videoTargetFolder.takeIf { !it.isNullOrBlank() }
+                            ?: Preferences.prefs.getString(Preferences.targetFolderKey, "").takeIf { !it.isNullOrBlank() }
+                        videoDirectoryPicker.launch(lastDir?.let { Uri.parse(it) })
+                    }
+                ) {
+                    Text(
+                        text = stringResource(R.string.video_directory),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(10.dp))
             Button(
+                modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     view.playSoundEffect(SoundEffectConstants.CLICK)
-                    val lastDir = Preferences.prefs.getString(Preferences.targetFolderKey, "")
-                        .takeIf { !it.isNullOrBlank() }
-                    directoryPicker.launch(lastDir?.let { Uri.parse(it) })
+                    showLanguagePref = true
                 }
             ) {
-                Text(stringResource(R.string.choose_dir))
+                val currentCode = Preferences.prefs.getString(Preferences.languageKey, "") ?: ""
+                val currentName = LanguageHelper.languages.find { it.code == currentCode }?.name
+                    ?: stringResource(R.string.system_default)
+                Text(
+                    text = "${stringResource(R.string.language)}: $currentName",
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
             Spacer(modifier = Modifier.height(10.dp))
             ChipSelector(
@@ -157,19 +231,25 @@ fun SettingsScreen() {
                     Preferences.edit { putString(Preferences.audioFormatKey, audioFormat.name) }
                 }
             }
-            Row {
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 CustomNumInputPref(
+                    modifier = Modifier.weight(1f),
                     key = Preferences.audioSampleRateKey,
                     title = stringResource(R.string.sample_rate),
                     defValue = 44_100
                 )
-                Spacer(modifier = Modifier.width(10.dp))
                 CustomNumInputPref(
+                    modifier = Modifier.weight(1f),
                     key = Preferences.audioBitrateKey,
                     title = stringResource(R.string.bitrate),
                     defValue = 192_000
                 )
             }
+            Spacer(modifier = Modifier.height(10.dp))
             val audioDeviceSourceValues = AudioDeviceSource.values().map { it.value }
             ChipSelector(
                 entries = listOf(
@@ -235,6 +315,7 @@ fun SettingsScreen() {
             }
             Spacer(modifier = Modifier.height(10.dp))
             CustomNumInputPref(
+                modifier = Modifier.fillMaxWidth(),
                 key = Preferences.videoBitrateKey,
                 title = stringResource(R.string.bitrate),
                 defValue = 1_200_000
@@ -305,6 +386,24 @@ fun SettingsScreen() {
     if (showAbout) {
         AboutDialog {
             showAbout = false
+        }
+    }
+
+    if (showLanguagePref) {
+        val values = LanguageHelper.languages.map { it.code }
+        val entries = LanguageHelper.languages.map { lang ->
+            if (lang.code.isEmpty()) stringResource(R.string.system_default) else lang.name
+        }
+        val currentContext = LocalContext.current
+        SelectionDialog(
+            onDismissRequest = { showLanguagePref = false },
+            title = stringResource(R.string.language),
+            entries = entries
+        ) { index ->
+            val langCode = values[index]
+            LanguageHelper.setLanguage(currentContext, langCode)
+            showLanguagePref = false
+            (currentContext as? ComponentActivity)?.recreate()
         }
     }
 }

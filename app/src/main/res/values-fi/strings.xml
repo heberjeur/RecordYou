@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">Ei riittäviä käyttöoikeuksia tallentamisen aloittamiseksi</string>
     <string name="countdown_timer">Ajastin</string>
     <string name="off">Pois päältä</string>
+    <string name="language">Kieli</string>
+    <string name="system_default">Järjestelmän oletus</string>
+    <string name="audio_directory">Äänihakemisto</string>
+    <string name="video_directory">Näytöntallennushakemisto</string>
 </resources>

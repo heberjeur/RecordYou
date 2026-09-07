@@ -82,4 +82,8 @@
     <string name="cant_access_selected_folder">しんたくさるフォルダーんかいアクセスなやびらん！</string>
     <string name="countdown_timer">カウントダウンタイマー</string>
     <string name="off">オフ</string>
+    <string name="language">言語</string>
+    <string name="system_default">システムデフォルト</string>
+    <string name="audio_directory">音声ディレクトリ</string>
+    <string name="video_directory">画面録画ディレクトリ</string>
 </resources>

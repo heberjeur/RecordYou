@@ -49,4 +49,8 @@
     <string name="theme">Vising</string>
     <string name="countdown_timer">Nedteljingstidtakar</string>
     <string name="off">Av</string>
+    <string name="language">Språk</string>
+    <string name="system_default">Systemstandard</string>
+    <string name="audio_directory">Lydmappe</string>
+    <string name="video_directory">Skjermopptaksmappe</string>
 </resources>

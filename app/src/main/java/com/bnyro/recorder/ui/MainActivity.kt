@@ -22,6 +22,7 @@ import com.bnyro.recorder.enums.ThemeMode
 import com.bnyro.recorder.ui.models.RecorderModel
 import com.bnyro.recorder.ui.models.ThemeModel
 import com.bnyro.recorder.ui.theme.RecordYouTheme
+import com.bnyro.recorder.util.LanguageHelper
 
 class MainActivity : ComponentActivity() {
     private var initialRecorder = RecorderType.NONE
@@ -29,6 +30,10 @@ class MainActivity : ComponentActivity() {
     private lateinit var mProjectionManager: MediaProjectionManager
     private val recorderModel: RecorderModel by viewModels()
     private lateinit var launcher: ActivityResultLauncher<Intent>
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LanguageHelper.wrapContext(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

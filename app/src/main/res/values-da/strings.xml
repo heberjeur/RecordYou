@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">Ingen tilstrækkelige tilladelser til at optage</string>
     <string name="countdown_timer">Nedtællingstimer</string>
     <string name="off">Fra</string>
+    <string name="language">Sprog</string>
+    <string name="system_default">Systemstandard</string>
+    <string name="audio_directory">Lydmappe</string>
+    <string name="video_directory">Skærmoptagelsesmappe</string>
 </resources>

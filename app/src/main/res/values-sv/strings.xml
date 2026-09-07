@@ -43,4 +43,8 @@
     <string name="sample_rate">Samplingsfrekvens</string>
     <string name="countdown_timer">Nedräkningstimer</string>
     <string name="off">Av</string>
+    <string name="language">Språk</string>
+    <string name="system_default">Systemstandard</string>
+    <string name="audio_directory">Ljudkatalog</string>
+    <string name="video_directory">Skärminspelningskatalog</string>
 </resources>

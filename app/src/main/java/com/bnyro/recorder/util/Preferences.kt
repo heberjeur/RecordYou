@@ -8,6 +8,9 @@ object Preferences {
     lateinit var prefs: SharedPreferences
 
     const val targetFolderKey = "targetFolder"
+    const val audioTargetFolderKey = "audioTargetFolder"
+    const val videoTargetFolderKey = "videoTargetFolder"
+    const val languageKey = "language"
     const val audioFormatKey = "audioFormat"
     const val audioSourceKey = "audioSource"
     const val audioSampleRateKey = "audioSampleRate"

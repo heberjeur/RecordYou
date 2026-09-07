@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">Non ci sono autorizzazioni sufficienti per avviare la registrazione</string>
     <string name="countdown_timer">Timer conto alla rovescia</string>
     <string name="off">Disattivato</string>
+    <string name="language">Lingua</string>
+    <string name="system_default">Predefinito di sistema</string>
+    <string name="audio_directory">Cartella audio</string>
+    <string name="video_directory">Cartella registrazione schermo</string>
 </resources>

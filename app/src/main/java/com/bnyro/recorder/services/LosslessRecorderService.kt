@@ -11,8 +11,12 @@ import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
 import com.bnyro.recorder.App
 import com.bnyro.recorder.R
+import com.bnyro.recorder.enums.AudioChannels
+import com.bnyro.recorder.enums.AudioDeviceSource
 import com.bnyro.recorder.enums.RecorderState
 import com.bnyro.recorder.util.PcmConverter
+import com.bnyro.recorder.util.Preferences
+import de.sciss.jump3r.Main as Jump3rMain
 import java.io.File
 import kotlin.concurrent.thread
 import kotlin.experimental.and
@@ -39,18 +43,39 @@ class LosslessRecorderService : RecorderService() {
     override fun start() {
         super.start()
 
+        val audioSource = Preferences.prefs.getInt(
+            Preferences.audioDeviceSourceKey,
+            AudioDeviceSource.DEFAULT.value
+        )
+        val channelPref = Preferences.prefs.getInt(
+            Preferences.audioChannelsKey,
+            AudioChannels.STEREO.value
+        )
+        val channelMask = if (channelPref == AudioChannels.MONO.value) {
+            AudioFormat.CHANNEL_IN_MONO
+        } else {
+            AudioFormat.CHANNEL_IN_STEREO
+        }
+        val sampleRatePref = Preferences.prefs.getInt(
+            Preferences.audioSampleRateKey,
+            SAMPLING_RATE
+        ).takeIf { it > 0 } ?: SAMPLING_RATE
+
         val audioFormat: AudioFormat = AudioFormat.Builder()
-            .setSampleRate(SAMPLING_RATE)
-            .setChannelMask(CHANNEL_IN)
+            .setSampleRate(sampleRatePref)
+            .setChannelMask(channelMask)
             .setEncoding(FORMAT)
             .build()
 
+        val minBuf = AudioRecord.getMinBufferSize(sampleRatePref, channelMask, FORMAT)
+        val bufferSize = (2 * minBuf).coerceAtLeast(4096)
+
         audioRecorder = AudioRecord(
-            MediaRecorder.AudioSource.DEFAULT,
+            audioSource,
             audioFormat.sampleRate,
             audioFormat.channelMask,
             audioFormat.encoding,
-            BUFFER_SIZE_IN_BYTES
+            bufferSize
         )
 
         pcmConverter = PcmConverter(
@@ -134,6 +159,44 @@ class LosslessRecorderService : RecorderService() {
         outputFile?.delete()
     }
 
+    private fun convertToMp3() {
+        val pcmFile = File(filesDir, "temp.pcm")
+        if (!pcmFile.exists() || pcmFile.length() == 0L) {
+            outputFile?.delete()
+            return
+        }
+        val tempWav = File(cacheDir, "temp_${System.currentTimeMillis()}.wav")
+        val tempMp3 = File(cacheDir, "temp_${System.currentTimeMillis()}.mp3")
+        try {
+            pcmFile.inputStream().use { input ->
+                tempWav.outputStream().use { output ->
+                    pcmConverter?.convertToWave(input, output, BUFFER_SIZE_IN_BYTES)
+                }
+            }
+            val bitrate = Preferences.prefs.getInt(Preferences.audioBitrateKey, 192_000).takeIf { it > 0 } ?: 192_000
+            val bitrateKbps = (bitrate / 1000).coerceIn(32, 320)
+            val sampleRatePref = Preferences.prefs.getInt(Preferences.audioSampleRateKey, SAMPLING_RATE).takeIf { it > 0 } ?: SAMPLING_RATE
+            val args = arrayOf(
+                "-b", bitrateKbps.toString(),
+                "-s", (sampleRatePref / 1000.0).toString(),
+                tempWav.absolutePath,
+                tempMp3.absolutePath
+            )
+            Jump3rMain().run(args)
+            if (tempMp3.exists() && tempMp3.length() > 0L) {
+                (application as App).fileRepository.commitOutputFile(tempMp3, FILE_NAME_EXTENSION_MP3)
+            } else {
+                android.util.Log.e("LosslessRecorderService", "MP3 encoding produced empty file")
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("LosslessRecorderService", "Error encoding MP3", e)
+        } finally {
+            tempWav.delete()
+            tempMp3.delete()
+            outputFile?.delete()
+        }
+    }
+
     override fun stopRecording() {
         if (recorderState == RecorderState.IDLE) return
         audioRecorder?.stop()
@@ -141,7 +204,12 @@ class LosslessRecorderService : RecorderService() {
         audioRecorder = null
         recorderThread = null
 
-        convertToWav()
+        val isLosslessWav = Preferences.prefs.getBoolean(Preferences.losslessRecorderKey, false)
+        if (isLosslessWav) {
+            convertToWav()
+        } else {
+            convertToMp3()
+        }
 
         super.stopRecording()
     }
@@ -150,6 +218,7 @@ class LosslessRecorderService : RecorderService() {
 
     companion object {
         private const val FILE_NAME_EXTENSION_WAV = "wav"
+        private const val FILE_NAME_EXTENSION_MP3 = "mp3"
         private const val SAMPLING_RATE = 44100
         private const val CHANNEL_IN = AudioFormat.CHANNEL_IN_STEREO
         private const val FORMAT = AudioFormat.ENCODING_PCM_16BIT

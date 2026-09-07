@@ -76,4 +76,8 @@
     <string name="trim_failed">החיתוך נכשל</string>
     <string name="countdown_timer">ספירה לאחור</string>
     <string name="off">כבוי</string>
+    <string name="language">שפה</string>
+    <string name="system_default">ברירת מחדל של המערכת</string>
+    <string name="audio_directory">תיקיית שמע</string>
+    <string name="video_directory">תיקיית הקלטת מסך</string>
 </resources>

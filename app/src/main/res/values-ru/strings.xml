@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">Нет необходимых разрешений для записи</string>
     <string name="countdown_timer">Таймер обратного отсчета</string>
     <string name="off">Выкл</string>
+    <string name="language">Язык</string>
+    <string name="system_default">Системный по умолчанию</string>
+    <string name="audio_directory">Папка для аудио</string>
+    <string name="video_directory">Папка для записи экрана</string>
 </resources>

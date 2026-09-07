@@ -12,8 +12,10 @@ navigationCompose = "2.8.5"
 junit = "4.13.2"
 extJunit = "1.2.1"
 espresso = "3.6.1"
+jump3r = "1.0.5"
 
 [libraries]
+jump3r = { group = "de.sciss", name = "jump3r", version.ref = "jump3r" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycleService" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }

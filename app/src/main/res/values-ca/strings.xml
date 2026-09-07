@@ -78,4 +78,8 @@
     <string name="erase_mode">Mode d\'esborrar</string>
     <string name="countdown_timer">Temporitzador de compte enrere</string>
     <string name="off">Desactivat</string>
+    <string name="language">Idioma</string>
+    <string name="system_default">Per defecte del sistema</string>
+    <string name="audio_directory">Directori d\'àudio</string>
+    <string name="video_directory">Directori d\'enregistrament de pantalla</string>
 </resources>

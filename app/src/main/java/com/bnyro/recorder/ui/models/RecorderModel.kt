@@ -28,6 +28,7 @@ import com.bnyro.recorder.services.AudioRecorderService
 import com.bnyro.recorder.services.LosslessRecorderService
 import com.bnyro.recorder.services.RecorderService
 import com.bnyro.recorder.services.ScreenRecorderService
+import com.bnyro.recorder.obj.AudioFormat
 import com.bnyro.recorder.util.PermissionHelper
 import com.bnyro.recorder.util.Preferences
 
@@ -173,7 +174,8 @@ class RecorderModel : ViewModel() {
 
     private fun executeStartAudioRecorder(context: Context) {
         val serviceIntent =
-            if (Preferences.prefs.getBoolean(Preferences.losslessRecorderKey, false)) {
+            if (Preferences.prefs.getBoolean(Preferences.losslessRecorderKey, false) ||
+                AudioFormat.getCurrent().extension == "mp3") {
                 Intent(context, LosslessRecorderService::class.java)
             } else {
                 Intent(context, AudioRecorderService::class.java)

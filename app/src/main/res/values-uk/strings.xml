@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">Немає достатніх дозволів для початку запису</string>
     <string name="countdown_timer">Таймер зворотного відліку</string>
     <string name="off">Вимкнено</string>
+    <string name="language">Мова</string>
+    <string name="system_default">За замовчуванням системи</string>
+    <string name="audio_directory">Каталог аудіо</string>
+    <string name="video_directory">Каталог запису екрана</string>
 </resources>

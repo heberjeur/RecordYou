@@ -25,12 +25,15 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import com.bnyro.recorder.R
 import com.bnyro.recorder.util.Preferences
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomNumInputPref(
+    modifier: Modifier = Modifier,
     key: String,
     title: String,
     defValue: Int
@@ -47,11 +50,19 @@ fun CustomNumInputPref(
         mutableStateOf((pref ?: defValue).toString())
     }
 
-    Button(onClick = {
-        view.playSoundEffect(SoundEffectConstants.CLICK)
-        showDialog = true
-    }) {
-        Text(text = title)
+    Button(
+        modifier = modifier,
+        onClick = {
+            view.playSoundEffect(SoundEffectConstants.CLICK)
+            showDialog = true
+        }
+    ) {
+        Text(
+            text = title,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 
     if (showDialog) {

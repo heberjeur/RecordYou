@@ -80,4 +80,8 @@
     <string name="modified_rev">اصلاح شده (معکوس)</string>
     <string name="countdown_timer">تایمر شمارش معکوس</string>
     <string name="off">خاموش</string>
+    <string name="language">زبان</string>
+    <string name="system_default">پیش‌فرض سیستم</string>
+    <string name="audio_directory">پوشه صوتی</string>
+    <string name="video_directory">پوشه ضبط صفحه</string>
 </resources>

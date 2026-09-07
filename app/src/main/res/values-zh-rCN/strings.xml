@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">没有足够的权限开始录制</string>
     <string name="countdown_timer">倒计时</string>
     <string name="off">关闭</string>
+    <string name="language">语言</string>
+    <string name="system_default">系统默认</string>
+    <string name="audio_directory">音频目录</string>
+    <string name="video_directory">屏幕录制目录</string>
 </resources>

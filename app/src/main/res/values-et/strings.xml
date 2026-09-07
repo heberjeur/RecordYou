@@ -82,4 +82,8 @@
     <string name="no_sufficient_permissions">Salvestamise alustamiseks pole piisavalt õigusi</string>
     <string name="countdown_timer">Taimer</string>
     <string name="off">Väljas</string>
+    <string name="language">Keel</string>
+    <string name="system_default">Süsteemi vaikeväärtus</string>
+    <string name="audio_directory">Helikataloog</string>
+    <string name="video_directory">Ekraanisalvestuse kataloog</string>
 </resources>

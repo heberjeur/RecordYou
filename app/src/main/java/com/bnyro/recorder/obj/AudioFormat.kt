@@ -24,6 +24,12 @@ data class AudioFormat(
             "AAC",
             "aac"
         )
+        private val mp3 = AudioFormat(
+            -1,
+            -1,
+            "MP3",
+            "mp3"
+        )
         private val tgp = AudioFormat(
             MediaRecorder.OutputFormat.THREE_GPP,
             MediaRecorder.AudioEncoder.AAC,
@@ -39,7 +45,7 @@ data class AudioFormat(
             "ogg"
         )
 
-        val formats = mutableListOf(m4a, aac, tgp).also {
+        val formats = mutableListOf(m4a, mp3, aac, tgp).also {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) it.add(opus)
         }
 

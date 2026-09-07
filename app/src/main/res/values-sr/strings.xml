@@ -86,4 +86,8 @@
     <string name="no_sufficient_permissions">Нема довољних дозвола за почетак снимања</string>
     <string name="countdown_timer">Одбројавање</string>
     <string name="off">Искључено</string>
+    <string name="language">Језик</string>
+    <string name="system_default">Подразумевано за систем</string>
+    <string name="audio_directory">Аудио директоријум</string>
+    <string name="video_directory">Директоријум за снимање екрана</string>
 </resources>
