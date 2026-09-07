@@ -88,4 +88,7 @@
     <string name="video_directory">वीडियो निर्देशिका</string>
     <string name="reset_waveform_cache">ऑडियो वेवफॉर्म रीसेट करें</string>
     <string name="reset_waveform_cache_done">वेवफॉर्म रीसेट हो गया</string>
+    <string name="close">बंद करें</string>
+    <string name="waveform_generating">बनाया जा रहा है…</string>
+    <string name="waveform_ready">स्पेक्ट्रम तैयार है</string>
 </resources>

@@ -88,4 +88,7 @@
     <string name="video_directory">Videomappe</string>
     <string name="reset_waveform_cache">Nulstil lydbølgeformer</string>
     <string name="reset_waveform_cache_done">Bølgeformer nulstillet</string>
+    <string name="close">Luk</string>
+    <string name="waveform_generating">Genererer…</string>
+    <string name="waveform_ready">Spektrum klar</string>
 </resources>

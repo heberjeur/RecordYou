@@ -84,4 +84,7 @@
     <string name="video_directory">Directori de vídeo</string>
     <string name="reset_waveform_cache">Restableix les formes d\'ona d\'àudio</string>
     <string name="reset_waveform_cache_done">Formes d\'ona restablertes</string>
+    <string name="close">Tanca</string>
+    <string name="waveform_generating">Generant…</string>
+    <string name="waveform_ready">Espectre a punt</string>
 </resources>

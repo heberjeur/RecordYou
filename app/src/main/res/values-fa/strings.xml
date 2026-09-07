@@ -86,4 +86,7 @@
     <string name="video_directory">پوشه ویدیو</string>
     <string name="reset_waveform_cache">بازنشانی شکل موج صوتی</string>
     <string name="reset_waveform_cache_done">شکل موج بازنشانی شد</string>
+    <string name="close">بستن</string>
+    <string name="waveform_generating">در حال تولید…</string>
+    <string name="waveform_ready">طیف آماده است</string>
 </resources>

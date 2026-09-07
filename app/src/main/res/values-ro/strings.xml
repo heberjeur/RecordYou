@@ -72,4 +72,7 @@
     <string name="video_directory">Director video</string>
     <string name="reset_waveform_cache">Resetați formele de undă audio</string>
     <string name="reset_waveform_cache_done">Forme de undă resetate</string>
+    <string name="close">Închide</string>
+    <string name="waveform_generating">Se generează…</string>
+    <string name="waveform_ready">Spectru pregătit</string>
 </resources>

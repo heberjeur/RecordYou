@@ -12,6 +12,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.math.abs
 import kotlin.math.cos
+import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
@@ -32,18 +33,24 @@ object AudioWaveformExtractor {
         return false
     }
 
+    fun isSaturatedWaveform(data: List<Float>?): Boolean {
+        if (data.isNullOrEmpty()) return true
+        val highCount = data.count { it > 0.70f }
+        return (highCount.toFloat() / data.size) > 0.60f
+    }
+
     fun createSyntheticWaveform(seed: Int, targetBars: Int = 160): List<Float> {
         val raw = FloatArray(targetBars)
         val seedOffset = abs(seed) % 100
         for (i in 0 until targetBars) {
             val t = (i + seedOffset) * 0.16
             val primary = abs(sin(t * 0.42) * cos(t * 0.88 + seedOffset * 0.05))
-            val speechPause = if (sin(t * 0.22) > 0.65) 0.15f else 1.0f
-            val microNoise = (abs(sin(i * 3.7)) * 0.18f).toFloat()
+            val speechPause = if (sin(t * 0.22) > 0.65) 0.08f else 1.0f
+            val microNoise = (abs(sin(i * 3.7)) * 0.12f).toFloat()
             val fade = if (i > targetBars * 0.88) {
                 ((targetBars - i).toFloat() / (targetBars * 0.12f)).coerceIn(0f, 1f)
             } else 1f
-            val wave = (0.05f + (0.78f * primary.toFloat() + microNoise) * speechPause * fade).coerceIn(0.03f, 0.95f)
+            val wave = (0.03f + (0.60f * primary.toFloat() + microNoise) * speechPause * fade).coerceIn(0.02f, 0.85f)
             raw[i] = wave
         }
         return raw.toList()
@@ -98,15 +105,10 @@ object AudioWaveformExtractor {
         }
         if (maxGlobal <= 10f) return null
 
-        val sorted = raw.filter { it > 0f }.sorted()
-        val effectivePeak = if (sorted.isNotEmpty()) {
-            val p95 = sorted[(sorted.size * 0.95).toInt().coerceIn(0, sorted.size - 1)]
-            p95.coerceAtLeast(maxGlobal * 0.30f).coerceAtLeast(100f)
-        } else maxGlobal.coerceAtLeast(100f)
-
+        val effectivePeak = maxGlobal.coerceAtLeast(100f)
         return raw.map {
-            val norm = (it / effectivePeak).coerceIn(0f, 1.5f)
-            sqrt(norm).coerceIn(0.02f, 1f)
+            val norm = (it / effectivePeak).coerceIn(0f, 1f)
+            norm.pow(0.75f).coerceIn(0.02f, 1f)
         }
     }
 
@@ -265,15 +267,10 @@ object AudioWaveformExtractor {
                 }
             }
 
-            val sorted = effectiveBars.filter { it > 0f }.sorted()
-            val effectivePeak = if (sorted.isNotEmpty()) {
-                val p95 = sorted[(sorted.size * 0.95).toInt().coerceIn(0, sorted.size - 1)]
-                p95.coerceAtLeast(maxGlobal * 0.30f).coerceAtLeast(100f)
-            } else maxGlobal.coerceAtLeast(100f)
-
+            val effectivePeak = maxGlobal.coerceAtLeast(100f)
             val list = effectiveBars.map {
-                val norm = (it / effectivePeak).coerceIn(0f, 1.5f)
-                sqrt(norm).coerceIn(0.02f, 1f)
+                val norm = (it / effectivePeak).coerceIn(0f, 1f)
+                norm.pow(0.75f).coerceIn(0.02f, 1f)
             }
             return if (!isFlatWaveform(list)) list else null
         } catch (e: Exception) {

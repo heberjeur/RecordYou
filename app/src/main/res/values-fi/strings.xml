@@ -88,4 +88,7 @@
     <string name="video_directory">Videohakemisto</string>
     <string name="reset_waveform_cache">Nollaa ääniaaltomuodot</string>
     <string name="reset_waveform_cache_done">Aaltomuodot nollattu</string>
+    <string name="close">Sulje</string>
+    <string name="waveform_generating">Luodaan…</string>
+    <string name="waveform_ready">Spektri valmis</string>
 </resources>

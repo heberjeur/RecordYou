@@ -88,4 +88,7 @@
     <string name="video_directory">影片目錄</string>
     <string name="reset_waveform_cache">重設音訊波形</string>
     <string name="reset_waveform_cache_done">波形已重設</string>
+    <string name="close">關閉</string>
+    <string name="waveform_generating">產生中…</string>
+    <string name="waveform_ready">頻譜就緒</string>
 </resources>

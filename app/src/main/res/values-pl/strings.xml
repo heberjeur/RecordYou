@@ -86,4 +86,7 @@
     <string name="video_directory">Katalog wideo</string>
     <string name="reset_waveform_cache">Zresetuj widma audio</string>
     <string name="reset_waveform_cache_done">Widma zresetowane</string>
+    <string name="close">Zamknij</string>
+    <string name="waveform_generating">Generowanie…</string>
+    <string name="waveform_ready">Widmo gotowe</string>
 </resources>

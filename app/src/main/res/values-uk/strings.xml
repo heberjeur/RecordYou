@@ -88,4 +88,7 @@
     <string name="video_directory">Каталог відео</string>
     <string name="reset_waveform_cache">Скинути аудіоспектри</string>
     <string name="reset_waveform_cache_done">Спектри скинуто</string>
+    <string name="close">Закрити</string>
+    <string name="waveform_generating">Генерація…</string>
+    <string name="waveform_ready">Спектр готовий</string>
 </resources>

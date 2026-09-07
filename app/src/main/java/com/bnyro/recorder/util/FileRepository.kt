@@ -143,7 +143,7 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                             for (j in 0 until waveArr.length()) {
                                 list.add(waveArr.optDouble(j, 0.1).toFloat())
                             }
-                            if (!AudioWaveformExtractor.isFlatWaveform(list)) list else null
+                            if (!AudioWaveformExtractor.isFlatWaveform(list) && !AudioWaveformExtractor.isSaturatedWaveform(list)) list else null
                         } else null
                         if (wave != null) {
                             audioWaveformCache.put(doc.uri.toString(), wave)
@@ -233,7 +233,7 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
             audioWaveformCache.remove(uriStr)
         } else {
             val cached = audioWaveformCache.get(uriStr)
-            if (cached != null && !AudioWaveformExtractor.isFlatWaveform(cached)) {
+            if (cached != null && !AudioWaveformExtractor.isFlatWaveform(cached) && !AudioWaveformExtractor.isSaturatedWaveform(cached)) {
                 return cached
             }
         }
@@ -298,7 +298,8 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                 val currentModified = it.lastModified()
                 val existing = cachedAudio?.firstOrNull { c -> c.recordingFile.uri == it.uri }
                 val wave = if (existing != null && existing.size == currentSize && existing.lastModified == currentModified) {
-                    audioWaveformCache.get(uriStr) ?: existing.waveform
+                    val w = audioWaveformCache.get(uriStr) ?: existing.waveform
+                    if (w != null && !AudioWaveformExtractor.isSaturatedWaveform(w)) w else null
                 } else {
                     null
                 }

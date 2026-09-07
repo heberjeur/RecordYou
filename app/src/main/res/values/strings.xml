@@ -95,4 +95,7 @@
     <string name="video_directory">Video directory</string>
     <string name="reset_waveform_cache">Reset audio waveforms</string>
     <string name="reset_waveform_cache_done">Waveforms reset</string>
+    <string name="close">Close</string>
+    <string name="waveform_generating">Generating…</string>
+    <string name="waveform_ready">Spectrum ready</string>
 </resources>

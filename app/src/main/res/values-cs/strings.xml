@@ -88,4 +88,7 @@
     <string name="video_directory">Video adresář</string>
     <string name="reset_waveform_cache">Resetovat zvukové křivky</string>
     <string name="reset_waveform_cache_done">Křivky resetovány</string>
+    <string name="close">Zavřít</string>
+    <string name="waveform_generating">Generování…</string>
+    <string name="waveform_ready">Spektrum připraveno</string>
 </resources>

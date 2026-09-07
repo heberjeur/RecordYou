@@ -86,4 +86,7 @@
     <string name="video_directory">Video-Verzeichnis</string>
     <string name="reset_waveform_cache">Audiospektren zurücksetzen</string>
     <string name="reset_waveform_cache_done">Spektren zurückgesetzt</string>
+    <string name="close">Schließen</string>
+    <string name="waveform_generating">Wird generiert…</string>
+    <string name="waveform_ready">Spektrum bereit</string>
 </resources>

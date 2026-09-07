@@ -30,4 +30,7 @@
     <string name="video_directory">ভিডিও ডিরেক্টরি</string>
     <string name="reset_waveform_cache">অডিও ওয়েভফর্ম রিসেট করুন</string>
     <string name="reset_waveform_cache_done">ওয়েভফর্ম রিসেট হয়েছে</string>
+    <string name="close">বন্ধ করুন</string>
+    <string name="waveform_generating">তৈরি হচ্ছে…</string>
+    <string name="waveform_ready">স্পেকট্রাম প্রস্তুত</string>
 </resources>

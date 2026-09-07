@@ -88,4 +88,7 @@
     <string name="video_directory">வீடியோ அடைவு</string>
     <string name="reset_waveform_cache">ஆடியோ அலைவடிவங்களை மீட்டமை</string>
     <string name="reset_waveform_cache_done">அலைவடிவங்கள் மீட்டமைக்கப்பட்டன</string>
+    <string name="close">மூடு</string>
+    <string name="waveform_generating">உருவாக்குகிறது…</string>
+    <string name="waveform_ready">அலைவரிசை தயார்</string>
 </resources>

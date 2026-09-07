@@ -91,7 +91,15 @@ fun RecordingItemList(
                         .padding(bottom = 10.dp),
                     visible = showMiniPlayer
                 ) {
-                    MiniPlayer(chosenFile!!, playerModel = playerModel)
+                    MiniPlayer(
+                        inputFile = chosenFile!!,
+                        playerModel = playerModel,
+                        onClose = {
+                            playerModel.player.stop()
+                            showMiniPlayer = false
+                            chosenFile = null
+                        }
+                    )
                 }
             }
         }

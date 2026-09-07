@@ -88,4 +88,7 @@
     <string name="video_directory">動画ディレクトリ</string>
     <string name="reset_waveform_cache">音声波形ばリセット</string>
     <string name="reset_waveform_cache_done">波形リセットさびたん</string>
+    <string name="close">閉じる</string>
+    <string name="waveform_generating">作いくぃ中…</string>
+    <string name="waveform_ready">波形準備完了</string>
 </resources>

@@ -7,12 +7,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -43,7 +46,8 @@ fun MiniPlayer(
         } else {
             viewModel(factory = PlayerModel.Factory)
         }
-    }
+    },
+    onClose: (() -> Unit)? = null
 ) {
     val view = LocalView.current
     DisposableEffect(inputFile) {
@@ -72,6 +76,20 @@ fun MiniPlayer(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                if (onClose != null) {
+                    IconButton(
+                        onClick = {
+                            view.playSoundEffect(SoundEffectConstants.CLICK)
+                            onClose()
+                        }
+                    ) {
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = stringResource(id = com.bnyro.recorder.R.string.close)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
                 val fileName = inputFile.name.orEmpty()
                 Text(
                     modifier = Modifier.weight(1f),

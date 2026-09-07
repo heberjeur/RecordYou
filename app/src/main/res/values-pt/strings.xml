@@ -85,4 +85,7 @@
     <string name="video_directory">Diretório de vídeo</string>
     <string name="reset_waveform_cache">Redefinir formas de onda</string>
     <string name="reset_waveform_cache_done">Formas de onda redefinidas</string>
+    <string name="close">Fechar</string>
+    <string name="waveform_generating">A gerar…</string>
+    <string name="waveform_ready">Espetro pronto</string>
 </resources>
