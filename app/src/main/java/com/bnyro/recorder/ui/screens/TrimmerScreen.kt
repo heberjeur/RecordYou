@@ -110,6 +110,22 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                         }
                     }, modifier = Modifier.fillMaxSize())
                 }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    com.bnyro.recorder.ui.components.AudioWaveformPreview(
+                        amplitudes = null,
+                        seed = inputFile.name.hashCode(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(140.dp)
+                    )
+                }
             }
             PlayerController(trimmerModel.player)
 

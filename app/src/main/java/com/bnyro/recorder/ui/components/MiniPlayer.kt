@@ -55,14 +55,17 @@ fun MiniPlayer(
             }
         }
     }
+    val item = playerModel.audioRecordingItems.firstOrNull { it.recordingFile.uri == inputFile.uri }
+    val posAndDur by playerModel.player.positionAndDurationState()
+    val progress = if ((posAndDur.second ?: 0L) > 0L) {
+        posAndDur.first.toFloat() / posAndDur.second!!.toFloat()
+    } else 0f
+
     ElevatedCard(
-        modifier = Modifier
-            .height(140.dp)
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier
-                .padding(vertical = 15.dp, horizontal = 15.dp)
+            modifier = Modifier.padding(vertical = 12.dp, horizontal = 14.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -75,7 +78,6 @@ fun MiniPlayer(
                     } ?: fileName
                 )
                 with(playerModel.player) {
-
                     var playState by remember { mutableStateOf(false) }
 
                     DisposableEffect(key1 = this) {
@@ -110,7 +112,18 @@ fun MiniPlayer(
                 }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+
+            AudioWaveformPreview(
+                amplitudes = item?.waveform,
+                seed = inputFile.name.hashCode(),
+                progress = progress,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             PlayerController(exoPlayer = playerModel.player)
         }

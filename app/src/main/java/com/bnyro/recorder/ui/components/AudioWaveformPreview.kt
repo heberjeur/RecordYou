@@ -6,15 +6,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlin.math.abs
 import kotlin.math.cos
@@ -24,55 +22,102 @@ import kotlin.math.sin
 fun AudioWaveformPreview(
     amplitudes: List<Float>?,
     seed: Int = 0,
+    progress: Float? = null,
     modifier: Modifier = Modifier
 ) {
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val placeholderColor = primaryColor.copy(alpha = 0.28f)
-    val bgColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
+    val cyanColor = Color(0xFF00E5C0)
+    val gridColor = Color(0x33627282)
+    val centerGridColor = Color(0x557A8B9E)
+    val bgDark = Color(0xFF0F1115)
+    val playedRegionTint = Color(0x406B2626)
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(64.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(bgColor)
-            .padding(horizontal = 8.dp, vertical = 6.dp)
+            .height(72.dp)
+            .clip(RoundedCornerShape(6.dp))
+            .background(bgDark)
     ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
-            val h = size.height
             val w = size.width
-            val totalBars = amplitudes?.size ?: 40
-            val spacing = 2.dp.toPx()
-            val barWidth = ((w - (totalBars - 1) * spacing) / totalBars).coerceAtLeast(2f)
+            val h = size.height
+            val centerY = h / 2f
 
-            val hasRealData = amplitudes != null && amplitudes.isNotEmpty() &&
-                ((amplitudes.maxOrNull() ?: 0f) - (amplitudes.minOrNull() ?: 0f) > 0.05f)
+            if (progress != null && progress > 0f) {
+                val playedWidth = w * progress.coerceIn(0f, 1f)
+                drawRect(
+                    color = playedRegionTint,
+                    topLeft = Offset.Zero,
+                    size = Size(playedWidth, h)
+                )
+            }
 
-            if (hasRealData) {
-                amplitudes.forEachIndexed { i, amp ->
-                    val barHeight = (h * amp.coerceIn(0.08f, 1f)).coerceAtLeast(3.dp.toPx())
-                    val top = (h - barHeight) / 2f
-                    val left = i * (barWidth + spacing)
-                    drawRoundRect(
-                        color = primaryColor,
-                        topLeft = Offset(left, top),
-                        size = Size(barWidth, barHeight),
-                        cornerRadius = CornerRadius(barWidth / 2f, barWidth / 2f)
+            val verticalDivisions = 8
+            val colWidth = w / verticalDivisions
+            for (c in 1 until verticalDivisions) {
+                val x = c * colWidth
+                drawLine(
+                    color = gridColor,
+                    start = Offset(x, 0f),
+                    end = Offset(x, h),
+                    strokeWidth = 1f
+                )
+            }
+
+            drawLine(
+                color = gridColor,
+                start = Offset(0f, h * 0.25f),
+                end = Offset(w, h * 0.25f),
+                strokeWidth = 1f
+            )
+            drawLine(
+                color = centerGridColor,
+                start = Offset(0f, centerY),
+                end = Offset(w, centerY),
+                strokeWidth = 1f
+            )
+            drawLine(
+                color = gridColor,
+                start = Offset(0f, h * 0.75f),
+                end = Offset(w, h * 0.75f),
+                strokeWidth = 1f
+            )
+
+            val data = amplitudes
+            if (data != null && data.isNotEmpty() &&
+                ((data.maxOrNull() ?: 0f) - (data.minOrNull() ?: 0f) > 0.05f)
+            ) {
+                val count = data.size
+                val stepX = w / count.coerceAtLeast(1)
+                val strokeW = stepX.coerceAtLeast(1.4f)
+                for (i in 0 until count) {
+                    val x = i * stepX + stepX / 2f
+                    val amp = data[i].coerceIn(0.04f, 1f)
+                    val halfSpike = (h * 0.46f) * amp
+                    drawLine(
+                        color = cyanColor,
+                        start = Offset(x, centerY - halfSpike),
+                        end = Offset(x, centerY + halfSpike),
+                        strokeWidth = strokeW
                     )
                 }
             } else {
+                val count = 160
+                val stepX = w / count
+                val strokeW = stepX.coerceAtLeast(1.4f)
                 val seedOffset = abs(seed) % 100
-                for (i in 0 until totalBars) {
-                    val t = (i + seedOffset) * 0.32
-                    val wave = (0.15f + 0.55f * abs(sin(t) * cos(t * 0.65 + seedOffset * 0.1))).toFloat().coerceIn(0.12f, 0.9f)
-                    val barHeight = (h * wave).coerceAtLeast(3.dp.toPx())
-                    val top = (h - barHeight) / 2f
-                    val left = i * (barWidth + spacing)
-                    drawRoundRect(
-                        color = placeholderColor,
-                        topLeft = Offset(left, top),
-                        size = Size(barWidth, barHeight),
-                        cornerRadius = CornerRadius(barWidth / 2f, barWidth / 2f)
+                for (i in 0 until count) {
+                    val x = i * stepX + stepX / 2f
+                    val t = (i + seedOffset) * 0.18
+                    val burst = abs(sin(t * 0.45) * cos(t * 0.85 + seedOffset * 0.05))
+                    val microNoise = (abs(sin(i * 3.7)) * 0.12f).toFloat()
+                    val wave = (0.05f + 0.75f * burst.toFloat() + microNoise).coerceIn(0.04f, 0.95f)
+                    val halfSpike = (h * 0.46f) * wave
+                    drawLine(
+                        color = cyanColor.copy(alpha = 0.85f),
+                        start = Offset(x, centerY - halfSpike),
+                        end = Offset(x, centerY + halfSpike),
+                        strokeWidth = strokeW
                     )
                 }
             }

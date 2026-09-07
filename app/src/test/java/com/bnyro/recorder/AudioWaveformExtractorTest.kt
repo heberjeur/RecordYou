@@ -30,7 +30,7 @@ class AudioWaveformExtractorTest {
             val size = channel.size()
             assertTrue(size > 44L)
 
-            val targetBars = 50
+            val targetBars = 160
             val dataSize = size - 44L
             val step = (dataSize / targetBars).coerceAtLeast(2L)
             val buffer = ByteBuffer.allocate(1024).order(ByteOrder.LITTLE_ENDIAN)

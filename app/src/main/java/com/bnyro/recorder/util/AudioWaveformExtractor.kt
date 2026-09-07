@@ -13,7 +13,7 @@ import kotlin.math.abs
 import kotlin.math.sqrt
 
 object AudioWaveformExtractor {
-    fun extractWaveform(context: Context, uri: Uri, targetBars: Int = 50): List<Float>? {
+    fun extractWaveform(context: Context, uri: Uri, targetBars: Int = 160): List<Float>? {
         return runCatching {
             context.contentResolver.openFileDescriptor(uri, "r")?.use { pfd ->
                 val path = uri.path.orEmpty().lowercase()
