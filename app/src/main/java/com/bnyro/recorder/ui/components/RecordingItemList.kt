@@ -32,12 +32,14 @@ import com.bnyro.recorder.obj.RecordingItemData
 import com.bnyro.recorder.ui.models.PlayerModel
 import com.bnyro.recorder.ui.screens.TrimmerScreen
 
+import com.bnyro.recorder.util.findActivity
+
 @Composable
 fun RecordingItemList(
     items: List<RecordingItemData>,
     isVideoList: Boolean,
     playerModel: PlayerModel = run {
-        val activity = androidx.compose.ui.platform.LocalContext.current as? androidx.activity.ComponentActivity
+        val activity = androidx.compose.ui.platform.LocalContext.current.findActivity()
         if (activity != null) {
             viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
         } else {

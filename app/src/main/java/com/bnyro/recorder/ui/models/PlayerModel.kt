@@ -95,6 +95,31 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
         loadFiles()
     }
 
+    fun resetWaveform(item: RecordingItemData) {
+        fileRepository.resetWaveform(item.recordingFile)
+        audioRecordingItems = audioRecordingItems.map {
+            if (it.recordingFile.uri == item.recordingFile.uri) {
+                it.copy(waveform = null)
+            } else {
+                it
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val wave = fileRepository.loadAudioWaveform(item.recordingFile)
+            if (wave != null) {
+                withContext(Dispatchers.Main) {
+                    audioRecordingItems = audioRecordingItems.map {
+                        if (it.recordingFile.uri == item.recordingFile.uri) {
+                            it.copy(waveform = wave)
+                        } else {
+                            it
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     fun sortItems(newSort: SortOrder) {
         if (newSort == sortOrder) return
         sortOrder = newSort

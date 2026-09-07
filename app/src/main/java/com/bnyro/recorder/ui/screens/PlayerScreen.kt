@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import com.bnyro.recorder.util.findActivity
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -43,7 +45,8 @@ fun PlayerScreen(
     var selectedSortOrder by remember {
         mutableStateOf(SortOrder.ALPHABETIC)
     }
-    val activity = androidx.compose.ui.platform.LocalContext.current as? androidx.activity.ComponentActivity
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val activity = context.findActivity()
     val playerModel: PlayerModel = if (activity != null) {
         viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
     } else {
@@ -76,6 +79,17 @@ fun PlayerScreen(
                     }
                 },
                 actions = {
+                    ClickableIcon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = stringResource(R.string.reset_waveform_cache)
+                    ) {
+                        playerModel.resetAndReloadWaveforms()
+                        android.widget.Toast.makeText(
+                            context,
+                            context.getString(R.string.reset_waveform_cache_done),
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    }
                     Box {
                         var showDropDown by remember {
                             mutableStateOf(false)
@@ -108,6 +122,20 @@ fun PlayerScreen(
                                     }
                                 )
                             }
+                            DropdownMenuItem(
+                                text = {
+                                    Text(stringResource(R.string.reset_waveform_cache))
+                                },
+                                onClick = {
+                                    playerModel.resetAndReloadWaveforms()
+                                    android.widget.Toast.makeText(
+                                        context,
+                                        context.getString(R.string.reset_waveform_cache_done),
+                                        android.widget.Toast.LENGTH_SHORT
+                                    ).show()
+                                    showDropDown = false
+                                }
+                            )
                         }
                     }
                     if (playerModel.selectedFiles.isNotEmpty()) {

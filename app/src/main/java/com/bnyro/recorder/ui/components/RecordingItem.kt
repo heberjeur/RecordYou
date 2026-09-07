@@ -43,6 +43,7 @@ import com.bnyro.recorder.ui.dialogs.ConfirmationDialog
 import com.bnyro.recorder.ui.models.PlayerModel
 import com.bnyro.recorder.ui.views.VideoView
 import com.bnyro.recorder.util.IntentHelper
+import com.bnyro.recorder.util.findActivity
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -50,7 +51,7 @@ fun RecordingItem(
     recordingItem: RecordingItemData,
     isSelected: Boolean,
     playerModel: PlayerModel = run {
-        val activity = LocalContext.current as? androidx.activity.ComponentActivity
+        val activity = LocalContext.current.findActivity()
         if (activity != null) {
             viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
         } else {
@@ -203,6 +204,17 @@ fun RecordingItem(
                                     showDropDown = false
                                 }
                             )
+                            if (isAudio) {
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(stringResource(R.string.reset_waveform_cache))
+                                    },
+                                    onClick = {
+                                        playerModel.resetWaveform(recordingItem)
+                                        showDropDown = false
+                                    }
+                                )
+                            }
                             DropdownMenuItem(
                                 text = {
                                     Text(stringResource(R.string.delete))

@@ -22,12 +22,14 @@ import com.bnyro.recorder.R
 import com.bnyro.recorder.ui.models.PlayerModel
 import kotlinx.coroutines.launch
 
+import com.bnyro.recorder.util.findActivity
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlayerView(
     showVideoModeInitially: Boolean,
     playerModel: PlayerModel = run {
-        val activity = androidx.compose.ui.platform.LocalContext.current as? androidx.activity.ComponentActivity
+        val activity = androidx.compose.ui.platform.LocalContext.current.findActivity()
         if (activity != null) {
             viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
         } else {

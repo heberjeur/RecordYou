@@ -25,6 +25,7 @@ interface FileRepository {
     fun loadVideoThumbnail(file: DocumentFile): Bitmap?
     fun loadAudioWaveform(file: DocumentFile): List<Float>?
     fun resetWaveformCache()
+    fun resetWaveform(file: DocumentFile)
     suspend fun deleteFiles(files: List<DocumentFile>)
     suspend fun deleteAllFiles()
     fun getTempOutputFile(extension: String): java.io.File
@@ -250,6 +251,15 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
     override fun resetWaveformCache() {
         audioWaveformCache.evictAll()
         cachedAudio = cachedAudio?.map { it.copy(waveform = null) }
+        writeCache()
+    }
+
+    override fun resetWaveform(file: DocumentFile) {
+        val uriStr = file.uri.toString()
+        audioWaveformCache.remove(uriStr)
+        cachedAudio = cachedAudio?.map {
+            if (it.recordingFile.uri == file.uri) it.copy(waveform = null) else it
+        }
         writeCache()
     }
 

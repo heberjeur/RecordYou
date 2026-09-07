@@ -31,11 +31,13 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import com.bnyro.recorder.ui.models.PlayerModel
 
+import com.bnyro.recorder.util.findActivity
+
 @Composable
 fun MiniPlayer(
     inputFile: DocumentFile,
     playerModel: PlayerModel = run {
-        val activity = androidx.compose.ui.platform.LocalContext.current as? androidx.activity.ComponentActivity
+        val activity = androidx.compose.ui.platform.LocalContext.current.findActivity()
         if (activity != null) {
             viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
         } else {

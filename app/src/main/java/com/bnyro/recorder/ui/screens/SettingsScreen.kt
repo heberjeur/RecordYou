@@ -68,6 +68,7 @@ import com.bnyro.recorder.ui.components.NamingPatternPref
 import com.bnyro.recorder.ui.dialogs.AboutDialog
 import com.bnyro.recorder.ui.models.PlayerModel
 import com.bnyro.recorder.ui.models.ThemeModel
+import com.bnyro.recorder.util.findActivity
 import com.bnyro.recorder.util.PickFolderContract
 import com.bnyro.recorder.util.Preferences
 
@@ -390,7 +391,7 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
             Spacer(modifier = Modifier.height(10.dp))
             val currentContext = LocalContext.current
             val playerModel: PlayerModel = run {
-                val activity = currentContext as? ComponentActivity
+                val activity = currentContext.findActivity()
                 if (activity != null) {
                     viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
                 } else {

@@ -127,13 +127,9 @@ object AudioWaveformExtractor {
         val extractor = MediaExtractor()
         try {
             runCatching {
-                extractor.setDataSource(context, uri, null)
+                extractor.setDataSource(pfd.fileDescriptor)
             }.recoverCatching {
-                if (pfd.statSize > 0) {
-                    extractor.setDataSource(pfd.fileDescriptor, 0, pfd.statSize)
-                } else {
-                    extractor.setDataSource(pfd.fileDescriptor)
-                }
+                extractor.setDataSource(context, uri, null)
             }
             var trackIndex = -1
             var format: MediaFormat? = null
@@ -186,9 +182,12 @@ object AudioWaveformExtractor {
                                 if (sampleSize > 0) {
                                     codec.queueInputBuffer(inIdx, 0, sampleSize, extractor.sampleTime, 0)
                                     extractor.advance()
-                                } else {
+                                } else if (sampleSize < 0) {
                                     codec.queueInputBuffer(inIdx, 0, 0, 0L, MediaCodec.BUFFER_FLAG_END_OF_STREAM)
                                     sawInputEos = true
+                                } else {
+                                    codec.queueInputBuffer(inIdx, 0, 0, 0L, 0)
+                                    extractor.advance()
                                 }
                             }
                         }
