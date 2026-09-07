@@ -80,4 +80,6 @@
     <string name="trimming">トリミングそーいびーん…</string>
     <string name="trim_successful">トリムせいかんさびたん</string>
     <string name="cant_access_selected_folder">しんたくさるフォルダーんかいアクセスなやびらん！</string>
+    <string name="countdown_timer">カウントダウンタイマー</string>
+    <string name="off">オフ</string>
 </resources>

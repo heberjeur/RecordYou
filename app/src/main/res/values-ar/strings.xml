@@ -80,4 +80,6 @@
     <string name="modified_rev">تم تعديله(معكوس)</string>
     <string name="internal_audio">الصوت الداخلي (الجذر)</string>
     <string name="no_sufficient_permissions">لا توجد أذونات كافية لبدء التسجيل</string>
+    <string name="countdown_timer">مؤقت العد التنازلي</string>
+    <string name="off">معطل</string>
 </resources>

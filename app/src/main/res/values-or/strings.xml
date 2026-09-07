@@ -6,4 +6,6 @@
     <string name="pause">ବିରତି</string>
     <string name="cancel">ବାତିଲ୍ କରନ୍ତୁ</string>
     <string name="play">ଚଲାନ୍ତୁ</string>
+    <string name="countdown_timer">କାଉଣ୍ଟଡାଉନ୍ ଟାଇମର୍</string>
+    <string name="off">ବନ୍ଦ</string>
 </resources>

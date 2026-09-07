@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <ImageButton
+        android:id="@+id/widget_btn_record_audio"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/widget_button_background"
+        android:contentDescription="@string/record_sound"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_audio" />
+
+    <ImageButton
+        android:id="@+id/widget_btn_record_screen"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/widget_button_background"
+        android:contentDescription="@string/record_screen"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_screen" />
+
+</LinearLayout>

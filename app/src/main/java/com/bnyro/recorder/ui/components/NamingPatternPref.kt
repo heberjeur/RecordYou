@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bnyro.recorder.R
 import com.bnyro.recorder.ui.common.DialogButton
-import com.bnyro.recorder.util.FileRepositoryImpl
+import com.bnyro.recorder.util.FileRepository
 import com.bnyro.recorder.util.Preferences
 
 @Composable
@@ -48,7 +48,7 @@ fun NamingPatternPref() {
             mutableStateOf(
                 Preferences.getString(
                     Preferences.namingPatternKey,
-                    FileRepositoryImpl.DEFAULT_NAMING_PATTERN
+                    FileRepository.DEFAULT_NAMING_PATTERN
                 )
             )
         }

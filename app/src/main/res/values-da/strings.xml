@@ -80,4 +80,6 @@
     <string name="size">Størrelse</string>
     <string name="internal_audio">Intern Lyd (Root)</string>
     <string name="no_sufficient_permissions">Ingen tilstrækkelige tilladelser til at optage</string>
+    <string name="countdown_timer">Nedtællingstimer</string>
+    <string name="off">Fra</string>
 </resources>

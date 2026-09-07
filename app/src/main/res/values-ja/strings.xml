@@ -80,4 +80,6 @@
     <string name="trimming">トリミングしています…</string>
     <string name="trim_successful">トリムに成功しました</string>
     <string name="cant_access_selected_folder">選択したフォルダーにアクセス出来ません！</string>
+    <string name="countdown_timer">カウントダウンタイマー</string>
+    <string name="off">オフ</string>
 </resources>

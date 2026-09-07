@@ -80,4 +80,6 @@
     <string name="auto">Auto</string>
     <string name="internal_audio">Sisäinen ääni (Root)</string>
     <string name="no_sufficient_permissions">Ei riittäviä käyttöoikeuksia tallentamisen aloittamiseksi</string>
+    <string name="countdown_timer">Ajastin</string>
+    <string name="off">Pois päältä</string>
 </resources>

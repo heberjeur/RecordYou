@@ -76,4 +76,6 @@
     <string name="default_sort">Па змаўчанні</string>
     <string name="erase_mode">Рэжым сцірання</string>
     <string name="trim_failed">Не ўдалося абрэзаць</string>
+    <string name="countdown_timer">Таймер зваротнага адліку</string>
+    <string name="off">Выключана</string>
 </resources>

@@ -80,4 +80,6 @@
     <string name="draw_mode">இழுவை பயன்முறை</string>
     <string name="erase_mode">அழி பயன்முறை</string>
     <string name="internal_audio">உள் ஆடியோ (ரூட்)</string>
+    <string name="countdown_timer">கவுண்ட்டவுன் டைமர்</string>
+    <string name="off">முடக்கு</string>
 </resources>

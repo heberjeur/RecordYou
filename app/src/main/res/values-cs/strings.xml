@@ -80,4 +80,6 @@
     <string name="modified">Upraveno</string>
     <string name="internal_audio">Interní zvuk (root)</string>
     <string name="no_sufficient_permissions">Nedostatečná oprávnění pro spuštění nahrávání</string>
+    <string name="countdown_timer">Odpočet</string>
+    <string name="off">Vypnuto</string>
 </resources>

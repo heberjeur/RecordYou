@@ -51,4 +51,6 @@
     <string name="dark">Qaranlıq</string>
     <string name="lossless_audio">İtkisiz səs yazıcı (WAV)</string>
     <string name="lossless_audio_desc">Qeyd, digər səsə səciyyəvi seçimlər istifadə vaxtı tətbiq edilməyəcək.</string>
+    <string name="countdown_timer">Geri sayım taymeri</string>
+    <string name="off">Sönülü</string>
 </resources>

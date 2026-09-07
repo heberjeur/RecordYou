@@ -41,4 +41,6 @@
     <string name="microphone">Mikrofon</string>
     <string name="no_audio">Inget ljud</string>
     <string name="sample_rate">Samplingsfrekvens</string>
+    <string name="countdown_timer">Nedräkningstimer</string>
+    <string name="off">Av</string>
 </resources>

@@ -84,4 +84,6 @@
     <string name="modified_rev">Измењено (обрнуто)</string>
     <string name="internal_audio">Унутрашњи аудио снимак (Root)</string>
     <string name="no_sufficient_permissions">Нема довољних дозвола за почетак снимања</string>
+    <string name="countdown_timer">Одбројавање</string>
+    <string name="off">Искључено</string>
 </resources>

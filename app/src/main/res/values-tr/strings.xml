@@ -80,4 +80,6 @@
     <string name="modified_rev">Değiştirildi (ters)</string>
     <string name="internal_audio">Dahili Ses (Root)</string>
     <string name="no_sufficient_permissions">Kaydı başlatmak için yeterli izin yok</string>
+    <string name="countdown_timer">Geri sayım sayacı</string>
+    <string name="off">Kapalı</string>
 </resources>

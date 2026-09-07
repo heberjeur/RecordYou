@@ -80,4 +80,6 @@
     <string name="modified">По дате изменения</string>
     <string name="internal_audio">Звук системы (Root)</string>
     <string name="no_sufficient_permissions">Нет необходимых разрешений для записи</string>
+    <string name="countdown_timer">Таймер обратного отсчета</string>
+    <string name="off">Выкл</string>
 </resources>

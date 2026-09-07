@@ -80,4 +80,6 @@
     <string name="modified_rev">修改日期（倒序）</string>
     <string name="internal_audio">内部音频（Root）</string>
     <string name="no_sufficient_permissions">没有足够的权限开始录制</string>
+    <string name="countdown_timer">倒计时</string>
+    <string name="off">关闭</string>
 </resources>

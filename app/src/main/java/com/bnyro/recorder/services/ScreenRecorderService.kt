@@ -180,6 +180,18 @@ class ScreenRecorderService : RecorderService() {
                 return
             }
 
+            setOnErrorListener { _, what, extra ->
+                Log.e("ScreenRecorderService", "MediaRecorder error: what=$what, extra=$extra")
+                stopRecording()
+            }
+            setOnInfoListener { _, what, _ ->
+                if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED ||
+                    what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
+                    Log.w("ScreenRecorderService", "MediaRecorder max file size or duration reached")
+                    stopRecording()
+                }
+            }
+
             start()
 
             virtualDisplay?.surface = surface

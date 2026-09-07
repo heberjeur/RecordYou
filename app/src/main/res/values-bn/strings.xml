@@ -22,4 +22,6 @@
     <string name="audio">শব্দ</string>
     <string name="directory">ডাইরেক্টরি</string>
     <string name="video">ভিডিও</string>
+    <string name="countdown_timer">কাউন্টডাউন টাইমার</string>
+    <string name="off">বন্ধ</string>
 </resources>

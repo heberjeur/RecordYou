@@ -49,4 +49,6 @@
     <string name="recordings">Rakaman-rakaman</string>
     <string name="okay">Baik</string>
     <string name="cancel">Batal</string>
+    <string name="countdown_timer">Pemasa undur</string>
+    <string name="off">Mati</string>
 </resources>

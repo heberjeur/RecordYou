@@ -49,4 +49,6 @@
     <string name="system">Sistema</string>
     <string name="dark">Madilim</string>
     <string name="light">Maliwanag</string>
+    <string name="countdown_timer">Countdown timer</string>
+    <string name="off">Naka-off</string>
 </resources>

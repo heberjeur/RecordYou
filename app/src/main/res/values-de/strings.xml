@@ -78,4 +78,6 @@
     <string name="trim_failed">Kürzung fehlgeschlagen</string>
     <string name="trimming">Kürzen…</string>
     <string name="cant_access_selected_folder">Auf den ausgewählten Ordner kann nicht zugegriffen werden!</string>
+    <string name="countdown_timer">Countdown-Timer</string>
+    <string name="off">Aus</string>
 </resources>

@@ -80,4 +80,6 @@
     <string name="modified_rev">Modificada (invertida)</string>
     <string name="internal_audio">Áudio Interno (Root)</string>
     <string name="no_sufficient_permissions">Sem permissões suficientes para iniciar a gravação</string>
+    <string name="countdown_timer">Temporizador de contagem regressiva</string>
+    <string name="off">Desativado</string>
 </resources>

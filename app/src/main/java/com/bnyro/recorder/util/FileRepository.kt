@@ -24,6 +24,23 @@ interface FileRepository {
     fun getOutputFile(extension: String, prefix: String = ""): DocumentFile?
     fun getOutputDir(): DocumentFile
     fun getOutputDirs(): List<DocumentFile>
+
+    companion object {
+        const val DEFAULT_NAMING_PATTERN = "%d_%t"
+
+        fun formatFileName(
+            pattern: String,
+            date: String,
+            time: String,
+            epochMillis: Long
+        ): String {
+            return pattern
+                .replace("%d", date)
+                .replace("%t", time)
+                .replace("%m", epochMillis.toString())
+                .replace("%s", (epochMillis / 1000).toString())
+        }
+    }
 }
 
 class FileRepositoryImpl(val context: Context) : FileRepository {
@@ -147,14 +164,15 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         val currentDate = currentDateTime.split("_").first()
         val currentTime = currentDateTime.split("_").last()
 
-        val fileName = Preferences.getString(
-            Preferences.namingPatternKey,
-            DEFAULT_NAMING_PATTERN
+        val fileName = FileRepository.formatFileName(
+            Preferences.getString(
+                Preferences.namingPatternKey,
+                FileRepository.DEFAULT_NAMING_PATTERN
+            ),
+            currentDate,
+            currentTime,
+            currentTimeMillis.time
         )
-            .replace("%d", currentDate)
-            .replace("%t", currentTime)
-            .replace("%m", currentTimeMillis.time.toString())
-            .replace("%s", currentTimeMillis.time.div(1000).toString())
 
         val outputDir = getOutputDir()
         if (!outputDir.exists() || !outputDir.canRead() || !outputDir.canWrite()) return null
@@ -187,9 +205,9 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
     }
 
     companion object {
+        const val DEFAULT_NAMING_PATTERN = FileRepository.DEFAULT_NAMING_PATTERN
         @SuppressLint("SimpleDateFormat")
         private val dateTimeFormat = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")
-        const val DEFAULT_NAMING_PATTERN = "%d_%t"
     }
 }
 

@@ -26,7 +26,7 @@ class MediaTrimmer {
         startMs: Long,
         endMs: Long
     ): Boolean {
-        assert(endMs > startMs && endMs > 0)
+        if (!isValidTrimRange(startMs, endMs)) return false
         return withContext(Dispatchers.IO) {
             var extension = inputFile.name?.split('.')?.lastOrNull() ?: inputFile.uri.path?.split('.')?.lastOrNull()
             if (extension == "aac" || (extension == "ogg" && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)) {
@@ -45,7 +45,6 @@ class MediaTrimmer {
         }
     }
 
-    // https://android.googlesource.com/platform/packages/apps/Gallery2/+/634248d/src/com/android/gallery3d/app/VideoUtils.java
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("WrongConstant")
     private suspend fun trimMediaFile(
@@ -58,6 +57,7 @@ class MediaTrimmer {
         return withContext(Dispatchers.IO) {
             val extractor = MediaExtractor()
             extractor.setDataSource(inputPfd.fileDescriptor)
+
             val trackCount = extractor.trackCount
             val muxer = MediaMuxer(
                 outputPfd.fileDescriptor,
@@ -104,7 +104,6 @@ class MediaTrimmer {
                 muxer.start()
                 Log.d("Media Trimmer", "Muxer started")
                 while (true) {
-                    // Start copying samples from input file to output file
                     bufferInfo.offset = offset
                     bufferInfo.size = extractor.readSampleData(destinationBuffer, offset)
                     if (bufferInfo.size < 0) {
@@ -139,6 +138,14 @@ class MediaTrimmer {
                 runCatching { inputPfd.close() }
                 runCatching { outputPfd.close() }
             }
+        }
+    }
+
+    companion object {
+        private const val DEFAULT_BUFFER_SIZE = 1024 * 1024
+
+        fun isValidTrimRange(startMs: Long, endMs: Long, totalDurationMs: Long = Long.MAX_VALUE): Boolean {
+            return startMs >= 0 && endMs > startMs && endMs <= totalDurationMs
         }
     }
 }

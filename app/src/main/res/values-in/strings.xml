@@ -80,4 +80,6 @@
     <string name="modified_rev">Terakhir diubah (terbalik)</string>
     <string name="internal_audio">Audio Internal (Root)</string>
     <string name="no_sufficient_permissions">Tidak ada perizinan yang cukup untuk merekam</string>
+    <string name="countdown_timer">Penghitung waktu mundur</string>
+    <string name="off">Nonaktif</string>
 </resources>

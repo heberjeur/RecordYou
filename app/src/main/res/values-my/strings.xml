@@ -76,4 +76,6 @@
     <string name="cant_access_selected_folder">ဖိုလ်ဒါမရွေးနိုင်!</string>
     <string name="draw_mode">ပုံဆွဲမုဒ်</string>
     <string name="erase_mode">ခဲဖျက်မုဒ်</string>
+    <string name="countdown_timer">အချိန်ရေတွက်မှု</string>
+    <string name="off">ပိတ်</string>
 </resources>

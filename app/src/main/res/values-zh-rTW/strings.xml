@@ -80,4 +80,6 @@
     <string name="cant_access_selected_folder">已選的資料夾無法存取！</string>
     <string name="internal_audio">內部音訊（Root）</string>
     <string name="no_sufficient_permissions">沒有相應的權限，無法開始錄製</string>
+    <string name="countdown_timer">倒數計時</string>
+    <string name="off">關閉</string>
 </resources>

@@ -47,4 +47,6 @@
     <string name="stereo">Stereo</string>
     <string name="author">Forfattar</string>
     <string name="theme">Vising</string>
+    <string name="countdown_timer">Nedteljingstidtakar</string>
+    <string name="off">Av</string>
 </resources>

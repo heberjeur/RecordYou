@@ -80,4 +80,6 @@
     <string name="modified">Muudetud</string>
     <string name="internal_audio">Süsteemne heli (juurkasutajana)</string>
     <string name="no_sufficient_permissions">Salvestamise alustamiseks pole piisavalt õigusi</string>
+    <string name="countdown_timer">Taimer</string>
+    <string name="off">Väljas</string>
 </resources>

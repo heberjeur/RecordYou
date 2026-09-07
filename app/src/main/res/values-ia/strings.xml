@@ -80,4 +80,6 @@
     <string name="modified_rev">Modificate (invertite)</string>
     <string name="internal_audio">Audio interne (Root)</string>
     <string name="no_sufficient_permissions">Non il ha permissiones sufficiente pro initiar le registration</string>
+    <string name="countdown_timer">Temporisator de conto a retro</string>
+    <string name="off">Disactivate</string>
 </resources>

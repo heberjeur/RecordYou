@@ -77,4 +77,6 @@
     <string name="draw_mode">Modo de desenho</string>
     <string name="erase_mode">Modo de apagar</string>
     <string name="modified">Alterado</string>
+    <string name="countdown_timer">Temporizador de contagem regressiva</string>
+    <string name="off">Desativado</string>
 </resources>

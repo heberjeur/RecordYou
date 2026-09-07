@@ -74,4 +74,6 @@
     <string name="default_sort">Forvalg</string>
     <string name="trim_failed">Kunne ikke utføre beskjæring</string>
     <string name="screen_recorder_annotation">Skjermopptaksundertekst</string>
+    <string name="countdown_timer">Nedtellingstidtaker</string>
+    <string name="off">Av</string>
 </resources>

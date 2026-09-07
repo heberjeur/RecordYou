@@ -76,4 +76,6 @@
     <string name="cant_access_selected_folder">No es pot accedir a la carpeta seleccionada.</string>
     <string name="draw_mode">Mode de dibuix</string>
     <string name="erase_mode">Mode d\'esborrar</string>
+    <string name="countdown_timer">Temporitzador de compte enrere</string>
+    <string name="off">Desactivat</string>
 </resources>

@@ -80,4 +80,6 @@
     <string name="modified">Modificado</string>
     <string name="internal_audio">Audio interno (Root)</string>
     <string name="no_sufficient_permissions">No hay permisos suficientes para iniciar la grabación</string>
+    <string name="countdown_timer">Temporizador de cuenta regresiva</string>
+    <string name="off">Desactivado</string>
 </resources>
