@@ -25,10 +25,16 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlayerView(
-    showVideoModeInitially: Boolean
+    showVideoModeInitially: Boolean,
+    playerModel: PlayerModel = run {
+        val activity = androidx.compose.ui.platform.LocalContext.current as? androidx.activity.ComponentActivity
+        if (activity != null) {
+            viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
+        } else {
+            viewModel(factory = PlayerModel.Factory)
+        }
+    }
 ) {
-    val playerModel: PlayerModel = viewModel(factory = PlayerModel.Factory)
-
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -80,12 +86,14 @@ fun PlayerView(
             when (index) {
                 0 -> RecordingItemList(
                     items = playerModel.audioRecordingItems,
-                    isVideoList = false
+                    isVideoList = false,
+                    playerModel = playerModel
                 )
 
                 1 -> RecordingItemList(
                     items = playerModel.screenRecordingItems,
-                    isVideoList = true
+                    isVideoList = true,
+                    playerModel = playerModel
                 )
             }
         }

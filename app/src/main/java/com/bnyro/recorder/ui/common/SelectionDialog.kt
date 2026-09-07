@@ -22,12 +22,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Alignment
 
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+
 @Composable
 fun SelectionDialog(
     onDismissRequest: () -> Unit,
     title: String,
     entries: List<String>,
     icons: List<String>? = null,
+    iconDrawables: List<@Composable () -> Unit>? = null,
     onSelect: (index: Int) -> Unit
 ) {
     val view = LocalView.current
@@ -51,14 +55,23 @@ fun SelectionDialog(
                                 onSelect.invoke(index)
                                 onDismissRequest.invoke()
                             }
-                            .padding(vertical = 12.dp, horizontal = 10.dp),
+                            .padding(vertical = 14.dp, horizontal = 12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        icons?.getOrNull(index)?.let { icon ->
-                            Text(text = icon)
-                            Spacer(modifier = Modifier.width(12.dp))
+                        if (iconDrawables != null && index < iconDrawables.size) {
+                            iconDrawables[index].invoke()
+                            Spacer(modifier = Modifier.width(16.dp))
+                        } else {
+                            icons?.getOrNull(index)?.let { icon ->
+                                Text(text = icon, fontSize = 24.sp)
+                                Spacer(modifier = Modifier.width(16.dp))
+                            }
                         }
-                        Text(text = entry)
+                        Text(
+                            text = entry,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Medium
+                        )
                     }
                 }
             }

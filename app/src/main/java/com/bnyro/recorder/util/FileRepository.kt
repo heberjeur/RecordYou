@@ -18,6 +18,8 @@ import android.graphics.Bitmap
 import android.os.Build
 
 interface FileRepository {
+    fun cachedVideos(sort: SortOrder): List<RecordingItemData>
+    fun cachedAudio(sort: SortOrder): List<RecordingItemData>
     suspend fun getVideoRecordingItems(sortOrder: SortOrder): List<RecordingItemData>
     suspend fun getAudioRecordingItems(sortOrder: SortOrder): List<RecordingItemData>
     fun loadVideoThumbnail(file: DocumentFile): Bitmap?
@@ -99,6 +101,70 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         }.distinctBy { it.uri }
 
     private val videoThumbnailCache = android.util.LruCache<String, Bitmap>(50)
+    private var cachedAudio: List<RecordingItemData>? = null
+    private var cachedVideos: List<RecordingItemData>? = null
+    private val cacheFile = java.io.File(context.cacheDir, "recordings.json")
+
+    init {
+        readCache()
+    }
+
+    private fun readCache() {
+        if (!cacheFile.exists()) return
+        try {
+            val arr = org.json.JSONArray(cacheFile.readText())
+            val audio = mutableListOf<RecordingItemData>()
+            val video = mutableListOf<RecordingItemData>()
+            for (i in 0 until arr.length()) {
+                val obj = arr.getJSONObject(i)
+                val uriStr = obj.optString("uri")
+                val isVideo = obj.optBoolean("video")
+                if (uriStr.isNotEmpty()) {
+                    val uri = android.net.Uri.parse(uriStr)
+                    val doc = if (uri.scheme == "file") {
+                        val file = java.io.File(uri.path ?: "")
+                        if (file.exists()) DocumentFile.fromFile(file) else null
+                    } else {
+                        DocumentFile.fromSingleUri(context, uri)
+                    }
+                    if (doc != null && doc.exists()) {
+                        val item = RecordingItemData(
+                            recordingFile = doc,
+                            recorderType = if (isVideo) RecorderType.VIDEO else RecorderType.AUDIO,
+                            thumbnail = if (isVideo) videoThumbnailCache.get(doc.uri.toString()) else null
+                        )
+                        if (isVideo) video.add(item) else audio.add(item)
+                    }
+                }
+            }
+            cachedAudio = audio
+            cachedVideos = video
+        } catch (e: Exception) {
+            Log.e("FileRepository", "Cache read failed", e)
+        }
+    }
+
+    private fun writeCache() {
+        try {
+            val arr = org.json.JSONArray()
+            val all = (cachedAudio.orEmpty() + cachedVideos.orEmpty()).distinctBy { it.recordingFile.uri }
+            for (item in all) {
+                val obj = org.json.JSONObject()
+                obj.put("uri", item.recordingFile.uri.toString())
+                obj.put("video", item.isVideo)
+                arr.put(obj)
+            }
+            cacheFile.writeText(arr.toString())
+        } catch (e: Exception) {
+            Log.e("FileRepository", "Cache write failed", e)
+        }
+    }
+
+    override fun cachedAudio(sort: SortOrder): List<RecordingItemData> =
+        cachedAudio?.sortedBy(sort) ?: emptyList()
+
+    override fun cachedVideos(sort: SortOrder): List<RecordingItemData> =
+        cachedVideos?.sortedBy(sort) ?: emptyList()
 
     override fun loadVideoThumbnail(file: DocumentFile): Bitmap? {
         val uriStr = file.uri.toString()
@@ -125,23 +191,33 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
 
     override suspend fun getVideoRecordingItems(sortOrder: SortOrder): List<RecordingItemData> {
         return withContext(Dispatchers.IO) {
-            getVideoFiles().sortedBy(sortOrder).map {
+            val items = getVideoFiles().map {
                 RecordingItemData(it, RecorderType.VIDEO, videoThumbnailCache.get(it.uri.toString()))
             }
+            cachedVideos = items
+            writeCache()
+            items.sortedBy(sortOrder)
         }
     }
 
     override suspend fun getAudioRecordingItems(sortOrder: SortOrder): List<RecordingItemData> {
         return withContext(Dispatchers.IO) {
-            getAudioFiles().sortedBy(sortOrder).map { RecordingItemData(it, RecorderType.AUDIO) }
+            val items = getAudioFiles().map { RecordingItemData(it, RecorderType.AUDIO) }
+            cachedAudio = items
+            writeCache()
+            items.sortedBy(sortOrder)
         }
     }
 
     override suspend fun deleteFiles(files: List<DocumentFile>) {
         withContext(Dispatchers.IO) {
+            val uris = files.map { it.uri }.toSet()
             files.forEach {
                 if (it.exists()) it.delete()
             }
+            cachedAudio = cachedAudio?.filterNot { uris.contains(it.recordingFile.uri) }
+            cachedVideos = cachedVideos?.filterNot { uris.contains(it.recordingFile.uri) }
+            writeCache()
         }
     }
 
@@ -152,6 +228,9 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                     if (it.isFile) it.delete()
                 }
             }
+            cachedAudio = emptyList()
+            cachedVideos = emptyList()
+            writeCache()
         }
     }
 
@@ -174,6 +253,13 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                 outputStream.flush()
             }
             tempFile.delete()
+            val isAudio = commonAudioExtensions.contains(".$extension")
+            if (isAudio) {
+                cachedAudio = (listOf(RecordingItemData(destFile, RecorderType.AUDIO)) + cachedAudio.orEmpty()).distinctBy { it.recordingFile.uri }
+            } else {
+                cachedVideos = (listOf(RecordingItemData(destFile, RecorderType.VIDEO)) + cachedVideos.orEmpty()).distinctBy { it.recordingFile.uri }
+            }
+            writeCache()
             destFile
         } catch (e: java.io.IOException) {
             Log.e("FileRepository", "IO error committing temp recording", e)
@@ -259,3 +345,16 @@ fun List<DocumentFile>.sortedBy(sortOrder: SortOrder): List<DocumentFile> {
         SortOrder.SIZE -> sortedByDescending { it.length() }
     }
 }
+
+@JvmName("sortItems")
+fun List<RecordingItemData>.sortedBy(sortOrder: SortOrder): List<RecordingItemData> {
+    return when (sortOrder) {
+        SortOrder.MODIFIED -> sortedBy { it.recordingFile.lastModified() }
+        SortOrder.MODIFIED_REV -> sortedByDescending { it.recordingFile.lastModified() }
+        SortOrder.ALPHABETIC -> sortedBy { it.recordingFile.name.orEmpty().lowercase() }
+        SortOrder.ALPHABETIC_REV -> sortedByDescending { it.recordingFile.name.orEmpty().lowercase() }
+        SortOrder.SIZE_REV -> sortedBy { it.recordingFile.length() }
+        SortOrder.SIZE -> sortedByDescending { it.recordingFile.length() }
+    }
+}
+

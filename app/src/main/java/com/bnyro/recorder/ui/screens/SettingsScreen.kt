@@ -17,6 +17,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DarkMode
@@ -248,11 +256,11 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
             Spacer(modifier = Modifier.height(10.dp))
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 item {
                     CustomNumInputPref(
+                        modifier = Modifier.padding(end = 10.dp),
                         key = Preferences.audioSampleRateKey,
                         title = stringResource(R.string.sample_rate),
                         defValue = 44_100
@@ -260,6 +268,7 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                 }
                 item {
                     CustomNumInputPref(
+                        modifier = Modifier.padding(end = 10.dp),
                         key = Preferences.audioBitrateKey,
                         title = stringResource(R.string.bitrate),
                         defValue = 192_000
@@ -383,6 +392,27 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
     }
 
     if (showThemePref) {
+        val themeIcons: List<@Composable () -> Unit> = listOf(
+            { Text("🌓", fontSize = 24.sp) },
+            { Text("☀️", fontSize = 24.sp) },
+            { Text("🌙", fontSize = 24.sp) },
+            {
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFFE2E2E2)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_black_sun),
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                        tint = Color.Black
+                    )
+                }
+            }
+        )
         SelectionDialog(
             onDismissRequest = { showThemePref = false },
             title = stringResource(R.string.theme),
@@ -393,7 +423,8 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                 R.string.amoled_dark
             ).map {
                 stringResource(it)
-            }
+            },
+            iconDrawables = themeIcons
         ) {
             themeModel.themeMode = ThemeMode.values()[it]
             Preferences.edit { putString(Preferences.themeModeKey, ThemeMode.values()[it].name) }

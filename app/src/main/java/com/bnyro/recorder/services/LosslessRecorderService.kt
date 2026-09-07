@@ -86,11 +86,11 @@ class LosslessRecorderService : RecorderService() {
 
         audioRecorder?.startRecording()
 
-        outputFile = DocumentFile.fromFile(
-            File(filesDir, "temp.pcm").also {
-                it.createNewFile()
-            }
-        )
+        val rawFile = File(filesDir, "temp.wav").also {
+            if (it.exists()) it.delete()
+            it.createNewFile()
+        }
+        outputFile = DocumentFile.fromFile(rawFile)
 
         recorderThread = thread(true) {
             writeAudioDataToFile()
@@ -100,11 +100,12 @@ class LosslessRecorderService : RecorderService() {
     private fun writeAudioDataToFile() {
         val data = ByteArray(BUFFER_SIZE_IN_BYTES / 2)
         outputFile?.uri?.let { uri ->
-            contentResolver.openOutputStream(uri)?.use { outputStream ->
+            contentResolver.openOutputStream(uri)?.use { out ->
+                pcmConverter?.initHeader(out)
                 while (recorderState != RecorderState.IDLE) {
                     audioRecorder?.read(data, 0, data.size)?.let {
                         if (recorderState == RecorderState.ACTIVE) {
-                            outputStream.write(data)
+                            out.write(data)
                             currentMaxAmplitude = getAmplitudesFromBytes(data).max()
                         }
                     }
@@ -142,46 +143,34 @@ class LosslessRecorderService : RecorderService() {
         audioRecorder?.startRecording()
     }
 
-    private fun convertToWav() {
-        val inputStream = contentResolver.openInputStream(outputFile?.uri ?: return) ?: return
-        val wavDoc = (application as App).fileRepository
-            .getOutputFile(FILE_NAME_EXTENSION_WAV)
-        val outputStream = wavDoc?.let {
-            contentResolver.openOutputStream(it.uri)
-        }
-
-        if (outputStream == null) {
-            Toast.makeText(this, R.string.cant_access_selected_folder, Toast.LENGTH_LONG).show()
-            return
-        }
-
-        pcmConverter?.convertToWave(inputStream, outputStream, BUFFER_SIZE_IN_BYTES)
-        outputFile?.delete()
-        outputFile = wavDoc
-    }
-
-    private fun convertToMp3() {
-        val pcmFile = File(filesDir, "temp.pcm")
-        if (!pcmFile.exists() || pcmFile.length() == 0L) {
+    private fun convertToWav(raw: File) {
+        if (!raw.exists() || raw.length() <= 44L) {
             outputFile?.delete()
             outputFile = null
             return
         }
-        val tempWav = File(cacheDir, "temp_${System.currentTimeMillis()}.wav")
-        val tempMp3 = File(cacheDir, "temp_${System.currentTimeMillis()}.mp3")
+        outputFile?.delete()
+        outputFile = (application as App).fileRepository.commitOutputFile(raw, FILE_NAME_EXTENSION_WAV)
+    }
+
+    private fun convertToMp3(raw: File) {
+        if (!raw.exists() || raw.length() <= 44L) {
+            outputFile?.delete()
+            outputFile = null
+            return
+        }
+        val tempMp3 = File(cacheDir, "rec_${System.currentTimeMillis()}.mp3")
         try {
-            pcmFile.inputStream().use { input ->
-                tempWav.outputStream().use { output ->
-                    pcmConverter?.convertToWave(input, output, BUFFER_SIZE_IN_BYTES)
-                }
-            }
             val bitrate = Preferences.prefs.getInt(Preferences.audioBitrateKey, 192_000).takeIf { it > 0 } ?: 192_000
-            val bitrateKbps = (bitrate / 1000).coerceIn(32, 320)
-            val sampleRatePref = Preferences.prefs.getInt(Preferences.audioSampleRateKey, SAMPLING_RATE).takeIf { it > 0 } ?: SAMPLING_RATE
+            val kbps = (bitrate / 1000).coerceIn(32, 320)
+            val sampleRate = Preferences.prefs.getInt(Preferences.audioSampleRateKey, SAMPLING_RATE).takeIf { it > 0 } ?: SAMPLING_RATE
             val args = arrayOf(
-                "-b", bitrateKbps.toString(),
-                "-s", (sampleRatePref / 1000.0).toString(),
-                tempWav.absolutePath,
+                "-b", kbps.toString(),
+                "-s", (sampleRate / 1000.0).toString(),
+                "-f",
+                "-q", "7",
+                "--silent",
+                raw.absolutePath,
                 tempMp3.absolutePath
             )
             Jump3rMain().run(args)
@@ -192,9 +181,8 @@ class LosslessRecorderService : RecorderService() {
                 outputFile = null
             }
         } finally {
-            tempWav.delete()
             tempMp3.delete()
-            pcmFile.delete()
+            raw.delete()
         }
     }
 
@@ -205,11 +193,14 @@ class LosslessRecorderService : RecorderService() {
         audioRecorder = null
         recorderThread = null
 
-        val isLosslessWav = Preferences.prefs.getBoolean(Preferences.losslessRecorderKey, false)
-        if (isLosslessWav) {
-            convertToWav()
+        val rawFile = File(filesDir, "temp.wav")
+        pcmConverter?.writeHeader(rawFile)
+
+        val isLossless = Preferences.prefs.getBoolean(Preferences.losslessRecorderKey, false)
+        if (isLossless) {
+            convertToWav(rawFile)
         } else {
-            convertToMp3()
+            convertToMp3(rawFile)
         }
 
         super.stopRecording()

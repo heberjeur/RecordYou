@@ -16,8 +16,10 @@ import com.bnyro.recorder.App
 import com.bnyro.recorder.enums.SortOrder
 import com.bnyro.recorder.obj.RecordingItemData
 import com.bnyro.recorder.util.FileRepository
+import com.bnyro.recorder.util.sortedBy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PlayerModel(context: Context, private val fileRepository: FileRepository) : ViewModel() {
     @UnstableApi
@@ -29,8 +31,8 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
 
     private var sortOrder = SortOrder.MODIFIED
 
-    var audioRecordingItems by mutableStateOf(listOf<RecordingItemData>())
-    var screenRecordingItems by mutableStateOf(listOf<RecordingItemData>())
+    var audioRecordingItems by mutableStateOf(fileRepository.cachedAudio(sortOrder))
+    var screenRecordingItems by mutableStateOf(fileRepository.cachedVideos(sortOrder))
 
     init {
         loadFiles()
@@ -38,21 +40,28 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
 
     fun loadFiles() {
         viewModelScope.launch(Dispatchers.IO) {
-            audioRecordingItems = fileRepository.getAudioRecordingItems(sortOrder)
+            val audio = fileRepository.getAudioRecordingItems(sortOrder)
+            withContext(Dispatchers.Main) {
+                audioRecordingItems = audio
+            }
         }
         viewModelScope.launch(Dispatchers.IO) {
-            val videoItems = fileRepository.getVideoRecordingItems(sortOrder)
-            screenRecordingItems = videoItems
+            val video = fileRepository.getVideoRecordingItems(sortOrder)
+            withContext(Dispatchers.Main) {
+                screenRecordingItems = video
+            }
 
-            videoItems.forEach { item ->
+            video.forEach { item ->
                 if (item.thumbnail == null) {
                     val thumb = fileRepository.loadVideoThumbnail(item.recordingFile)
                     if (thumb != null) {
-                        screenRecordingItems = screenRecordingItems.map {
-                            if (it.recordingFile.uri == item.recordingFile.uri) {
-                                it.copy(thumbnail = thumb)
-                            } else {
-                                it
+                        withContext(Dispatchers.Main) {
+                            screenRecordingItems = screenRecordingItems.map {
+                                if (it.recordingFile.uri == item.recordingFile.uri) {
+                                    it.copy(thumbnail = thumb)
+                                } else {
+                                    it
+                                }
                             }
                         }
                     }
@@ -61,22 +70,27 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
         }
     }
 
-    fun sortItems(newSortOrder: SortOrder) {
-        if (newSortOrder == sortOrder) return
-        sortOrder = newSortOrder
-        loadFiles()
+    fun sortItems(newSort: SortOrder) {
+        if (newSort == sortOrder) return
+        sortOrder = newSort
+        audioRecordingItems = audioRecordingItems.sortedBy(sortOrder)
+        screenRecordingItems = screenRecordingItems.sortedBy(sortOrder)
     }
 
     fun deleteFiles() {
         viewModelScope.launch {
             if (selectedFiles.isEmpty()) {
                 fileRepository.deleteAllFiles()
-                loadFiles()
+                audioRecordingItems = emptyList()
+                screenRecordingItems = emptyList()
                 return@launch
             }
-            fileRepository.deleteFiles(selectedFiles.map { it.recordingFile })
+            val toDelete = selectedFiles
             selectedFiles = emptyList()
-            loadFiles()
+            fileRepository.deleteFiles(toDelete.map { it.recordingFile })
+            val uris = toDelete.map { it.recordingFile.uri }.toSet()
+            audioRecordingItems = audioRecordingItems.filterNot { uris.contains(it.recordingFile.uri) }
+            screenRecordingItems = screenRecordingItems.filterNot { uris.contains(it.recordingFile.uri) }
         }
     }
 

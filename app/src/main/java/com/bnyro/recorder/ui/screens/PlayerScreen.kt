@@ -43,7 +43,16 @@ fun PlayerScreen(
     var selectedSortOrder by remember {
         mutableStateOf(SortOrder.ALPHABETIC)
     }
-    val playerModel: PlayerModel = viewModel(factory = PlayerModel.Factory)
+    val activity = androidx.compose.ui.platform.LocalContext.current as? androidx.activity.ComponentActivity
+    val playerModel: PlayerModel = if (activity != null) {
+        viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
+    } else {
+        viewModel(factory = PlayerModel.Factory)
+    }
+
+    LaunchedEffect(Unit) {
+        playerModel.loadFiles()
+    }
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
         rememberTopAppBarState()
@@ -134,7 +143,8 @@ fun PlayerScreen(
                 .padding(horizontal = 16.dp)
         ) {
             PlayerView(
-                showVideoModeInitially
+                showVideoModeInitially = showVideoModeInitially,
+                playerModel = playerModel
             )
         }
     }

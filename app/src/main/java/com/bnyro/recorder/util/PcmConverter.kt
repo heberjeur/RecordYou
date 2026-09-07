@@ -72,7 +72,31 @@ class PcmConverter(sampleRate: Long, channels: Int, bitsPerSample: Int) {
         }
     }
 
-    // http://stackoverflow.com/questions/4440015/java-pcm-to-wav
+    fun initHeader(out: OutputStream) {
+        out.write(ByteArray(wavHeader.size))
+    }
+
+    fun writeHeader(file: java.io.File) {
+        if (!file.exists()) return
+        val total = file.length()
+        if (total < wavHeader.size) return
+        val audioLen = total - wavHeader.size
+        val dataLen = audioLen + 36
+        java.io.RandomAccessFile(file, "rw").use { raf ->
+            raf.seek(0)
+            val header = wavHeader.copyOf(wavHeader.size)
+            header[4] = (dataLen and 0xffL).toByte()
+            header[5] = (dataLen shr 8 and 0xffL).toByte()
+            header[6] = (dataLen shr 16 and 0xffL).toByte()
+            header[7] = (dataLen shr 24 and 0xffL).toByte()
+            header[40] = (audioLen and 0xffL).toByte()
+            header[41] = (audioLen shr 8 and 0xffL).toByte()
+            header[42] = (audioLen shr 16 and 0xffL).toByte()
+            header[43] = (audioLen shr 24 and 0xffL).toByte()
+            raf.write(header)
+        }
+    }
+
     @Throws(IOException::class)
     private fun writeWaveHeader(
         out: OutputStream?,

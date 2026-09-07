@@ -49,11 +49,18 @@ import com.bnyro.recorder.util.IntentHelper
 fun RecordingItem(
     recordingItem: RecordingItemData,
     isSelected: Boolean,
+    playerModel: PlayerModel = run {
+        val activity = LocalContext.current as? androidx.activity.ComponentActivity
+        if (activity != null) {
+            viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
+        } else {
+            viewModel(factory = PlayerModel.Factory)
+        }
+    },
     onClick: (wasLongClick: Boolean) -> Unit,
     onEdit: () -> Unit,
     startPlayingAudio: () -> Unit
 ) {
-    val playerModel: PlayerModel = viewModel(factory = PlayerModel.Factory)
     val context = LocalContext.current
     val view = LocalView.current
     val haptic = LocalHapticFeedback.current

@@ -48,4 +48,34 @@ class PcmConverterTest {
         assertEquals('t'.code.toByte(), result[38])
         assertEquals('a'.code.toByte(), result[39])
     }
+
+    @Test
+    fun testMp3Encoding() {
+        val raw = java.io.File.createTempFile("test_audio", ".wav")
+        val mp3 = java.io.File.createTempFile("test_audio", ".mp3")
+        try {
+            val sampleCount = 44100 * 2 * 2
+            val dummy = ByteArray(sampleCount + 44) { (it % 64).toByte() }
+            raw.writeBytes(dummy)
+
+            val converter = PcmConverter(44100L, 2, 16)
+            converter.writeHeader(raw)
+
+            val args = arrayOf(
+                "-b", "128",
+                "-s", "44.1",
+                "-f",
+                "-q", "7",
+                "--silent",
+                raw.absolutePath,
+                mp3.absolutePath
+            )
+            de.sciss.jump3r.Main().run(args)
+            assertTrue(mp3.exists())
+            assertTrue(mp3.length() > 0L)
+        } finally {
+            raw.delete()
+            mp3.delete()
+        }
+    }
 }

@@ -7,7 +7,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ElevatedFilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.draw.scale
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
@@ -51,7 +56,7 @@ fun CustomNumInputPref(
     val valueText = if (pref != null) "$pref" else stringResource(R.string.auto)
 
     ElevatedFilterChip(
-        modifier = modifier,
+        modifier = modifier.height(32.dp),
         selected = pref != null,
         onClick = {
             view.playSoundEffect(SoundEffectConstants.CLICK)
@@ -60,9 +65,19 @@ fun CustomNumInputPref(
         label = {
             Text(
                 text = "$title: $valueText",
-                maxLines = 1
+                maxLines = 1,
+                style = MaterialTheme.typography.labelLarge
             )
-        }
+        },
+        leadingIcon = if (pref != null) {
+            {
+                Icon(
+                    Icons.Default.Check,
+                    contentDescription = null,
+                    modifier = Modifier.scale(0.6f)
+                )
+            }
+        } else null
     )
 
     if (showDialog) {

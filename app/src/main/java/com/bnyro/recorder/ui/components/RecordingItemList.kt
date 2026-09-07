@@ -36,7 +36,14 @@ import com.bnyro.recorder.ui.screens.TrimmerScreen
 fun RecordingItemList(
     items: List<RecordingItemData>,
     isVideoList: Boolean,
-    playerModel: PlayerModel = viewModel()
+    playerModel: PlayerModel = run {
+        val activity = androidx.compose.ui.platform.LocalContext.current as? androidx.activity.ComponentActivity
+        if (activity != null) {
+            viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
+        } else {
+            viewModel(factory = PlayerModel.Factory)
+        }
+    }
 ) {
     val icon = if (isVideoList) Icons.Default.VideoFile else Icons.Default.AudioFile
     var chosenFile by remember { mutableStateOf<DocumentFile?>(null) }
@@ -53,6 +60,7 @@ fun RecordingItemList(
                     RecordingItem(
                         it,
                         isSelected = playerModel.selectedFiles.contains(it),
+                        playerModel = playerModel,
                         onClick = { wasLongPress ->
                             when {
                                 wasLongPress -> playerModel.selectedFiles += it
