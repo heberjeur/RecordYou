@@ -3,7 +3,7 @@
 
 <!-- ---------- Header ---------- -->
 <div align="center">
-  <img width="200" height="200"src="fastlane/metadata/android/en-US/images/icon.png">
+  <img width="200" height="200" src="fastlane/metadata/android/en-US/images/icon.png">
   <h1>Record You</h1>
 <p>Privacy focused voice and screen recorder app built with MD3.</p>
 
@@ -25,11 +25,11 @@ Read in other languages: [Japanese](https://github.com/kuragehimekurara1/RecordY
 
 - [x] Material Design 3 (You)
 - [x] Dark and light theme
-- [X] Support for audio and screen recording
-- [X] Different available formats and codecs
-- [X] In-app recordings player
-- [X] SAF (Storage Access Framework) support
-- [X] Written in Jetpack Compose 
+- [x] Support for audio and screen recording
+- [x] Different available formats and codecs
+- [x] In-app recordings player
+- [x] SAF (Storage Access Framework) support
+- [x] Written in Jetpack Compose 
 
 <!-- ---------- Download ---------- -->
 ## Download
