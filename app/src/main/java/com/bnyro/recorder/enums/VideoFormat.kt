@@ -47,11 +47,11 @@ data class VideoFormat(
             }
         }
 
-        fun getCurrent() = codecs.first {
+        fun getCurrent() = codecs.firstOrNull {
             it.codec == Preferences.prefs.getInt(
                 Preferences.videoCodecKey,
                 MediaRecorder.VideoEncoder.H264
             )
-        }
+        } ?: codecs.first()
     }
 }

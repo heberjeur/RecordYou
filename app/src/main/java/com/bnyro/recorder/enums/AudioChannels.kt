@@ -5,6 +5,6 @@ enum class AudioChannels(val value: Int) {
     STEREO(2);
 
     companion object {
-        fun fromInt(value: Int) = AudioChannels.values().first { it.value == value }
+        fun fromInt(value: Int) = values().firstOrNull { it.value == value } ?: STEREO
     }
 }

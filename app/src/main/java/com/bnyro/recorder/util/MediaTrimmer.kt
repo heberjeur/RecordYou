@@ -28,16 +28,19 @@ class MediaTrimmer {
     ): Boolean {
         assert(endMs > startMs && endMs > 0)
         return withContext(Dispatchers.IO) {
-            var extension = inputFile.uri.path!!.split('.').lastOrNull()
-            if (extension == "aac" || (extension == "ogg" && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)) { // Special case if trimming raw AAC or ogg with no muxer available input mux it into MP4 container.
+            var extension = inputFile.name?.split('.')?.lastOrNull() ?: inputFile.uri.path?.split('.')?.lastOrNull()
+            if (extension == "aac" || (extension == "ogg" && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)) {
                 extension = "m4a"
             }
             val outputFile = (context.applicationContext as App).fileRepository.getOutputFile(
                 extension = extension ?: "mp4",
                 prefix = "Trim_"
-            )
-            val inputPfd = context.contentResolver.openFileDescriptor(inputFile.uri, "r")!!
-            val outputPfd = context.contentResolver.openFileDescriptor(outputFile!!.uri, "w")!!
+            ) ?: return@withContext false
+            val inputPfd = context.contentResolver.openFileDescriptor(inputFile.uri, "r") ?: return@withContext false
+            val outputPfd = context.contentResolver.openFileDescriptor(outputFile.uri, "w") ?: run {
+                inputPfd.close()
+                return@withContext false
+            }
             trimMediaFile(inputPfd, outputPfd, startMs, endMs, extension)
         }
     }
@@ -131,9 +134,10 @@ class MediaTrimmer {
                 Log.e("Media trimmer", e.message, e)
                 false
             } finally {
-                muxer.release()
-                inputPfd.close()
-                outputPfd.close()
+                runCatching { muxer.release() }
+                runCatching { extractor.release() }
+                runCatching { inputPfd.close() }
+                runCatching { outputPfd.close() }
             }
         }
     }

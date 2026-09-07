@@ -52,12 +52,12 @@ fun RecordYouTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        amoledDark && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        darkTheme && amoledDark && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            dynamicDarkColorScheme(context).copy(background = Color.Black)
+            dynamicDarkColorScheme(context).copy(background = Color.Black, surface = Color.Black)
         }
 
-        amoledDark -> AmoledDarkColorScheme
+        darkTheme && amoledDark -> AmoledDarkColorScheme
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)

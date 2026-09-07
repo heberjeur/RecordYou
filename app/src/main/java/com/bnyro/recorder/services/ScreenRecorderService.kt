@@ -31,6 +31,16 @@ class ScreenRecorderService : RecorderService() {
     private var virtualDisplay: VirtualDisplay? = null
     private var mediaProjection: MediaProjection? = null
     private var activityResult: ActivityResult? = null
+    private var displayManager: DisplayManager? = null
+    private val displayListener = object : DisplayManager.DisplayListener {
+        override fun onDisplayAdded(displayId: Int) {}
+        override fun onDisplayRemoved(displayId: Int) {}
+        override fun onDisplayChanged(displayId: Int) {
+            val newRes = getScreenResolution()
+            virtualDisplay?.resize(newRes.width, newRes.height, newRes.density)
+        }
+    }
+
     override val fgServiceType: Int?
         get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION
@@ -47,19 +57,25 @@ class ScreenRecorderService : RecorderService() {
         val mProjectionManager = getSystemService(
             Context.MEDIA_PROJECTION_SERVICE
         ) as MediaProjectionManager
+        val intentData = activityResult?.data ?: run {
+            Log.e("ScreenRecorderService", "No ActivityResult data provided")
+            stopRecording()
+            return
+        }
         try {
             mediaProjection = mProjectionManager.getMediaProjection(
                 Activity.RESULT_OK,
-                activityResult?.data!!
+                intentData
             )
         } catch (e: Exception) {
             Log.e("Media Projection Error", e.toString())
-            onDestroy()
+            stopRecording()
+            return
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            mediaProjection!!.registerCallback(object : MediaProjection.Callback() {
+            mediaProjection?.registerCallback(object : MediaProjection.Callback() {
                 override fun onStop() {
-                    onDestroy()
+                    stopRecording()
                 }
             }, null)
         }
@@ -71,6 +87,9 @@ class ScreenRecorderService : RecorderService() {
         )
         val resolution = getScreenResolution()
         val videoFormat = VideoFormat.getCurrent()
+
+        displayManager = getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        displayManager?.registerDisplayListener(displayListener, null)
 
         recorder = PlayerHelper.newRecorder(this).apply {
             setVideoSource(MediaRecorder.VideoSource.SURFACE)
@@ -112,7 +131,7 @@ class ScreenRecorderService : RecorderService() {
 
             setVideoSize(resolution.width, resolution.height)
 
-            virtualDisplay = mediaProjection!!.createVirtualDisplay(
+            virtualDisplay = mediaProjection?.createVirtualDisplay(
                 getString(R.string.app_name),
                 resolution.width,
                 resolution.height,
@@ -123,18 +142,42 @@ class ScreenRecorderService : RecorderService() {
                 null
             )
 
-            outputFile = (application as App).fileRepository.getOutputFile(videoFormat.extension)
-            if (outputFile == null) {
-                Toast.makeText(this@ScreenRecorderService, R.string.cant_access_selected_folder, Toast.LENGTH_LONG).show()
-                onDestroy()
-                return
+            recordingExtension = videoFormat.extension
+            val tempFile = (application as App).fileRepository.getTempOutputFile(recordingExtension)
+            tempOutputFile = tempFile
+            setOutputFile(tempFile.absolutePath)
+
+            var prepareSuccess = runCatching { prepare() }.isSuccess
+            if (!prepareSuccess && videoFormat.codec != MediaRecorder.VideoEncoder.H264) {
+                Log.w("ScreenRecorderService", "Format ${videoFormat.name} prepare failed, falling back to H.264")
+                reset()
+                setVideoSource(MediaRecorder.VideoSource.SURFACE)
+                if (audioSource == AudioSource.MICROPHONE) {
+                    val audioDev = Preferences.prefs.getInt(
+                        Preferences.audioDeviceSourceKey,
+                        AudioDeviceSource.DEFAULT.value
+                    )
+                    setAudioSource(audioDev)
+                }
+                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+                setVideoFrameRate(resolution.frameRate)
+                setVideoEncoder(MediaRecorder.VideoEncoder.H264)
+                setVideoEncodingBitRate(bitratePref.takeIf { it > 0 } ?: autoBitrate)
+                if (audioSource == AudioSource.MICROPHONE) {
+                    setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                }
+                setVideoSize(resolution.width, resolution.height)
+                recordingExtension = "mp4"
+                setOutputFile(tempFile.absolutePath)
+                prepareSuccess = runCatching { prepare() }.isSuccess
             }
 
-            fileDescriptor = contentResolver.openFileDescriptor(outputFile!!.uri, "w")
-            setOutputFile(fileDescriptor?.fileDescriptor)
-
-            runCatching {
-                prepare()
+            if (!prepareSuccess) {
+                Log.e("ScreenRecorderService", "Failed to prepare MediaRecorder")
+                release()
+                recorder = null
+                stopRecording()
+                return
             }
 
             start()
@@ -144,11 +187,11 @@ class ScreenRecorderService : RecorderService() {
 
         super.start()
     }
-    private fun getScreenResolution(): VideoResolution {
-        val displayManager = getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
-        val display = displayManager.getDisplay(Display.DEFAULT_DISPLAY)
 
-        // TODO Use the window API instead on newer devices
+    private fun getScreenResolution(): VideoResolution {
+        val dm = getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        val display = dm.getDisplay(Display.DEFAULT_DISPLAY)
+
         val metrics = DisplayMetrics()
         display.getRealMetrics(metrics)
 
@@ -160,9 +203,13 @@ class ScreenRecorderService : RecorderService() {
         )
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun stopRecording() {
+        displayManager?.unregisterDisplayListener(displayListener)
         virtualDisplay?.release()
+        virtualDisplay = null
+        mediaProjection?.stop()
+        mediaProjection = null
+        super.stopRecording()
     }
 
     override fun getCurrentAmplitude() = recorder?.maxAmplitude

@@ -33,42 +33,33 @@ class AudioRecorderService : RecorderService() {
             )
             setAudioSource(audioSource)
 
-            val sampleRatePref = Preferences.prefs.getInt(Preferences.audioSampleRateKey, -1).takeIf { it > 0 }
-            val audioBitrate = Preferences.prefs.getInt(Preferences.audioBitrateKey, -1).takeIf { it > 0 }
-            if (sampleRatePref != null && (audioFormat.codec != MediaRecorder.AudioEncoder.OPUS || sampleRatePref in opusSampleRates)) {
+            val sampleRatePref = Preferences.prefs.getInt(Preferences.audioSampleRateKey, DEFAULT_AUDIO_SAMPLE_RATE).takeIf { it > 0 } ?: DEFAULT_AUDIO_SAMPLE_RATE
+            val audioBitrate = Preferences.prefs.getInt(Preferences.audioBitrateKey, DEFAULT_AUDIO_BITRATE).takeIf { it > 0 } ?: DEFAULT_AUDIO_BITRATE
+            if (audioFormat.codec != MediaRecorder.AudioEncoder.OPUS || sampleRatePref in opusSampleRates) {
                 setAudioSamplingRate(sampleRatePref)
             }
-            if (audioBitrate != null) {
-                setAudioEncodingBitRate(audioBitrate)
-            } else if (sampleRatePref != null) {
-                setAudioEncodingBitRate(sampleRatePref * 32 * 2)
-            }
+            setAudioEncodingBitRate(audioBitrate)
 
-            Preferences.prefs.getInt(Preferences.audioChannelsKey, AudioChannels.MONO.value).let {
-                setAudioChannels(it)
-            }
+            val channels = Preferences.prefs.getInt(Preferences.audioChannelsKey, AudioChannels.STEREO.value)
+            setAudioChannels(channels)
 
             setOutputFormat(audioFormat.format)
             setAudioEncoder(audioFormat.codec)
 
-            outputFile = (application as App).fileRepository.getOutputFile(
-                audioFormat.extension
-            )
-            if (outputFile == null) {
-                Toast.makeText(
-                    this@AudioRecorderService,
-                    R.string.cant_access_selected_folder,
-                    Toast.LENGTH_LONG
-                ).show()
-                onDestroy()
-                return
-            }
+            recordingExtension = audioFormat.extension
+            val tempFile = (application as App).fileRepository.getTempOutputFile(recordingExtension)
+            tempOutputFile = tempFile
+            setOutputFile(tempFile.absolutePath)
 
-            fileDescriptor = contentResolver.openFileDescriptor(outputFile!!.uri, "w")
-            setOutputFile(fileDescriptor?.fileDescriptor)
-
-            runCatching {
+            val prepResult = runCatching {
                 prepare()
+            }
+            if (prepResult.isFailure) {
+                android.util.Log.e("AudioRecorderService", "MediaRecorder prepare failed", prepResult.exceptionOrNull())
+                release()
+                recorder = null
+                stopRecording()
+                return
             }
 
             start()
@@ -80,6 +71,8 @@ class AudioRecorderService : RecorderService() {
     override fun getCurrentAmplitude() = recorder?.maxAmplitude
 
     companion object {
-        private val opusSampleRates =  listOf(8000, 12000, 16000, 24000, 48000)
+        private const val DEFAULT_AUDIO_SAMPLE_RATE = 48000
+        private const val DEFAULT_AUDIO_BITRATE = 192000
+        private val opusSampleRates = listOf(8000, 12000, 16000, 24000, 48000)
     }
 }

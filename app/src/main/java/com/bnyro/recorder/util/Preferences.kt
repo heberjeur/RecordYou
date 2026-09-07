@@ -21,6 +21,7 @@ object Preferences {
     const val namingPatternKey = "namingPattern"
     const val showOverlayAnnotationToolKey = "annotationTool"
     const val showVisualizerTimestamps = "visualizerTimestamp"
+    const val countdownSecondsKey = "countdownSeconds"
 
     fun init(context: Context) {
         prefs = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)

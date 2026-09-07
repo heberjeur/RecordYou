@@ -46,13 +46,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
+            val isSystemDark = isSystemInDarkTheme()
+            val isDark = when (themeModel.themeMode) {
+                ThemeMode.SYSTEM -> isSystemDark
+                ThemeMode.DARK -> true
+                ThemeMode.AMOLED -> isSystemDark
+                ThemeMode.LIGHT -> false
+            }
             RecordYouTheme(
-                when (themeModel.themeMode) {
-                    ThemeMode.SYSTEM -> isSystemInDarkTheme()
-                    ThemeMode.DARK, ThemeMode.AMOLED -> true
-                    else -> false
-                },
-                amoledDark = themeModel.themeMode == ThemeMode.AMOLED
+                darkTheme = isDark,
+                amoledDark = isDark && themeModel.themeMode == ThemeMode.AMOLED
             ) {
                 val navController = rememberNavController()
                 Surface(

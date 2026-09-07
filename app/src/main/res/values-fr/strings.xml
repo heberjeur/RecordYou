@@ -80,4 +80,6 @@
     <string name="trim">Découper</string>
     <string name="start_trimming">Commencer à découper</string>
     <string name="erase_mode">Mode d\'effacement</string>
+    <string name="countdown_timer">Compte à rebours</string>
+    <string name="off">Désactivé</string>
 </resources>

@@ -65,6 +65,11 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
         player.stop()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        player.release()
+    }
+
     companion object {
         val Factory = viewModelFactory {
             initializer {

@@ -87,4 +87,6 @@
     <string name="erase_mode">Erase Mode</string>
     <string name="internal_audio">Internal Audio (Root)</string>
     <string name="no_sufficient_permissions">No sufficient permissions to start recording</string>
+    <string name="countdown_timer">Countdown timer</string>
+    <string name="off">Off</string>
 </resources>

@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
+import com.bnyro.recorder.App
 import com.bnyro.recorder.R
 import com.bnyro.recorder.enums.RecorderState
 import com.bnyro.recorder.receivers.FinishedNotificationReceiver
@@ -44,11 +45,14 @@ abstract class RecorderService : LifecycleService() {
     var recorderState: RecorderState = RecorderState.IDLE
     private lateinit var audioManager: AudioManager
 
+    var tempOutputFile: java.io.File? = null
+    var recordingExtension: String = "mp4"
+
     private val recorderReceiver = object : BroadcastReceiver() {
         @SuppressLint("NewApi")
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.getStringExtra(ACTION_EXTRA_KEY)) {
-                STOP_ACTION -> onDestroy()
+                STOP_ACTION -> stopRecording()
                 PAUSE_RESUME_ACTION -> {
                     if (recorderState == RecorderState.ACTIVE) pause() else resume()
                 }
@@ -197,42 +201,51 @@ abstract class RecorderService : LifecycleService() {
         updateNotification()
     }
 
-    override fun onDestroy() {
+    open fun stopRecording() {
+        if (recorderState == RecorderState.IDLE) return
+        recorderState = RecorderState.IDLE
         runCatching {
-            recorderState = RecorderState.IDLE
             onRecorderStateChanged(recorderState)
         }
 
         NotificationManagerCompat.from(this)
             .cancel(NotificationHelper.RECORDING_NOTIFICATION_ID)
 
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                recorder?.runCatching {
-                    stop()
-                    release()
-                }
-                recorder = null
-                fileDescriptor?.close()
-            }
-
-            createRecordingFinishedNotification()
-            outputFile = null
-
-            runCatching {
-                unregisterReceiver(recorderReceiver)
-            }
-
-            runCatching {
-                audioManager.stopBluetoothSco()
-                unregisterReceiver(bluetoothReceiver)
-            }
-
-            ServiceCompat.stopForeground(this@RecorderService, ServiceCompat.STOP_FOREGROUND_REMOVE)
-            stopSelf()
-
-            super.onDestroy()
+        recorder?.runCatching {
+            stop()
+            release()
         }
+        recorder = null
+        fileDescriptor?.close()
+        fileDescriptor = null
+
+        val temp = tempOutputFile
+        if (temp != null && temp.exists()) {
+            outputFile = (application as App).fileRepository.commitOutputFile(temp, recordingExtension)
+            tempOutputFile = null
+        }
+
+        createRecordingFinishedNotification()
+        outputFile = null
+
+        runCatching {
+            unregisterReceiver(recorderReceiver)
+        }
+
+        runCatching {
+            audioManager.stopBluetoothSco()
+            unregisterReceiver(bluetoothReceiver)
+        }
+
+        ServiceCompat.stopForeground(this@RecorderService, ServiceCompat.STOP_FOREGROUND_REMOVE)
+        stopSelf()
+    }
+
+    override fun onDestroy() {
+        if (recorderState != RecorderState.IDLE) {
+            stopRecording()
+        }
+        super.onDestroy()
     }
 
     @SuppressLint("MissingPermission")

@@ -134,8 +134,8 @@ class LosslessRecorderService : RecorderService() {
         outputFile?.delete()
     }
 
-    override fun onDestroy() {
-        recorderState = RecorderState.IDLE
+    override fun stopRecording() {
+        if (recorderState == RecorderState.IDLE) return
         audioRecorder?.stop()
         audioRecorder?.release()
         audioRecorder = null
@@ -143,7 +143,7 @@ class LosslessRecorderService : RecorderService() {
 
         convertToWav()
 
-        super.onDestroy()
+        super.stopRecording()
     }
 
     override fun getCurrentAmplitude() = currentMaxAmplitude

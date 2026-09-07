@@ -85,6 +85,9 @@ fun SettingsScreen() {
     var videoEncoder by remember {
         mutableStateOf(VideoFormat.getCurrent())
     }
+    var countdownSeconds by remember {
+        mutableStateOf(Preferences.prefs.getInt(Preferences.countdownSecondsKey, 0))
+    }
 
     val directoryPicker = rememberLauncherForActivityResult(PickFolderContract()) {
         it ?: return@rememberLauncherForActivityResult
@@ -236,6 +239,24 @@ fun SettingsScreen() {
                 title = stringResource(R.string.bitrate),
                 defValue = 1_200_000
             )
+            Spacer(modifier = Modifier.height(10.dp))
+            val countdownValues = listOf(0, 3, 5, 10)
+            ChipSelector(
+                title = stringResource(R.string.countdown_timer),
+                entries = listOf(
+                    stringResource(R.string.off),
+                    "3s",
+                    "5s",
+                    "10s"
+                ),
+                values = countdownValues,
+                selections = listOf(countdownSeconds)
+            ) { index, newValue ->
+                if (newValue) {
+                    countdownSeconds = countdownValues[index]
+                    Preferences.edit { putInt(Preferences.countdownSecondsKey, countdownSeconds) }
+                }
+            }
             Spacer(modifier = Modifier.height(10.dp))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 CheckboxPref(

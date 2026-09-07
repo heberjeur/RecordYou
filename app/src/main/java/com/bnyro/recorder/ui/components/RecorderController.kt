@@ -72,7 +72,16 @@ fun RecorderController(
         modifier = Modifier.wrapContentSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        recorderModel.recordedTime?.let {
+        recorderModel.countdownRemaining?.let { count ->
+            Text(
+                text = count.toString(),
+                style = MaterialTheme.typography.displayLarge.copy(
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        } ?: recorderModel.recordedTime?.let {
             Text(
                 text = DateUtils.formatElapsedTime(it / 10),
                 style = MaterialTheme.typography.displayLarge
@@ -97,7 +106,7 @@ fun RecorderController(
                 shape = CircleShape
             ) {
                 val buttonDescription = stringResource(
-                    if (recorderModel.recorderState != RecorderState.IDLE) {
+                    if (recorderModel.countdownRemaining != null || recorderModel.recorderState != RecorderState.IDLE) {
                         R.string.stop
                     } else {
                         R.string.record
@@ -106,6 +115,7 @@ fun RecorderController(
                 IconButton(
                     onClick = {
                         when {
+                            recorderModel.countdownRemaining != null -> recorderModel.cancelCountdown()
                             recorderModel.recorderState != RecorderState.IDLE -> recorderModel.stopRecording()
                             recordScreenMode -> requestScreenRecording()
                             else -> recorderModel.startAudioRecorder(context)
@@ -116,11 +126,11 @@ fun RecorderController(
                         .semantics { contentDescription = buttonDescription }
                 ) {
                     when {
-                        recorderModel.recorderState != RecorderState.IDLE -> {
+                        recorderModel.countdownRemaining != null || recorderModel.recorderState != RecorderState.IDLE -> {
                             Icon(
                                 Icons.Default.Stop,
                                 modifier = Modifier.size(36.dp),
-                                contentDescription = stringResource(R.string.pause)
+                                contentDescription = stringResource(R.string.stop)
                             )
                         }
 
