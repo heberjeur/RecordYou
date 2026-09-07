@@ -57,4 +57,6 @@
     <string name="system_default">Sistem susmaya görə</string>
     <string name="audio_directory">Audio qovluğu</string>
     <string name="video_directory">Video qovluğu</string>
+    <string name="reset_waveform_cache">Səs dalğa formalarını sıfırla</string>
+    <string name="reset_waveform_cache_done">Dalğa formaları sıfırlandı</string>
 </resources>

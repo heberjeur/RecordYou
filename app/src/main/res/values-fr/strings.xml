@@ -86,4 +86,6 @@
     <string name="system_default">Par défaut du système</string>
     <string name="audio_directory">Dossier audio</string>
     <string name="video_directory">Dossier Vidéo</string>
+    <string name="reset_waveform_cache">Réinitialiser les spectres audio</string>
+    <string name="reset_waveform_cache_done">Spectres réinitialisés</string>
 </resources>

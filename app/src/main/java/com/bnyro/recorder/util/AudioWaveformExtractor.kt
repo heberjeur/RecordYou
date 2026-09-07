@@ -13,15 +13,19 @@ import java.nio.ByteOrder
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 object AudioWaveformExtractor {
     fun isFlatWaveform(data: List<Float>?): Boolean {
         if (data.isNullOrEmpty() || data.size < 10) return true
         val min = data.minOrNull() ?: 0f
         val max = data.maxOrNull() ?: 0f
-        if (max - min < 0.08f) return true
-        val floorCount = data.count { it <= min + 0.03f }
-        return (floorCount.toFloat() / data.size) > 0.75f
+        if (max - min < 0.05f) return true
+        val tail = data.drop(4)
+        val tailMin = tail.minOrNull() ?: 0f
+        val tailMax = tail.maxOrNull() ?: 0f
+        if (tailMax - tailMin < 0.005f) return true
+        return false
     }
 
     fun createSyntheticWaveform(seed: Int, targetBars: Int = 160): List<Float> {
@@ -89,7 +93,17 @@ object AudioWaveformExtractor {
             if (f > maxGlobal) maxGlobal = f
         }
         if (maxGlobal <= 10f) return null
-        return raw.map { (it / maxGlobal).coerceIn(0.04f, 1f) }
+
+        val sorted = raw.filter { it > 0f }.sorted()
+        val effectivePeak = if (sorted.isNotEmpty()) {
+            val p95 = sorted[(sorted.size * 0.95).toInt().coerceIn(0, sorted.size - 1)]
+            p95.coerceAtLeast(maxGlobal * 0.30f).coerceAtLeast(100f)
+        } else maxGlobal.coerceAtLeast(100f)
+
+        return raw.map {
+            val norm = (it / effectivePeak).coerceIn(0f, 1.5f)
+            sqrt(norm).coerceIn(0.02f, 1f)
+        }
     }
 
     private fun extractMediaWaveform(
@@ -201,11 +215,20 @@ object AudioWaveformExtractor {
                 if (raw[i] <= 0f) {
                     val prev = if (i > 0) raw[i - 1] else 0f
                     val next = if (i < targetBars - 1) raw[i + 1] else 0f
-                    raw[i] = ((prev + next) / 2f).coerceAtLeast(maxGlobal * 0.04f)
+                    raw[i] = ((prev + next) / 2f).coerceAtLeast(0f)
                 }
             }
 
-            val list = raw.map { (it / maxGlobal).coerceIn(0.04f, 1f) }
+            val sorted = raw.filter { it > 0f }.sorted()
+            val effectivePeak = if (sorted.isNotEmpty()) {
+                val p95 = sorted[(sorted.size * 0.95).toInt().coerceIn(0, sorted.size - 1)]
+                p95.coerceAtLeast(maxGlobal * 0.30f).coerceAtLeast(100f)
+            } else maxGlobal.coerceAtLeast(100f)
+
+            val list = raw.map {
+                val norm = (it / effectivePeak).coerceIn(0f, 1.5f)
+                sqrt(norm).coerceIn(0.02f, 1f)
+            }
             return if (!isFlatWaveform(list)) list else null
         } catch (e: Exception) {
             return null

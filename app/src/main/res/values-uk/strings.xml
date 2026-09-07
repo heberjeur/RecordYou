@@ -86,4 +86,6 @@
     <string name="system_default">За замовчуванням системи</string>
     <string name="audio_directory">Каталог аудіо</string>
     <string name="video_directory">Каталог відео</string>
+    <string name="reset_waveform_cache">Скинути аудіоспектри</string>
+    <string name="reset_waveform_cache_done">Спектри скинуто</string>
 </resources>

@@ -86,4 +86,6 @@
     <string name="system_default">Sistem varsayılanı</string>
     <string name="audio_directory">Ses dizini</string>
     <string name="video_directory">Video dizini</string>
+    <string name="reset_waveform_cache">Ses dalga formlarını sıfırla</string>
+    <string name="reset_waveform_cache_done">Dalğa formaları sıfırlandı</string>
 </resources>

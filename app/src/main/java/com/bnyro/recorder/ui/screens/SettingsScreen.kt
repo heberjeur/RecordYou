@@ -387,6 +387,27 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                 summary = stringResource(R.string.audio_visualizer_timestamps_description)
             )
             Spacer(modifier = Modifier.height(10.dp))
+            val currentContext = LocalContext.current
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
+                    (currentContext.applicationContext as com.bnyro.recorder.App).fileRepository.resetWaveformCache()
+                    android.widget.Toast.makeText(
+                        currentContext,
+                        currentContext.getString(R.string.reset_waveform_cache_done),
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                }
+            ) {
+                Text(
+                    text = "📊 ${stringResource(R.string.reset_waveform_cache)}",
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
             NamingPatternPref()
         }
     }

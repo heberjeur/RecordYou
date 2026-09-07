@@ -86,4 +86,6 @@
     <string name="system_default">Výchozí nastavení systému</string>
     <string name="audio_directory">Zvukový adresář</string>
     <string name="video_directory">Video adresář</string>
+    <string name="reset_waveform_cache">Resetovat zvukové křivky</string>
+    <string name="reset_waveform_cache_done">Křivky resetovány</string>
 </resources>

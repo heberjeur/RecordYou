@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bnyro.recorder.ui.models.RecorderModel
 import com.bnyro.recorder.util.Preferences
 import com.bnyro.recorder.util.TimeFormatHelper
+import kotlin.math.sqrt
 
 @Composable
 fun AudioVisualizer(
@@ -98,8 +99,9 @@ fun AudioVisualizer(
                 val visiblePoints = mutableListOf<Triple<Float, Float, Int>>()
                 for (index in 0 until count) {
                     val amplitude = amplitudes[index]
-                    val ampPercent = (amplitude / maxAmplitude).coerceIn(0.02f, 1f)
-                    val halfSpike = (h * 0.45f) * ampPercent
+                    val norm = (amplitude.toFloat() / 3200f).coerceIn(0f, 1.5f)
+                    val ampPercent = sqrt(norm).coerceIn(0.02f, 1f)
+                    val halfSpike = (h * 0.46f) * ampPercent
                     val reverseIndex = index - count
                     val x = w + (reverseIndex * stepX)
                     if (x in -stepX..(w + stepX)) {

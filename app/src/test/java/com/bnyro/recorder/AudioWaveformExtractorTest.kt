@@ -81,6 +81,11 @@ class AudioWaveformExtractorTest {
         val synthetic = AudioWaveformExtractor.createSyntheticWaveform(42, 160)
         assertEquals(160, synthetic.size)
         assertFalse(AudioWaveformExtractor.isFlatWaveform(synthetic))
+
+        val speechWithPauses = List(160) {
+            if (it in 20..35) 0.65f else 0.04f
+        }
+        assertFalse(AudioWaveformExtractor.isFlatWaveform(speechWithPauses))
     }
 
     @Test

@@ -86,4 +86,6 @@
     <string name="system_default">सिस्टम डिफ़ॉल्ट</string>
     <string name="audio_directory">ऑडियो निर्देशिका</string>
     <string name="video_directory">वीडियो निर्देशिका</string>
+    <string name="reset_waveform_cache">ऑडियो वेवफॉर्म रीसेट करें</string>
+    <string name="reset_waveform_cache_done">वेवफॉर्म रीसेट हो गया</string>
 </resources>

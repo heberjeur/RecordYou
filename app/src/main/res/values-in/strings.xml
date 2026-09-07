@@ -86,4 +86,6 @@
     <string name="system_default">Default sistem</string>
     <string name="audio_directory">Direktori audio</string>
     <string name="video_directory">Direktori video</string>
+    <string name="reset_waveform_cache">Setel ulang bentuk gelombang audio</string>
+    <string name="reset_waveform_cache_done">Bentuk gelombang disetel ulang</string>
 </resources>

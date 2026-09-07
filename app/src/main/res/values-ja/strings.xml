@@ -86,4 +86,6 @@
     <string name="system_default">システムデフォルト</string>
     <string name="audio_directory">音声ディレクトリ</string>
     <string name="video_directory">動画ディレクトリ</string>
+    <string name="reset_waveform_cache">音声波形をリセット</string>
+    <string name="reset_waveform_cache_done">波形をリセットしました</string>
 </resources>

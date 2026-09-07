@@ -24,6 +24,7 @@ interface FileRepository {
     suspend fun getAudioRecordingItems(sortOrder: SortOrder): List<RecordingItemData>
     fun loadVideoThumbnail(file: DocumentFile): Bitmap?
     fun loadAudioWaveform(file: DocumentFile): List<Float>?
+    fun resetWaveformCache()
     suspend fun deleteFiles(files: List<DocumentFile>)
     suspend fun deleteAllFiles()
     fun getTempOutputFile(extension: String): java.io.File
@@ -234,6 +235,12 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         }
         writeCache()
         return wave
+    }
+
+    override fun resetWaveformCache() {
+        audioWaveformCache.evictAll()
+        cachedAudio = cachedAudio?.map { it.copy(waveform = null) }
+        writeCache()
     }
 
     override suspend fun getVideoRecordingItems(sortOrder: SortOrder): List<RecordingItemData> {
