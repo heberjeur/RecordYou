@@ -54,7 +54,7 @@
     <string name="author">Autor</string>
     <string name="sort">Sortieren</string>
     <string name="sample_rate">Samplerate</string>
-    <string name="naming_pattern_desc">%d: Datum, %t: Zeit, %s: Sekunden, %m: Millisekunden</string>
+    <string name="naming_pattern_desc" formatted="false">%d: Datum, %t: Zeit, %s: Sekunden, %m: Millisekunden</string>
     <string name="camcorder">Camcorder</string>
     <string name="amoled_dark">Dunkel</string>
     <string name="translation">Übersetzung</string>

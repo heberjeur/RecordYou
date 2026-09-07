@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.media.MediaRecorder
 import android.os.Binder
@@ -76,7 +77,6 @@ abstract class RecorderService : LifecycleService() {
     }
 
     inner class LocalBinder : Binder() {
-        // Return this instance of [BackgroundMode] so clients can call public methods
         fun getService(): RecorderService = this@RecorderService
     }
 
@@ -102,7 +102,7 @@ abstract class RecorderService : LifecycleService() {
             IntentFilter(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED),
             RECEIVER_EXPORTED
         )
-        audioManager.startBluetoothSco()
+        startBluetoothAudio()
 
         runCatching {
             unregisterReceiver(recorderReceiver)
@@ -233,12 +233,35 @@ abstract class RecorderService : LifecycleService() {
         }
 
         runCatching {
-            audioManager.stopBluetoothSco()
+            stopBluetoothAudio()
             unregisterReceiver(bluetoothReceiver)
         }
 
         ServiceCompat.stopForeground(this@RecorderService, ServiceCompat.STOP_FOREGROUND_REMOVE)
         stopSelf()
+    }
+
+    private fun startBluetoothAudio() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val device = audioManager.availableCommunicationDevices.firstOrNull {
+                it.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO || it.type == AudioDeviceInfo.TYPE_BLE_HEADSET
+            }
+            if (device != null) {
+                audioManager.setCommunicationDevice(device)
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager.startBluetoothSco()
+        }
+    }
+
+    private fun stopBluetoothAudio() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            audioManager.clearCommunicationDevice()
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager.stopBluetoothSco()
+        }
     }
 
     override fun onDestroy() {
@@ -283,7 +306,6 @@ abstract class RecorderService : LifecycleService() {
             .setContentText(outputFile?.name)
             .setSmallIcon(R.drawable.ic_notification)
             .addAction(deleteAction.build())
-            // / .addAction(shareAction.build())
             .setContentIntent(getActivityIntent())
             .setAutoCancel(true)
 

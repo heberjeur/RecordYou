@@ -57,7 +57,7 @@
     <string name="alphabetic">Alfabético</string>
     <string name="size">Tamaño</string>
     <string name="size_rev">Tamaño (al revés)</string>
-    <string name="naming_pattern_desc">%d: fecha, %t: hora, %s: era-segundos, %m: milisegundos</string>
+    <string name="naming_pattern_desc" formatted="false">%d: fecha, %t: hora, %s: era-segundos, %m: milisegundos</string>
     <string name="screen_recorder_annotation">Anotación del registro de pantalla</string>
     <string name="screen_recorder_annotation_desc">Mostrar la herramienta de anotación durante la grabación de pantalla</string>
     <string name="amoled_dark">Negro</string>

@@ -57,7 +57,7 @@
     <string name="alphabetic">По алфавиту</string>
     <string name="size">По размеру</string>
     <string name="naming_pattern">Образец именования</string>
-    <string name="naming_pattern_desc">%d: Дата, %t: Время, %s: Эпоха секунд, %m: Эпоха миллисекунд</string>
+    <string name="naming_pattern_desc" formatted="false">%d: Дата, %t: Время, %s: Эпоха секунд, %m: Эпоха миллисекунд</string>
     <string name="amoled_dark">Чёрная</string>
     <string name="screen_recorder_annotation">Аннотация записи экрана</string>
     <string name="screen_recorder_annotation_desc">Показывать инструмент аннотации во время записи экрана</string>

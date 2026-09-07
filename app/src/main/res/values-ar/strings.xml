@@ -54,7 +54,7 @@
     <string name="alphabetic_rev">أبجدي (معكوس)</string>
     <string name="size">الحجم</string>
     <string name="size_rev">الحجم (معكوس)</string>
-    <string name="naming_pattern_desc">%d: التاريخ، %t: الوقت، %s: ثواني العصر، %m: الحقبة المللية</string>
+    <string name="naming_pattern_desc" formatted="false">%d: التاريخ، %t: الوقت، %s: ثواني العصر، %m: الحقبة المللية</string>
     <string name="sort">فرز</string>
     <string name="alphabetic">أبجدي</string>
     <string name="naming_pattern">نمط التسمية</string>

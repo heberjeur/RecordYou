@@ -6,7 +6,7 @@
     <string name="recordings">Tallenteet</string>
     <string name="no_audio">Ei ääntä</string>
     <string name="audio_format">Äänimuoto</string>
-    <string name="naming_pattern_desc">%d: Päivä, %t: Aika, %s: Epookkisekunnit, %m: Epookkimillit</string>
+    <string name="naming_pattern_desc" formatted="false">%d: Päivä, %t: Aika, %s: Epookkisekunnit, %m: Epookkimillit</string>
     <string name="lossless_audio_desc">Huomioi, että muita ääniominaisia valintoja ei toteuteta käytön aikana.</string>
     <string name="mono">Mono</string>
     <string name="recording_audio">Tallennetaan ääntä…</string>

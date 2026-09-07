@@ -56,7 +56,7 @@
     <string name="size">Dimensione</string>
     <string name="size_rev">Dimensione (al contrario)</string>
     <string name="alphabetic_rev">Alfabetico (al contrario)</string>
-    <string name="naming_pattern_desc">%d: Data, %t: Tempo, %s: Secondi Epoch, %m: Millisecondi Epoch</string>
+    <string name="naming_pattern_desc" formatted="false">%d: Data, %t: Tempo, %s: Secondi Epoch, %m: Millisecondi Epoch</string>
     <string name="naming_pattern">Modello di denominazione</string>
     <string name="amoled_dark">Nero</string>
     <string name="screen_recorder_annotation">Annotazione della registrazione dello schermo</string>

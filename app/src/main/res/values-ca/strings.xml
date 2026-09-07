@@ -51,7 +51,7 @@
     <string name="lossless_audio">Gravació d\'àudio sense pèrdues (WAV)</string>
     <string name="lossless_audio_desc">Tingues en compte que no s\'aplicaran altres opcions específiques d\'àudio.</string>
     <string name="naming_pattern">Patró de nomenclatura</string>
-    <string name="naming_pattern_desc">%d: Data, %t: Hora, %s: Segons de l\'època, %m: Mil·lisegons de l\'època</string>
+    <string name="naming_pattern_desc" formatted="false">%d: Data, %t: Hora, %s: Segons de l\'època, %m: Mil·lisegons de l\'època</string>
     <string name="about">Quant a</string>
     <string name="source_code">Codi font</string>
     <string name="author">Autor</string>

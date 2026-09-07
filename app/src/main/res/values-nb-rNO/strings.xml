@@ -52,7 +52,7 @@
     <string name="delete_all">Slett alt</string>
     <string name="theme">Drakt</string>
     <string name="size">Størrelse</string>
-    <string name="naming_pattern_desc">%d: dato, %t: tid, %s: sekunder, %m: millisekunder</string>
+    <string name="naming_pattern_desc" formatted="false">%d: dato, %t: tid, %s: sekunder, %m: millisekunder</string>
     <string name="naming_pattern">Navnemønster</string>
     <string name="select_trim_range">Velg beskjæringsområde</string>
     <string name="trimming">Beskjærer …</string>

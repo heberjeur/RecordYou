@@ -12,6 +12,7 @@ import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Display
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import com.bnyro.recorder.App
@@ -203,16 +204,29 @@ class ScreenRecorderService : RecorderService() {
     private fun getScreenResolution(): VideoResolution {
         val dm = getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         val display = dm.getDisplay(Display.DEFAULT_DISPLAY)
+        val refreshRate = display?.refreshRate?.toInt() ?: 60
 
-        val metrics = DisplayMetrics()
-        display.getRealMetrics(metrics)
-
-        return VideoResolution(
-            metrics.widthPixels,
-            metrics.heightPixels,
-            metrics.densityDpi,
-            display.refreshRate.toInt()
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val bounds = wm.maximumWindowMetrics.bounds
+            val density = resources.configuration.densityDpi
+            return VideoResolution(
+                bounds.width(),
+                bounds.height(),
+                density,
+                refreshRate
+            )
+        } else {
+            val metrics = DisplayMetrics()
+            @Suppress("DEPRECATION")
+            display.getRealMetrics(metrics)
+            return VideoResolution(
+                metrics.widthPixels,
+                metrics.heightPixels,
+                metrics.densityDpi,
+                refreshRate
+            )
+        }
     }
 
     override fun stopRecording() {

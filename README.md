@@ -1,6 +1,3 @@
-> [!WARNING]  
-> This repository is no longer maintained! The app is considered feature-complete though and will continue to work in the future, even though no further updates will be released.
-
 <!-- ---------- Header ---------- -->
 <div align="center">
   <img width="200" height="200" src="fastlane/metadata/android/en-US/images/icon.png">
@@ -9,11 +6,10 @@
 
 <!-- ---------- Badges ---------- -->
   <div align="center">
-    <img alt="License" src="https://img.shields.io/github/license/you-apps/RecordYou?color=c3e7ff&style=flat-square">
-    <img alt="Downloads" src="https://img.shields.io/github/downloads/you-apps/RecordYou/total.svg?color=c3e7ff&style=flat-square">
-    <img alt="Last commit" src="https://img.shields.io/github/last-commit/you-apps/RecordYou?color=c3e7ff&style=flat-square">
-    <img alt="Repo size" src="https://img.shields.io/github/repo-size/you-apps/RecordYou?color=c3e7ff&style=flat-square">
-    <img alt="Stars" src="https://img.shields.io/github/stars/you-apps/RecordYou?color=c3e7ff&style=flat-square">
+    <img alt="License" src="https://img.shields.io/github/license/heberjeur/RecordYou?color=c3e7ff&style=flat-square">
+    <img alt="Last commit" src="https://img.shields.io/github/last-commit/heberjeur/RecordYou?color=c3e7ff&style=flat-square">
+    <img alt="Repo size" src="https://img.shields.io/github/repo-size/heberjeur/RecordYou?color=c3e7ff&style=flat-square">
+    <img alt="Stars" src="https://img.shields.io/github/stars/heberjeur/RecordYou?color=c3e7ff&style=flat-square">
     <br>
 </div>
 </div>
@@ -24,20 +20,23 @@ Read in other languages: [Japanese](https://github.com/kuragehimekurara1/RecordY
 ## Features
 
 - [x] Material Design 3 (You)
-- [x] Dark and light theme
+- [x] Dark, light and AMOLED black themes
 - [x] Support for audio and screen recording
-- [x] Different available formats and codecs
-- [x] In-app recordings player
-- [x] SAF (Storage Access Framework) support
-- [x] Written in Jetpack Compose 
+- [x] Configurable countdown timer before recording
+- [x] 1-tap Quick Record home screen widget
+- [x] High quality audio presets (AAC Stereo 192 kbps / 48 kHz)
+- [x] Dynamic screen rotation adaptation during capture
+- [x] Reliable SAF (Storage Access Framework) & local cache storage
+- [x] Safe video codec fallback (H.265 to H.264)
+- [x] In-app recordings player and media trimmer
+- [x] Written with Jetpack Compose
 
 <!-- ---------- Download ---------- -->
 ## Download
 
 <div align="center">
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="80">](https://f-droid.org/packages/com.bnyro.recorder/)
-[<img src="https://raw.githubusercontent.com/vadret/android/master/assets/get-github.png" alt="Get it on GitHub" height="80">](https://github.com/you-apps/RecordYou/releases)
+[<img src="https://raw.githubusercontent.com/vadret/android/master/assets/get-github.png" alt="Get it on GitHub" height="80">](https://github.com/heberjeur/RecordYou/releases)
 
 </div>
 
@@ -54,8 +53,7 @@ Read in other languages: [Japanese](https://github.com/kuragehimekurara1/RecordY
 ## Feedback and contributions
 ***All contributions are very welcome!***
 
-* Feel free to join the [Matrix room](https://matrix.to/#/#you-apps:matrix.org) for discussions about the app.
-* Bug reports and feature requests can be submitted [here](https://github.com/you-apps/RecordYou/issues) (please make sure to fill out all the requested information properly!).
+* Bug reports and feature requests can be submitted [here](https://github.com/heberjeur/RecordYou/issues).
 * If you are a developer and wish to contribute to the app, please **fork** the project and submit a [**pull request**](https://help.github.com/articles/about-pull-requests/).
 
 ## Translation
@@ -65,6 +63,7 @@ Read in other languages: [Japanese](https://github.com/kuragehimekurara1/RecordY
 
 ## Credits
 * Icon design by [M00NJ](https://github.com/M00NJ)
+* Original project by [you-apps](https://github.com/you-apps)
 
 ## License
 

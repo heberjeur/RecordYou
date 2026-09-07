@@ -43,7 +43,7 @@
     <string name="size">Urutkan menurut ukuran</string>
     <string name="size_rev">Urutkan menurut ukuran (terbalik)</string>
     <string name="sample_rate">Jumlah sampel per detik</string>
-    <string name="naming_pattern_desc">Tanggal %d, Pukul %t, Detik %s, Milidetik %m</string>
+    <string name="naming_pattern_desc" formatted="false">Tanggal %d, Pukul %t, Detik %s, Milidetik %m</string>
     <string name="no_audio">Tanpa audio</string>
     <string name="unprocessed">Tanpa diproses</string>
     <string name="system">Sistem</string>

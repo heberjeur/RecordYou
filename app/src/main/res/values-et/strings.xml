@@ -40,7 +40,7 @@
     <string name="lossless_audio">Kadudeta helisalvestus (wav-vorming)</string>
     <string name="lossless_audio_desc">Palun arvesta, et sel juhul muud heliseadistused ei kehti.</string>
     <string name="naming_pattern">Failide nimemuster</string>
-    <string name="naming_pattern_desc">%d: päev, %t: kellaaeg, %s: Unix\'i aeg sekundites, %m: Unix\'i aeg millisekundites</string>
+    <string name="naming_pattern_desc" formatted="false">%d: päev, %t: kellaaeg, %s: Unix\'i aeg sekundites, %m: Unix\'i aeg millisekundites</string>
     <string name="about">Rakenduse teave</string>
     <string name="source_code">Lähtekood</string>
     <string name="author">Autor</string>

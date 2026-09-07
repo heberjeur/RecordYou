@@ -6,7 +6,7 @@
     <string name="recordings">موارد ضبط‌شده</string>
     <string name="no_audio">بی‌صدا</string>
     <string name="audio_format">فرمت صدا</string>
-    <string name="naming_pattern_desc">%d: تاریخ، %t: زمان، %s: ثانیه، %m: میلی‌ثانیه</string>
+    <string name="naming_pattern_desc" formatted="false">%d: تاریخ، %t: زمان، %s: ثانیه، %m: میلی‌ثانیه</string>
     <string name="lossless_audio_desc">توجه داشته باشید که دیگر گزینه‌های ویژه صدا درهنگام استفاده اعمال نمی‌شوند.</string>
     <string name="mono">مونو</string>
     <string name="recording_audio">درحال ضبط صدا …</string>

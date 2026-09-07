@@ -70,7 +70,7 @@
     <string name="start_timestamp">शुरू:</string>
     <string name="select_trim_range">ट्रिम रेंज चुनें</string>
     <string name="trim_failed">ट्रिम विफल</string>
-    <string name="naming_pattern_desc">%d: दिनांक, %t: समय, %s: युग सेकंड, %m: युग मिलिस</string>
+    <string name="naming_pattern_desc" formatted="false">%d: दिनांक, %t: समय, %s: युग सेकंड, %m: युग मिलिस</string>
     <string name="trimming">ट्रिमिंग…</string>
     <string name="trim_successful">ट्रिम सफल</string>
     <string name="draw_mode">ड्रा मोड</string>

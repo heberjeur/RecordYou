@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "com.bnyro.recorder"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.bnyro.recorder"
         minSdk = 21
-        targetSdk = 34
-        versionCode = 19
-        versionName = "8.0"
+        targetSdk = 35
+        versionCode = 20
+        versionName = "8.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

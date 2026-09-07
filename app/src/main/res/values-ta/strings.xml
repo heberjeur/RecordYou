@@ -52,7 +52,7 @@
     <string name="lossless_audio">இழப்பற்ற ஆடியோ ரெக்கார்டர் (WAV)</string>
     <string name="lossless_audio_desc">பயன்பாட்டின் போது பிற ஆடியோ குறிப்பிட்ட விருப்பங்கள் பொருந்தாது என்பதை நினைவில் கொள்க.</string>
     <string name="naming_pattern">பெயரிடும் முறை</string>
-    <string name="naming_pattern_desc">%டி: தேதி, %டி: நேரம், %கள்: சகாப்த விநாடிகள், %மீ: எபோச் மில்லிச்</string>
+    <string name="naming_pattern_desc" formatted="false">%டி: தேதி, %டி: நேரம், %கள்: சகாப்த விநாடிகள், %மீ: எபோச் மில்லிச்</string>
     <string name="about">பற்றி</string>
     <string name="source_code">மூலக் குறியீடு</string>
     <string name="author">நூலாசிரியர்</string>

@@ -55,7 +55,7 @@
     <string name="size">Boyut</string>
     <string name="size_rev">Boyut (ters)</string>
     <string name="naming_pattern">Adlandırma Şablonu</string>
-    <string name="naming_pattern_desc">Tarih %d, Zaman %t, Saniye %s, Milisaniye %m</string>
+    <string name="naming_pattern_desc" formatted="false">Tarih %d, Zaman %t, Saniye %s, Milisaniye %m</string>
     <string name="alphabetic">Alfabetik</string>
     <string name="sort">Tür</string>
     <string name="screen_recorder_annotation">Ekran Kaydı Açıklaması</string>

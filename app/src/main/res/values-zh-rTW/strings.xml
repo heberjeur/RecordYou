@@ -55,7 +55,7 @@
     <string name="erase_mode">擦除模式</string>
     <string name="modified">修改日期</string>
     <string name="size_rev">大小（倒序）</string>
-    <string name="naming_pattern_desc">%d: 日期, %t: 時間, %s: 紀元秒, %m: 紀元毫秒</string>
+    <string name="naming_pattern_desc" formatted="false">%d: 日期, %t: 時間, %s: 紀元秒, %m: 紀元毫秒</string>
     <string name="amoled_dark">黑色</string>
     <string name="audio_visualizer_timestamps_description">在音訊視覺化時間線上顯示時間戳記。</string>
     <string name="trim_failed">剪輯失敗</string>

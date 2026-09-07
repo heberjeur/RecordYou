@@ -6,7 +6,7 @@
     <string name="recordings">Registros</string>
     <string name="no_audio">Necun audio</string>
     <string name="audio_format">Formato de audio</string>
-    <string name="naming_pattern_desc">%d: Data, %t: Tempore, %s: secundas epocha, %m: millisecundas epocha</string>
+    <string name="naming_pattern_desc" formatted="false">%d: Data, %t: Tempore, %s: secundas epocha, %m: millisecundas epocha</string>
     <string name="mono">Mono</string>
     <string name="recording_audio">Registrante audio …</string>
     <string name="record_sound">Registrar sono</string>

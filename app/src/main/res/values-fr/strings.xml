@@ -57,7 +57,7 @@
     <string name="naming_pattern">Motif de nommage</string>
     <string name="alphabetic_rev">Alphabétique (inversé)</string>
     <string name="size_rev">Taille (inversé)</string>
-    <string name="naming_pattern_desc">%d : Date, %t : Temps, %s : Secondes epoch, %m : Millisecondes epoch</string>
+    <string name="naming_pattern_desc" formatted="false">%d : Date, %t : Temps, %s : Secondes epoch, %m : Millisecondes epoch</string>
     <string name="amoled_dark">Noir</string>
     <string name="screen_recorder_annotation">Annotation d\'enregistrement d\'écran</string>
     <string name="screen_recorder_annotation_desc">Afficher l\'outil d\'annotation pendant l\'enregistrement d\'écran</string>

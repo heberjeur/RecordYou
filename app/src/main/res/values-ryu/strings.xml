@@ -51,7 +51,7 @@
     <string name="lossless_audio">ロスレスオーディオレコーダー（WAV）</string>
     <string name="lossless_audio_desc">ちゅうい　ふかぬオーディオくゆうぬオプションー、さうちゅうはてぃきようさりましん。</string>
     <string name="naming_pattern">なーめーめーパターン</string>
-    <string name="naming_pattern_desc">%d: ふぃいづけい、 %t: じがん、 %s: エポックびょう、 %m: エポックミリびょう</string>
+    <string name="naming_pattern_desc" formatted="false">%d: ふぃいづけい、 %t: じがん、 %s: エポックびょう、 %m: エポックミリびょう</string>
     <!-- About -->
     <string name="about">しょうさい</string>
     <string name="source_code">ソースコード</string>

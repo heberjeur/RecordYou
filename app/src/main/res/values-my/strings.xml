@@ -13,7 +13,7 @@
     <string name="alphabetic_rev">အက္ခရာစဥ်လိုက် (ပြောင်းပြန်)</string>
     <string name="microphone">မိုက်ခရိုဖုန်း</string>
     <string name="no_audio">အသံမရှိ</string>
-    <string name="naming_pattern_desc">%d: ရက်စွဲ, %t: အချိန်, %s: စက္ကန့်, %m: မီလီ</string>
+    <string name="naming_pattern_desc" formatted="false">%d: ရက်စွဲ, %t: အချိန်, %s: စက္ကန့်, %m: မီလီ</string>
     <string name="about">အကြောင်း</string>
     <string name="source_code">ရင်းမြစ်ကုဒ်</string>
     <string name="author">ဖန်တီးသူ</string>

@@ -57,7 +57,7 @@
     <string name="sort">Ordem</string>
     <string name="alphabetic_rev">Alfabética (invertida)</string>
     <string name="size_rev">Tamanho (invertido)</string>
-    <string name="naming_pattern_desc">%d: Data, %t: Hora, %s: Segundos, %m: Minutos</string>
+    <string name="naming_pattern_desc" formatted="false">%d: Data, %t: Hora, %s: Segundos, %m: Minutos</string>
     <string name="amoled_dark">Escuro</string>
     <string name="screen_recorder_annotation">Anotação de gravação de ecrã</string>
     <string name="screen_recorder_annotation_desc">Mostrar ferramenta de anotação durante a gravação de ecrã</string>

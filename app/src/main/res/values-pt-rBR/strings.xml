@@ -50,7 +50,7 @@
     <string name="stereo">Estéreo</string>
     <string name="lossless_audio">Áudio sem perdas (WAV)</string>
     <string name="naming_pattern">Padrão de nomeação</string>
-    <string name="naming_pattern_desc">%d: Data, %t: Hora, %s: Segundos, %m: Milisegundos</string>
+    <string name="naming_pattern_desc" formatted="false">%d: Data, %t: Hora, %s: Segundos, %m: Milisegundos</string>
     <string name="system">Sistema</string>
     <string name="sample_rate">Taxa de amostragem</string>
     <string name="bitrate">Taxa de bits</string>

@@ -4,7 +4,7 @@
     <string name="naming_pattern">Navngivningsmønster</string>
     <string name="start_timestamp">Start:</string>
     <string name="screen_recorder_annotation">Skærmoptag Annotering</string>
-    <string name="naming_pattern_desc">%d: Dato, %t: Tid, %s: Epoke sekunder, %m: Epoke millisekunder</string>
+    <string name="naming_pattern_desc" formatted="false">%d: Dato, %t: Tid, %s: Epoke sekunder, %m: Epoke millisekunder</string>
     <string name="audio_visualizer_timestamps_description">Vis tidsstempler på tidslinjen i lydvisualiseringen.</string>
     <string name="about">Om</string>
     <string name="source_code">Kildekode</string>
