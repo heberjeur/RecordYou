@@ -118,14 +118,6 @@ object AudioWaveformExtractor {
         pfd: ParcelFileDescriptor,
         targetBars: Int
     ): List<Float>? {
-        val durationUs = runCatching {
-            val retriever = MediaMetadataRetriever()
-            retriever.setDataSource(context, uri)
-            val dur = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull() ?: 0L
-            retriever.release()
-            dur * 1000L
-        }.getOrDefault(0L)
-
         val extractor = MediaExtractor()
         try {
             runCatching {
@@ -148,7 +140,17 @@ object AudioWaveformExtractor {
             extractor.selectTrack(trackIndex)
 
             val trackDurationUs = if (format.containsKey(MediaFormat.KEY_DURATION)) format.getLong(MediaFormat.KEY_DURATION) else 0L
-            val finalDurationUs = if (durationUs > 0L) durationUs else trackDurationUs
+            val finalDurationUs = if (trackDurationUs > 0L) {
+                trackDurationUs
+            } else {
+                runCatching {
+                    val retriever = MediaMetadataRetriever()
+                    retriever.setDataSource(context, uri)
+                    val dur = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull() ?: 0L
+                    retriever.release()
+                    dur * 1000L
+                }.getOrDefault(0L)
+            }
 
             val mime = format.getString(MediaFormat.KEY_MIME) ?: return null
             val codec = MediaCodec.createDecoderByType(mime)
@@ -165,14 +167,14 @@ object AudioWaveformExtractor {
             var highestBarReached = 0
 
             try {
-                while (!sawOutputEos && consecutiveNoProgress < 600) {
+                while (!sawOutputEos && consecutiveNoProgress < 200) {
                     var progressMade = false
                     if (!sawInputEos) {
                         while (extractor.sampleTrackIndex >= 0 && extractor.sampleTrackIndex != trackIndex) {
                             extractor.advance()
                         }
                         val currentTrack = extractor.sampleTrackIndex
-                        val inIdx = codec.dequeueInputBuffer(8000L)
+                        val inIdx = codec.dequeueInputBuffer(1000L)
                         if (inIdx >= 0) {
                             progressMade = true
                             if (currentTrack < 0) {
@@ -195,7 +197,7 @@ object AudioWaveformExtractor {
                         }
                     }
 
-                    val outIdx = codec.dequeueOutputBuffer(bufferInfo, 8000L)
+                    val outIdx = codec.dequeueOutputBuffer(bufferInfo, 1000L)
                     if (outIdx >= 0) {
                         progressMade = true
                         val outBuf = codec.getOutputBuffer(outIdx)
@@ -216,9 +218,13 @@ object AudioWaveformExtractor {
                             }
                             val shorts = outBuf.order(ByteOrder.LITTLE_ENDIAN).asShortBuffer()
                             var peak = 0
-                            while (shorts.hasRemaining()) {
-                                val s = abs(shorts.get().toInt())
+                            val limit = shorts.remaining()
+                            val stride = if (limit > 512) 4 else 1
+                            var pos = 0
+                            while (pos < limit) {
+                                val s = abs(shorts.get(pos).toInt())
                                 if (s > peak) peak = s
+                                pos += stride
                             }
                             val f = peak.toFloat()
                             if (f > raw[barIdx]) {

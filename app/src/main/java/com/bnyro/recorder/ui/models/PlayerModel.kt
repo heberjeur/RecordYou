@@ -19,7 +19,10 @@ import com.bnyro.recorder.util.FileRepository
 import com.bnyro.recorder.util.sortedBy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 
 class PlayerModel(context: Context, private val fileRepository: FileRepository) : ViewModel() {
@@ -68,22 +71,27 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
                 }
             }
 
-            audio.forEach { item ->
-                if (item.waveform == null) {
-                    val wave = fileRepository.loadAudioWaveform(item.recordingFile)
-                    if (wave != null) {
-                        withContext(Dispatchers.Main) {
-                            audioRecordingItems = audioRecordingItems.map {
-                                if (it.recordingFile.uri == item.recordingFile.uri) {
-                                    it.copy(waveform = wave)
-                                } else {
-                                    it
+            val pendingAudio = audio.filter { it.waveform == null }
+            val semaphore = Semaphore(3)
+            val jobs = pendingAudio.map { item ->
+                launch(Dispatchers.IO) {
+                    semaphore.withPermit {
+                        val wave = fileRepository.loadAudioWaveform(item.recordingFile)
+                        if (wave != null) {
+                            withContext(Dispatchers.Main) {
+                                audioRecordingItems = audioRecordingItems.map {
+                                    if (it.recordingFile.uri == item.recordingFile.uri) {
+                                        it.copy(waveform = wave)
+                                    } else {
+                                        it
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+            jobs.joinAll()
         }
     }
 

@@ -168,29 +168,33 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         }
     }
 
+    private val writeLock = Any()
+
     private fun writeCache() {
-        try {
-            val arr = org.json.JSONArray()
-            val all = (cachedAudio.orEmpty() + cachedVideos.orEmpty()).distinctBy { it.recordingFile.uri }
-            for (item in all) {
-                val obj = org.json.JSONObject()
-                obj.put("uri", item.recordingFile.uri.toString())
-                obj.put("video", item.isVideo)
-                obj.put("name", item.name)
-                obj.put("modified", item.lastModified)
-                obj.put("size", item.size)
-                item.waveform?.let { wave ->
-                    val jArr = org.json.JSONArray()
-                    for (f in wave) {
-                        jArr.put(f.toDouble())
+        synchronized(writeLock) {
+            try {
+                val arr = org.json.JSONArray()
+                val all = (cachedAudio.orEmpty() + cachedVideos.orEmpty()).distinctBy { it.recordingFile.uri }
+                for (item in all) {
+                    val obj = org.json.JSONObject()
+                    obj.put("uri", item.recordingFile.uri.toString())
+                    obj.put("video", item.isVideo)
+                    obj.put("name", item.name)
+                    obj.put("modified", item.lastModified)
+                    obj.put("size", item.size)
+                    item.waveform?.let { wave ->
+                        val jArr = org.json.JSONArray()
+                        for (f in wave) {
+                            jArr.put(f.toDouble())
+                        }
+                        obj.put("waveform", jArr)
                     }
-                    obj.put("waveform", jArr)
+                    arr.put(obj)
                 }
-                arr.put(obj)
+                cacheFile.writeText(arr.toString())
+            } catch (e: Exception) {
+                Log.e("FileRepository", "Cache write failed", e)
             }
-            cacheFile.writeText(arr.toString())
-        } catch (e: Exception) {
-            Log.e("FileRepository", "Cache write failed", e)
         }
     }
 
