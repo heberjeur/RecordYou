@@ -14,6 +14,7 @@ import com.bnyro.recorder.R
 import com.bnyro.recorder.enums.AudioChannels
 import com.bnyro.recorder.enums.AudioDeviceSource
 import com.bnyro.recorder.enums.RecorderState
+import com.bnyro.recorder.util.AudioWaveformExtractor
 import com.bnyro.recorder.util.PcmConverter
 import com.bnyro.recorder.util.Preferences
 import de.sciss.jump3r.Main as Jump3rMain
@@ -143,17 +144,21 @@ class LosslessRecorderService : RecorderService() {
         audioRecorder?.startRecording()
     }
 
-    private fun convertToWav(raw: File) {
+    private fun convertToWav(raw: File, waveform: List<Float>?) {
         if (!raw.exists() || raw.length() <= 44L) {
             outputFile?.delete()
             outputFile = null
             return
         }
         outputFile?.delete()
-        outputFile = (application as App).fileRepository.commitOutputFile(raw, FILE_NAME_EXTENSION_WAV)
+        outputFile = (application as App).fileRepository.commitOutputFile(
+            tempFile = raw,
+            extension = FILE_NAME_EXTENSION_WAV,
+            waveform = waveform
+        )
     }
 
-    private fun convertToMp3(raw: File) {
+    private fun convertToMp3(raw: File, waveform: List<Float>?) {
         if (!raw.exists() || raw.length() <= 44L) {
             outputFile?.delete()
             outputFile = null
@@ -176,7 +181,11 @@ class LosslessRecorderService : RecorderService() {
             Jump3rMain().run(args)
             outputFile?.delete()
             if (tempMp3.exists() && tempMp3.length() > 0L) {
-                outputFile = (application as App).fileRepository.commitOutputFile(tempMp3, FILE_NAME_EXTENSION_MP3)
+                outputFile = (application as App).fileRepository.commitOutputFile(
+                    tempFile = tempMp3,
+                    extension = FILE_NAME_EXTENSION_MP3,
+                    waveform = waveform
+                )
             } else {
                 outputFile = null
             }
@@ -195,12 +204,13 @@ class LosslessRecorderService : RecorderService() {
 
         val rawFile = File(filesDir, "temp.wav")
         pcmConverter?.writeHeader(rawFile)
+        val waveform = AudioWaveformExtractor.extractWavWaveformFromFile(rawFile)
 
         val isLossless = Preferences.prefs.getBoolean(Preferences.losslessRecorderKey, false)
         if (isLossless) {
-            convertToWav(rawFile)
+            convertToWav(rawFile, waveform)
         } else {
-            convertToMp3(rawFile)
+            convertToMp3(rawFile, waveform)
         }
 
         super.stopRecording()

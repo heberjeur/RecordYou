@@ -29,7 +29,7 @@ interface FileRepository {
     suspend fun deleteFiles(files: List<DocumentFile>)
     suspend fun deleteAllFiles()
     fun getTempOutputFile(extension: String): java.io.File
-    fun commitOutputFile(tempFile: java.io.File, extension: String, prefix: String = ""): DocumentFile?
+    fun commitOutputFile(tempFile: java.io.File, extension: String, prefix: String = "", waveform: List<Float>? = null): DocumentFile?
     fun getOutputFile(extension: String, prefix: String = ""): DocumentFile?
     fun getOutputDir(): DocumentFile
     fun getOutputDirs(): List<DocumentFile>
@@ -241,7 +241,7 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                 return cached
             }
         }
-        val wave = AudioWaveformExtractor.extractWaveform(context, file.uri) ?: return null
+        val wave = AudioWaveformExtractor.extractWaveform(context, file.uri, fileName = file.name) ?: return null
         audioWaveformCache.put(uriStr, wave)
         cachedAudio = cachedAudio?.map {
             if (it.recordingFile.uri == file.uri) {
@@ -355,7 +355,12 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         return java.io.File.createTempFile("rec_", ".$extension", tempDir)
     }
 
-    override fun commitOutputFile(tempFile: java.io.File, extension: String, prefix: String): DocumentFile? {
+    override fun commitOutputFile(
+        tempFile: java.io.File,
+        extension: String,
+        prefix: String,
+        waveform: List<Float>?
+    ): DocumentFile? {
         if (!tempFile.exists() || tempFile.length() == 0L) {
             tempFile.delete()
             return null
@@ -370,12 +375,19 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
             }
             tempFile.delete()
             val isAudio = commonAudioExtensions.contains(".$extension")
+            val validWaveform = if (waveform != null && !AudioWaveformExtractor.isFlatWaveform(waveform) && !AudioWaveformExtractor.isSaturatedWaveform(waveform)) {
+                waveform
+            } else null
+            if (isAudio && validWaveform != null) {
+                audioWaveformCache.put(destFile.uri.toString(), validWaveform)
+            }
             val newItem = RecordingItemData(
                 recordingFile = destFile,
                 recorderType = if (isAudio) RecorderType.AUDIO else RecorderType.VIDEO,
                 name = destFile.name.orEmpty(),
                 lastModified = destFile.lastModified(),
-                size = destFile.length()
+                size = destFile.length(),
+                waveform = validWaveform
             )
             if (isAudio) {
                 cachedAudio = (listOf(newItem) + cachedAudio.orEmpty()).distinctBy { it.recordingFile.uri }

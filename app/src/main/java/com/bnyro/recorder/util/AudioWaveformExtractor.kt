@@ -56,16 +56,79 @@ object AudioWaveformExtractor {
         return raw.toList()
     }
 
-    fun extractWaveform(context: Context, uri: Uri, targetBars: Int = 160): List<Float>? {
+    fun extractWavWaveformFromFile(file: java.io.File, targetBars: Int = 160): List<Float>? {
+        return runCatching {
+            FileInputStream(file).use { fis ->
+                extractWavWaveformFromChannel(fis.channel, targetBars)
+            }
+        }.getOrNull()
+    }
+
+    private fun resetFd(pfd: ParcelFileDescriptor) {
+        runCatching {
+            android.system.Os.lseek(pfd.fileDescriptor, 0L, android.system.OsConstants.SEEK_SET)
+        }
+    }
+
+    fun extractWaveform(
+        context: Context,
+        uri: Uri,
+        targetBars: Int = 160,
+        fileName: String? = null
+    ): List<Float>? {
         return runCatching {
             context.contentResolver.openFileDescriptor(uri, "r")?.use { pfd ->
-                val path = uri.path.orEmpty().lowercase()
+                val nameHint = (fileName ?: uri.lastPathSegment ?: uri.path).orEmpty().lowercase()
+                val decodedUri = runCatching { Uri.decode(uri.toString()).lowercase() }.getOrDefault("")
+                val isWav = nameHint.endsWith(".wav") || decodedUri.contains(".wav")
+                val isMp3 = nameHint.endsWith(".mp3") || decodedUri.contains(".mp3")
                 val seed = uri.lastPathSegment?.hashCode() ?: pfd.statSize.toInt()
-                val result = if (path.endsWith(".wav")) {
-                    extractWavWaveform(pfd, targetBars)
-                        ?: extractMediaWaveform(context, uri, pfd, targetBars)
-                } else {
-                    extractMediaWaveform(context, uri, pfd, targetBars)
+
+                val result = when {
+                    isWav -> {
+                        extractWavWaveform(pfd, targetBars) ?: run {
+                            resetFd(pfd)
+                            extractMediaWaveform(context, uri, pfd, targetBars)
+                        }
+                    }
+                    isMp3 -> {
+                        Mp3WaveformExtractor.extract(pfd, targetBars) ?: run {
+                            resetFd(pfd)
+                            extractMediaWaveform(context, uri, pfd, targetBars)
+                        }
+                    }
+                    else -> {
+                        val header = ByteBuffer.allocate(4)
+                        val channel = FileInputStream(pfd.fileDescriptor).channel
+                        channel.position(0L)
+                        val read = channel.read(header)
+                        channel.position(0L)
+                        resetFd(pfd)
+                        if (read >= 4) {
+                            header.flip()
+                            val b0 = header.get().toInt() and 0xFF
+                            val b1 = header.get().toInt() and 0xFF
+                            val b2 = header.get().toInt() and 0xFF
+                            val b3 = header.get().toInt() and 0xFF
+                            when {
+                                b0 == 0x52 && b1 == 0x49 && b2 == 0x46 && b3 == 0x46 -> {
+                                    extractWavWaveform(pfd, targetBars) ?: run {
+                                        resetFd(pfd)
+                                        extractMediaWaveform(context, uri, pfd, targetBars)
+                                    }
+                                }
+                                (b0 == 0x49 && b1 == 0x44 && b2 == 0x33) || (b0 == 0xFF && (b1 and 0xE0) == 0xE0) -> {
+                                    Mp3WaveformExtractor.extract(pfd, targetBars) ?: run {
+                                        resetFd(pfd)
+                                        extractMediaWaveform(context, uri, pfd, targetBars)
+                                    }
+                                }
+                                else -> extractMediaWaveform(context, uri, pfd, targetBars)
+                            }
+                        } else {
+                            extractMediaWaveform(context, uri, pfd, targetBars)
+                        }
+                    }
                 }
                 if (result != null && !isFlatWaveform(result)) {
                     result
@@ -78,6 +141,13 @@ object AudioWaveformExtractor {
 
     private fun extractWavWaveform(pfd: ParcelFileDescriptor, targetBars: Int): List<Float>? {
         val channel = FileInputStream(pfd.fileDescriptor).channel
+        return extractWavWaveformFromChannel(channel, targetBars)
+    }
+
+    private fun extractWavWaveformFromChannel(
+        channel: java.nio.channels.FileChannel,
+        targetBars: Int
+    ): List<Float>? {
         val size = channel.size()
         if (size <= 44L) return null
         val dataSize = size - 44L
