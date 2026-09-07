@@ -135,7 +135,7 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                     } else {
                         DocumentFile.fromSingleUri(context, uri)
                     }
-                    if (doc != null) {
+                    if (doc != null && doc.exists()) {
                         val waveArr = obj.optJSONArray("waveform")
                         val wave = if (waveArr != null && waveArr.length() > 0) {
                             val list = ArrayList<Float>(waveArr.length())
@@ -224,14 +224,24 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
 
     override fun loadAudioWaveform(file: DocumentFile): List<Float>? {
         val uriStr = file.uri.toString()
-        val cached = audioWaveformCache.get(uriStr)
-        if (cached != null && !AudioWaveformExtractor.isFlatWaveform(cached)) {
-            return cached
+        val currentSize = file.length()
+        val currentModified = file.lastModified()
+        val existing = cachedAudio?.firstOrNull { it.recordingFile.uri == file.uri }
+        val isModified = existing != null && (existing.size != currentSize || existing.lastModified != currentModified)
+        if (isModified) {
+            audioWaveformCache.remove(uriStr)
+        } else {
+            val cached = audioWaveformCache.get(uriStr)
+            if (cached != null && !AudioWaveformExtractor.isFlatWaveform(cached)) {
+                return cached
+            }
         }
         val wave = AudioWaveformExtractor.extractWaveform(context, file.uri) ?: return null
         audioWaveformCache.put(uriStr, wave)
         cachedAudio = cachedAudio?.map {
-            if (it.recordingFile.uri == file.uri) it.copy(waveform = wave) else it
+            if (it.recordingFile.uri == file.uri) {
+                it.copy(waveform = wave, size = currentSize, lastModified = currentModified)
+            } else it
         }
         writeCache()
         return wave
@@ -247,13 +257,21 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         return withContext(Dispatchers.IO) {
             val items = getVideoFiles().map {
                 val uriStr = it.uri.toString()
+                val currentSize = it.length()
+                val currentModified = it.lastModified()
+                val existing = cachedVideos?.firstOrNull { c -> c.recordingFile.uri == it.uri }
+                val thumb = if (existing != null && existing.size == currentSize && existing.lastModified == currentModified) {
+                    videoThumbnailCache.get(uriStr) ?: existing.thumbnail
+                } else {
+                    null
+                }
                 RecordingItemData(
                     recordingFile = it,
                     recorderType = RecorderType.VIDEO,
                     name = it.name.orEmpty(),
-                    lastModified = it.lastModified(),
-                    size = it.length(),
-                    thumbnail = videoThumbnailCache.get(uriStr)
+                    lastModified = currentModified,
+                    size = currentSize,
+                    thumbnail = thumb
                 )
             }
             cachedVideos = items
@@ -266,8 +284,14 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         return withContext(Dispatchers.IO) {
             val items = getAudioFiles().map {
                 val uriStr = it.uri.toString()
-                val wave = audioWaveformCache.get(uriStr)
-                    ?: cachedAudio?.firstOrNull { c -> c.recordingFile.uri == it.uri }?.waveform
+                val currentSize = it.length()
+                val currentModified = it.lastModified()
+                val existing = cachedAudio?.firstOrNull { c -> c.recordingFile.uri == it.uri }
+                val wave = if (existing != null && existing.size == currentSize && existing.lastModified == currentModified) {
+                    audioWaveformCache.get(uriStr) ?: existing.waveform
+                } else {
+                    null
+                }
                 if (wave != null) {
                     audioWaveformCache.put(uriStr, wave)
                 }
@@ -275,8 +299,8 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                     recordingFile = it,
                     recorderType = RecorderType.AUDIO,
                     name = it.name.orEmpty(),
-                    lastModified = it.lastModified(),
-                    size = it.length(),
+                    lastModified = currentModified,
+                    size = currentSize,
                     waveform = wave
                 )
             }
