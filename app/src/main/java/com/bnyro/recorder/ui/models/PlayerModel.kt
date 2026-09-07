@@ -67,6 +67,23 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
                     }
                 }
             }
+
+            audio.forEach { item ->
+                if (item.waveform == null) {
+                    val wave = fileRepository.loadAudioWaveform(item.recordingFile)
+                    if (wave != null) {
+                        withContext(Dispatchers.Main) {
+                            audioRecordingItems = audioRecordingItems.map {
+                                if (it.recordingFile.uri == item.recordingFile.uri) {
+                                    it.copy(waveform = wave)
+                                } else {
+                                    it
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

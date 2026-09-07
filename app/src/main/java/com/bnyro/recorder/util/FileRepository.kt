@@ -23,6 +23,7 @@ interface FileRepository {
     suspend fun getVideoRecordingItems(sortOrder: SortOrder): List<RecordingItemData>
     suspend fun getAudioRecordingItems(sortOrder: SortOrder): List<RecordingItemData>
     fun loadVideoThumbnail(file: DocumentFile): Bitmap?
+    fun loadAudioWaveform(file: DocumentFile): List<Float>?
     suspend fun deleteFiles(files: List<DocumentFile>)
     suspend fun deleteAllFiles()
     fun getTempOutputFile(extension: String): java.io.File
@@ -103,6 +104,7 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         }.distinctBy { it.uri }
 
     private val videoThumbnailCache = android.util.LruCache<String, Bitmap>(50)
+    private val audioWaveformCache = android.util.LruCache<String, List<Float>>(100)
     private var cachedAudio: List<RecordingItemData>? = null
     private var cachedVideos: List<RecordingItemData>? = null
     private val cacheFile = java.io.File(context.cacheDir, "recordings.json")
@@ -133,13 +135,25 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                         DocumentFile.fromSingleUri(context, uri)
                     }
                     if (doc != null) {
+                        val waveArr = obj.optJSONArray("waveform")
+                        val wave = if (waveArr != null && waveArr.length() > 0) {
+                            val list = ArrayList<Float>(waveArr.length())
+                            for (j in 0 until waveArr.length()) {
+                                list.add(waveArr.optDouble(j, 0.1).toFloat())
+                            }
+                            list
+                        } else null
+                        if (wave != null) {
+                            audioWaveformCache.put(doc.uri.toString(), wave)
+                        }
                         val item = RecordingItemData(
                             recordingFile = doc,
                             recorderType = if (isVideo) RecorderType.VIDEO else RecorderType.AUDIO,
                             name = if (name.isNotEmpty()) name else (uri.lastPathSegment ?: ""),
                             lastModified = modified,
                             size = size,
-                            thumbnail = if (isVideo) videoThumbnailCache.get(doc.uri.toString()) else null
+                            thumbnail = if (isVideo) videoThumbnailCache.get(doc.uri.toString()) else null,
+                            waveform = wave
                         )
                         if (isVideo) video.add(item) else audio.add(item)
                     }
@@ -163,6 +177,13 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                 obj.put("name", item.name)
                 obj.put("modified", item.lastModified)
                 obj.put("size", item.size)
+                item.waveform?.let { wave ->
+                    val jArr = org.json.JSONArray()
+                    for (f in wave) {
+                        jArr.put(f.toDouble())
+                    }
+                    obj.put("waveform", jArr)
+                }
                 arr.put(obj)
             }
             cacheFile.writeText(arr.toString())
@@ -200,6 +221,14 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
         }.getOrNull()
     }
 
+    override fun loadAudioWaveform(file: DocumentFile): List<Float>? {
+        val uriStr = file.uri.toString()
+        audioWaveformCache.get(uriStr)?.let { return it }
+        val wave = AudioWaveformExtractor.extractWaveform(context, file.uri) ?: return null
+        audioWaveformCache.put(uriStr, wave)
+        return wave
+    }
+
     override suspend fun getVideoRecordingItems(sortOrder: SortOrder): List<RecordingItemData> {
         return withContext(Dispatchers.IO) {
             val items = getVideoFiles().map {
@@ -222,12 +251,14 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
     override suspend fun getAudioRecordingItems(sortOrder: SortOrder): List<RecordingItemData> {
         return withContext(Dispatchers.IO) {
             val items = getAudioFiles().map {
+                val uriStr = it.uri.toString()
                 RecordingItemData(
                     recordingFile = it,
                     recorderType = RecorderType.AUDIO,
                     name = it.name.orEmpty(),
                     lastModified = it.lastModified(),
-                    size = it.length()
+                    size = it.length(),
+                    waveform = audioWaveformCache.get(uriStr)
                 )
             }
             cachedAudio = items

@@ -106,17 +106,26 @@ fun RecordingItem(
             )
         ) {
             Column() {
-                thumbnail?.let { thumbnail ->
-                    Image(
+                if (isVideo) {
+                    thumbnail?.let { thumbnail ->
+                        Image(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(0.8f)
+                                .padding(8.dp)
+                                .clip(RoundedCornerShape(8.dp)),
+                            bitmap = thumbnail.asImageBitmap(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center
+                        )
+                    }
+                } else if (isAudio) {
+                    AudioWaveformPreview(
+                        amplitudes = waveform,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(0.8f)
                             .padding(8.dp)
-                            .clip(RoundedCornerShape(8.dp)),
-                        bitmap = thumbnail.asImageBitmap(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
                     )
                 }
                 Row(

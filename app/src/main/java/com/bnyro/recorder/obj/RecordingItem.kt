@@ -11,7 +11,8 @@ data class RecordingItemData(
     val name: String = "",
     val lastModified: Long = 0L,
     val size: Long = 0L,
-    val thumbnail: Bitmap? = null
+    val thumbnail: Bitmap? = null,
+    val waveform: List<Float>? = null
 ) {
     val uri: Uri get() = recordingFile.uri
     val isAudio get() = recorderType == RecorderType.AUDIO
