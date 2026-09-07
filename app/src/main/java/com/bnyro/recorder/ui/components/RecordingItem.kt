@@ -128,7 +128,7 @@ fun RecordingItem(
                 ) {
                     Text(
                         modifier = Modifier.weight(1f),
-                        text = recordingFile.name.orEmpty()
+                        text = name
                     )
                     ClickableIcon(
                         imageVector = Icons.Default.PlayArrow,
@@ -211,7 +211,7 @@ fun RecordingItem(
 
         if (showRenameDialog) {
             var fileName by remember {
-                mutableStateOf(recordingFile.name.orEmpty())
+                mutableStateOf(name)
             }
 
             AlertDialog(
@@ -260,7 +260,7 @@ fun RecordingItem(
 
         if (showPlayer) {
             FullscreenDialog(
-                title = recordingFile.name.orEmpty().substringBeforeLast("."),
+                title = name.substringBeforeLast("."),
                 onDismissRequest = {
                     showPlayer = false
                 }

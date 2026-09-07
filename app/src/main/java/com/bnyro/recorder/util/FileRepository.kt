@@ -89,14 +89,16 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
     private fun getVideoFiles(): List<DocumentFile> =
         getVideoOutputDirs().flatMap {
             it.listFiles().filter { file ->
-                file.isFile && commonVideoExtensions.any { file.name?.endsWith(it) ?: false }
+                val name = file.name
+                name != null && commonVideoExtensions.any { ext -> name.endsWith(ext, ignoreCase = true) }
             }
         }.distinctBy { it.uri }
 
     private fun getAudioFiles(): List<DocumentFile> =
         getAudioOutputDirs().flatMap {
             it.listFiles().filter { file ->
-                file.isFile && commonAudioExtensions.any { file.name?.endsWith(it) ?: false }
+                val name = file.name
+                name != null && commonAudioExtensions.any { ext -> name.endsWith(ext, ignoreCase = true) }
             }
         }.distinctBy { it.uri }
 
@@ -119,18 +121,24 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                 val obj = arr.getJSONObject(i)
                 val uriStr = obj.optString("uri")
                 val isVideo = obj.optBoolean("video")
+                val name = obj.optString("name")
+                val modified = obj.optLong("modified", 0L)
+                val size = obj.optLong("size", 0L)
                 if (uriStr.isNotEmpty()) {
                     val uri = android.net.Uri.parse(uriStr)
                     val doc = if (uri.scheme == "file") {
                         val file = java.io.File(uri.path ?: "")
-                        if (file.exists()) DocumentFile.fromFile(file) else null
+                        DocumentFile.fromFile(file)
                     } else {
                         DocumentFile.fromSingleUri(context, uri)
                     }
-                    if (doc != null && doc.exists()) {
+                    if (doc != null) {
                         val item = RecordingItemData(
                             recordingFile = doc,
                             recorderType = if (isVideo) RecorderType.VIDEO else RecorderType.AUDIO,
+                            name = if (name.isNotEmpty()) name else (uri.lastPathSegment ?: ""),
+                            lastModified = modified,
+                            size = size,
                             thumbnail = if (isVideo) videoThumbnailCache.get(doc.uri.toString()) else null
                         )
                         if (isVideo) video.add(item) else audio.add(item)
@@ -152,6 +160,9 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                 val obj = org.json.JSONObject()
                 obj.put("uri", item.recordingFile.uri.toString())
                 obj.put("video", item.isVideo)
+                obj.put("name", item.name)
+                obj.put("modified", item.lastModified)
+                obj.put("size", item.size)
                 arr.put(obj)
             }
             cacheFile.writeText(arr.toString())
@@ -192,7 +203,15 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
     override suspend fun getVideoRecordingItems(sortOrder: SortOrder): List<RecordingItemData> {
         return withContext(Dispatchers.IO) {
             val items = getVideoFiles().map {
-                RecordingItemData(it, RecorderType.VIDEO, videoThumbnailCache.get(it.uri.toString()))
+                val uriStr = it.uri.toString()
+                RecordingItemData(
+                    recordingFile = it,
+                    recorderType = RecorderType.VIDEO,
+                    name = it.name.orEmpty(),
+                    lastModified = it.lastModified(),
+                    size = it.length(),
+                    thumbnail = videoThumbnailCache.get(uriStr)
+                )
             }
             cachedVideos = items
             writeCache()
@@ -202,7 +221,15 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
 
     override suspend fun getAudioRecordingItems(sortOrder: SortOrder): List<RecordingItemData> {
         return withContext(Dispatchers.IO) {
-            val items = getAudioFiles().map { RecordingItemData(it, RecorderType.AUDIO) }
+            val items = getAudioFiles().map {
+                RecordingItemData(
+                    recordingFile = it,
+                    recorderType = RecorderType.AUDIO,
+                    name = it.name.orEmpty(),
+                    lastModified = it.lastModified(),
+                    size = it.length()
+                )
+            }
             cachedAudio = items
             writeCache()
             items.sortedBy(sortOrder)
@@ -254,10 +281,17 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
             }
             tempFile.delete()
             val isAudio = commonAudioExtensions.contains(".$extension")
+            val newItem = RecordingItemData(
+                recordingFile = destFile,
+                recorderType = if (isAudio) RecorderType.AUDIO else RecorderType.VIDEO,
+                name = destFile.name.orEmpty(),
+                lastModified = destFile.lastModified(),
+                size = destFile.length()
+            )
             if (isAudio) {
-                cachedAudio = (listOf(RecordingItemData(destFile, RecorderType.AUDIO)) + cachedAudio.orEmpty()).distinctBy { it.recordingFile.uri }
+                cachedAudio = (listOf(newItem) + cachedAudio.orEmpty()).distinctBy { it.recordingFile.uri }
             } else {
-                cachedVideos = (listOf(RecordingItemData(destFile, RecorderType.VIDEO)) + cachedVideos.orEmpty()).distinctBy { it.recordingFile.uri }
+                cachedVideos = (listOf(newItem) + cachedVideos.orEmpty()).distinctBy { it.recordingFile.uri }
             }
             writeCache()
             destFile
@@ -349,12 +383,12 @@ fun List<DocumentFile>.sortedBy(sortOrder: SortOrder): List<DocumentFile> {
 @JvmName("sortItems")
 fun List<RecordingItemData>.sortedBy(sortOrder: SortOrder): List<RecordingItemData> {
     return when (sortOrder) {
-        SortOrder.MODIFIED -> sortedBy { it.recordingFile.lastModified() }
-        SortOrder.MODIFIED_REV -> sortedByDescending { it.recordingFile.lastModified() }
-        SortOrder.ALPHABETIC -> sortedBy { it.recordingFile.name.orEmpty().lowercase() }
-        SortOrder.ALPHABETIC_REV -> sortedByDescending { it.recordingFile.name.orEmpty().lowercase() }
-        SortOrder.SIZE_REV -> sortedBy { it.recordingFile.length() }
-        SortOrder.SIZE -> sortedByDescending { it.recordingFile.length() }
+        SortOrder.MODIFIED -> sortedBy { it.lastModified }
+        SortOrder.MODIFIED_REV -> sortedByDescending { it.lastModified }
+        SortOrder.ALPHABETIC -> sortedBy { it.name.lowercase() }
+        SortOrder.ALPHABETIC_REV -> sortedByDescending { it.name.lowercase() }
+        SortOrder.SIZE_REV -> sortedBy { it.size }
+        SortOrder.SIZE -> sortedByDescending { it.size }
     }
 }
 

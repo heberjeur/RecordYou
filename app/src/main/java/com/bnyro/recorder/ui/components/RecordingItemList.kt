@@ -56,7 +56,7 @@ fun RecordingItemList(
                     .padding(top = 10.dp)
                     .weight(1f)
             ) {
-                items(items) {
+                items(items, key = { it.recordingFile.uri }) {
                     RecordingItem(
                         it,
                         isSelected = playerModel.selectedFiles.contains(it),

@@ -18,6 +18,7 @@ import com.bnyro.recorder.obj.RecordingItemData
 import com.bnyro.recorder.util.FileRepository
 import com.bnyro.recorder.util.sortedBy
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -34,20 +35,19 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
     var audioRecordingItems by mutableStateOf(fileRepository.cachedAudio(sortOrder))
     var screenRecordingItems by mutableStateOf(fileRepository.cachedVideos(sortOrder))
 
+    private var loadJob: Job? = null
+
     init {
         loadFiles()
     }
 
     fun loadFiles() {
-        viewModelScope.launch(Dispatchers.IO) {
+        if (loadJob?.isActive == true) return
+        loadJob = viewModelScope.launch(Dispatchers.IO) {
             val audio = fileRepository.getAudioRecordingItems(sortOrder)
-            withContext(Dispatchers.Main) {
-                audioRecordingItems = audio
-            }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
             val video = fileRepository.getVideoRecordingItems(sortOrder)
             withContext(Dispatchers.Main) {
+                audioRecordingItems = audio
                 screenRecordingItems = video
             }
 
