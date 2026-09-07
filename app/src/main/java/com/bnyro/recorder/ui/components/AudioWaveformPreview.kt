@@ -16,6 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.bnyro.recorder.util.AudioWaveformExtractor
 import kotlin.math.abs
@@ -27,6 +30,7 @@ fun AudioWaveformPreview(
     amplitudes: List<Float>?,
     seed: Int = 0,
     progress: Float? = null,
+    onSeek: ((Float) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val cyanColor = Color(0xFF00E5C0)
@@ -36,12 +40,29 @@ fun AudioWaveformPreview(
     val bgDark = Color(0xFF0F1216)
     val playedOverlayColor = Color(0x40000000)
 
+    val seekModifier = if (onSeek != null) {
+        Modifier.pointerInput(Unit) {
+            awaitEachGesture {
+                val down = awaitFirstDown(requireUnconsumed = false)
+                onSeek((down.position.x / size.width).coerceIn(0f, 1f))
+                while (true) {
+                    val event = awaitPointerEvent()
+                    val change = event.changes.firstOrNull() ?: break
+                    if (!change.pressed) break
+                    onSeek((change.position.x / size.width).coerceIn(0f, 1f))
+                    change.consume()
+                }
+            }
+        }
+    } else Modifier
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(72.dp)
             .clip(RoundedCornerShape(6.dp))
             .background(bgDark)
+            .then(seekModifier)
     ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val w = size.width

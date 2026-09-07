@@ -118,6 +118,12 @@ fun MiniPlayer(
                 amplitudes = item?.waveform,
                 seed = inputFile.name.hashCode(),
                 progress = progress,
+                onSeek = { fraction ->
+                    val dur = posAndDur.second ?: playerModel.player.duration.takeIf { it > 0 } ?: 0L
+                    if (dur > 0L) {
+                        playerModel.player.seekTo((dur * fraction).toLong())
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)

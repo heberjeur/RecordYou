@@ -87,6 +87,14 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
         }
     }
 
+    fun resetAndReloadWaveforms() {
+        fileRepository.resetWaveformCache()
+        audioRecordingItems = audioRecordingItems.map { it.copy(waveform = null) }
+        loadJob?.cancel()
+        loadJob = null
+        loadFiles()
+    }
+
     fun sortItems(newSort: SortOrder) {
         if (newSort == sortOrder) return
         sortOrder = newSort

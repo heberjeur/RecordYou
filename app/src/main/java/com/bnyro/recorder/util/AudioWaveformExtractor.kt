@@ -25,6 +25,10 @@ object AudioWaveformExtractor {
         val tailMin = tail.minOrNull() ?: 0f
         val tailMax = tail.maxOrNull() ?: 0f
         if (tailMax - tailMin < 0.005f) return true
+        val half = data.size / 2
+        val lastHalfMax = data.takeLast(half).maxOrNull() ?: 0f
+        val firstHalfMax = data.take(half).maxOrNull() ?: 0f
+        if (lastHalfMax < 0.04f && firstHalfMax > 0.20f) return true
         return false
     }
 
@@ -122,10 +126,14 @@ object AudioWaveformExtractor {
 
         val extractor = MediaExtractor()
         try {
-            if (pfd.statSize > 0) {
-                extractor.setDataSource(pfd.fileDescriptor, 0, pfd.statSize)
-            } else {
-                extractor.setDataSource(pfd.fileDescriptor)
+            runCatching {
+                extractor.setDataSource(context, uri, null)
+            }.recoverCatching {
+                if (pfd.statSize > 0) {
+                    extractor.setDataSource(pfd.fileDescriptor, 0, pfd.statSize)
+                } else {
+                    extractor.setDataSource(pfd.fileDescriptor)
+                }
             }
             var trackIndex = -1
             var format: MediaFormat? = null
@@ -143,7 +151,6 @@ object AudioWaveformExtractor {
 
             val trackDurationUs = if (format.containsKey(MediaFormat.KEY_DURATION)) format.getLong(MediaFormat.KEY_DURATION) else 0L
             val finalDurationUs = if (durationUs > 0L) durationUs else trackDurationUs
-            if (finalDurationUs <= 0L) return null
 
             val mime = format.getString(MediaFormat.KEY_MIME) ?: return null
             val codec = MediaCodec.createDecoderByType(mime)
@@ -155,35 +162,57 @@ object AudioWaveformExtractor {
             var sawInputEos = false
             var sawOutputEos = false
             var maxGlobal = 1f
-            var totalBuffersDecoded = 0
-            val maxBuffersToDecode = 8000
+            var maxObservedTimeUs = 0L
+            var consecutiveNoProgress = 0
+            var highestBarReached = 0
 
             try {
-                while (!sawOutputEos && totalBuffersDecoded < maxBuffersToDecode) {
+                while (!sawOutputEos && consecutiveNoProgress < 600) {
+                    var progressMade = false
                     if (!sawInputEos) {
+                        while (extractor.sampleTrackIndex >= 0 && extractor.sampleTrackIndex != trackIndex) {
+                            extractor.advance()
+                        }
+                        val currentTrack = extractor.sampleTrackIndex
                         val inIdx = codec.dequeueInputBuffer(8000L)
                         if (inIdx >= 0) {
-                            val inBuf = codec.getInputBuffer(inIdx)
-                            val sampleSize = if (inBuf != null) extractor.readSampleData(inBuf, 0) else -1
-                            if (sampleSize > 0) {
-                                codec.queueInputBuffer(inIdx, 0, sampleSize, extractor.sampleTime, 0)
-                                extractor.advance()
-                            } else {
+                            progressMade = true
+                            if (currentTrack < 0) {
                                 codec.queueInputBuffer(inIdx, 0, 0, 0L, MediaCodec.BUFFER_FLAG_END_OF_STREAM)
                                 sawInputEos = true
+                            } else {
+                                val inBuf = codec.getInputBuffer(inIdx)
+                                val sampleSize = if (inBuf != null) extractor.readSampleData(inBuf, 0) else -1
+                                if (sampleSize > 0) {
+                                    codec.queueInputBuffer(inIdx, 0, sampleSize, extractor.sampleTime, 0)
+                                    extractor.advance()
+                                } else {
+                                    codec.queueInputBuffer(inIdx, 0, 0, 0L, MediaCodec.BUFFER_FLAG_END_OF_STREAM)
+                                    sawInputEos = true
+                                }
                             }
                         }
                     }
 
                     val outIdx = codec.dequeueOutputBuffer(bufferInfo, 8000L)
                     if (outIdx >= 0) {
-                        totalBuffersDecoded++
+                        progressMade = true
                         val outBuf = codec.getOutputBuffer(outIdx)
                         if (outBuf != null && bufferInfo.size > 0) {
                             outBuf.position(bufferInfo.offset)
                             outBuf.limit(bufferInfo.offset + bufferInfo.size)
                             val timeUs = bufferInfo.presentationTimeUs
-                            val barIdx = ((timeUs * targetBars) / finalDurationUs).toInt().coerceIn(0, targetBars - 1)
+                            if (timeUs > maxObservedTimeUs) {
+                                maxObservedTimeUs = timeUs
+                            }
+                            val barIdx = if (finalDurationUs > 0L) {
+                                ((timeUs * targetBars) / finalDurationUs).toInt().coerceIn(0, targetBars - 1)
+                            } else {
+                                0
+                            }
+                            if (barIdx > highestBarReached) {
+                                highestBarReached = barIdx
+                            }
                             val shorts = outBuf.order(ByteOrder.LITTLE_ENDIAN).asShortBuffer()
                             var peak = 0
                             while (shorts.hasRemaining()) {
@@ -203,6 +232,12 @@ object AudioWaveformExtractor {
                             sawOutputEos = true
                         }
                     }
+
+                    if (progressMade) {
+                        consecutiveNoProgress = 0
+                    } else {
+                        consecutiveNoProgress++
+                    }
                 }
             } finally {
                 kotlin.runCatching { codec.stop() }
@@ -211,21 +246,33 @@ object AudioWaveformExtractor {
 
             if (maxGlobal <= 50f) return null
 
+            val effectiveBars = if (highestBarReached in 10 until (targetBars * 0.85f).toInt()) {
+                val stretched = FloatArray(targetBars)
+                val count = highestBarReached + 1
+                for (i in 0 until targetBars) {
+                    val src = ((i.toFloat() / (targetBars - 1)) * (count - 1)).toInt().coerceIn(0, count - 1)
+                    stretched[i] = raw[src]
+                }
+                stretched
+            } else {
+                raw
+            }
+
             for (i in 0 until targetBars) {
-                if (raw[i] <= 0f) {
-                    val prev = if (i > 0) raw[i - 1] else 0f
-                    val next = if (i < targetBars - 1) raw[i + 1] else 0f
-                    raw[i] = ((prev + next) / 2f).coerceAtLeast(0f)
+                if (effectiveBars[i] <= 0f) {
+                    val prev = if (i > 0) effectiveBars[i - 1] else 0f
+                    val next = if (i < targetBars - 1) effectiveBars[i + 1] else 0f
+                    effectiveBars[i] = ((prev + next) / 2f).coerceAtLeast(0f)
                 }
             }
 
-            val sorted = raw.filter { it > 0f }.sorted()
+            val sorted = effectiveBars.filter { it > 0f }.sorted()
             val effectivePeak = if (sorted.isNotEmpty()) {
                 val p95 = sorted[(sorted.size * 0.95).toInt().coerceIn(0, sorted.size - 1)]
                 p95.coerceAtLeast(maxGlobal * 0.30f).coerceAtLeast(100f)
             } else maxGlobal.coerceAtLeast(100f)
 
-            val list = raw.map {
+            val list = effectiveBars.map {
                 val norm = (it / effectivePeak).coerceIn(0f, 1.5f)
                 sqrt(norm).coerceIn(0.02f, 1f)
             }

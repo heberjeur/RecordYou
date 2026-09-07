@@ -66,6 +66,7 @@ import com.bnyro.recorder.ui.common.CustomNumInputPref
 import com.bnyro.recorder.ui.common.SelectionDialog
 import com.bnyro.recorder.ui.components.NamingPatternPref
 import com.bnyro.recorder.ui.dialogs.AboutDialog
+import com.bnyro.recorder.ui.models.PlayerModel
 import com.bnyro.recorder.ui.models.ThemeModel
 import com.bnyro.recorder.util.PickFolderContract
 import com.bnyro.recorder.util.Preferences
@@ -388,11 +389,19 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
             )
             Spacer(modifier = Modifier.height(10.dp))
             val currentContext = LocalContext.current
+            val playerModel: PlayerModel = run {
+                val activity = currentContext as? ComponentActivity
+                if (activity != null) {
+                    viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
+                } else {
+                    viewModel(factory = PlayerModel.Factory)
+                }
+            }
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     view.playSoundEffect(SoundEffectConstants.CLICK)
-                    (currentContext.applicationContext as com.bnyro.recorder.App).fileRepository.resetWaveformCache()
+                    playerModel.resetAndReloadWaveforms()
                     android.widget.Toast.makeText(
                         currentContext,
                         currentContext.getString(R.string.reset_waveform_cache_done),
