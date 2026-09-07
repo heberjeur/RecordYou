@@ -60,7 +60,9 @@ object IntentHelper {
     private fun startActivity(context: Context, intent: Intent) {
         try {
             context.startActivity(intent)
-        } catch (e: Exception) {
+        } catch (e: android.content.ActivityNotFoundException) {
+            Toast.makeText(context, e.localizedMessage, Toast.LENGTH_SHORT).show()
+        } catch (e: SecurityException) {
             Toast.makeText(context, e.localizedMessage, Toast.LENGTH_SHORT).show()
         }
     }

@@ -129,8 +129,11 @@ class MediaTrimmer {
                 }
                 muxer.stop()
                 true
-            } catch (e: Exception) {
-                Log.e("Media trimmer", e.message, e)
+            } catch (e: java.io.IOException) {
+                Log.e("MediaTrimmer", "IO error during media trimming", e)
+                false
+            } catch (e: IllegalStateException) {
+                Log.e("MediaTrimmer", "Media codec/muxer state error during media trimming", e)
                 false
             } finally {
                 runCatching { muxer.release() }

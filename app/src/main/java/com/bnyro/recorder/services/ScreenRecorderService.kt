@@ -67,8 +67,12 @@ class ScreenRecorderService : RecorderService() {
                 Activity.RESULT_OK,
                 intentData
             )
-        } catch (e: Exception) {
-            Log.e("Media Projection Error", e.toString())
+        } catch (e: SecurityException) {
+            Log.e("ScreenRecorderService", "MediaProjection security exception", e)
+            stopRecording()
+            return
+        } catch (e: IllegalStateException) {
+            Log.e("ScreenRecorderService", "MediaProjection invalid state", e)
             stopRecording()
             return
         }

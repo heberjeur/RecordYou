@@ -97,15 +97,17 @@ class CanvasOverlay(context: Context) {
     fun show() {
         hideCanvas()
         try {
-            if (canvasView.windowToken == null && canvasView.parent == null) {
+            if (canvasView.parent == null) {
                 val params = getWindowLayoutParams(WindowManager.LayoutParams.MATCH_PARENT)
                 windowManager.addView(canvasView, params)
             }
-            if (toolbarView.windowToken == null && toolbarView.parent == null) {
+            if (toolbarView.parent == null) {
                 windowManager.addView(toolbarView, toolbarViewParams)
             }
-        } catch (e: Exception) {
-            Log.e("Show Overlay", e.toString())
+        } catch (e: WindowManager.BadTokenException) {
+            Log.e("CanvasOverlay", "Bad window token when attaching overlay", e)
+        } catch (e: SecurityException) {
+            Log.e("CanvasOverlay", "Overlay permission not granted", e)
         }
     }
 
@@ -129,12 +131,14 @@ class CanvasOverlay(context: Context) {
 
     fun remove() {
         try {
-            windowManager.removeView(canvasView)
-            canvasView.invalidate()
-            windowManager.removeView(toolbarView)
-            toolbarView.invalidate()
-        } catch (e: Exception) {
-            Log.e("Remove Overlay", e.toString())
+            if (canvasView.parent != null) {
+                windowManager.removeView(canvasView)
+            }
+            if (toolbarView.parent != null) {
+                windowManager.removeView(toolbarView)
+            }
+        } catch (e: IllegalArgumentException) {
+            Log.e("CanvasOverlay", "View not attached to window manager", e)
         }
     }
 }

@@ -151,8 +151,12 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
             }
             tempFile.delete()
             destFile
-        } catch (e: Exception) {
-            Log.e("FileRepository", "Failed to commit temp recording to destination", e)
+        } catch (e: java.io.IOException) {
+            Log.e("FileRepository", "IO error committing temp recording", e)
+            tempFile.delete()
+            null
+        } catch (e: SecurityException) {
+            Log.e("FileRepository", "Security error committing temp recording", e)
             tempFile.delete()
             null
         }
