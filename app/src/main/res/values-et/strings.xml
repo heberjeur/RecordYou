@@ -93,4 +93,6 @@
     <string name="waveform_ready">Spekter valmis</string>
     <string name="show_touches">Kuva puudutused</string>
     <string name="show_touches_desc">Tõsta ekraanisalvestuse ajal esile puudutused ja žestid</string>
+    <string name="show_touches_dev_desc">Selles Androidi versioonis piirab süsteem selle seade automaatset muutmist. Saate \'Kuva puudutused\' lubada otse Arendaja valikutes.</string>
+    <string name="open_developer_options">Arendaja valikud</string>
 </resources>

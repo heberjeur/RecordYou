@@ -62,4 +62,6 @@
     <string name="waveform_ready">Handa na ang spectrum</string>
     <string name="show_touches">Ipakita ang mga pagpindot</string>
     <string name="show_touches_desc">I-highlight ang mga pag-tap at kilos habang nagre-record ng screen</string>
+    <string name="show_touches_dev_desc">Sa bersyong ito ng Android, pinipigilan ng system ang awtomatikong pagbabago ng setting na ito. Maaari mong direktang paganahin ang \'Ipakita ang mga pag-tap\' sa Mga opsyon ng developer.</string>
+    <string name="open_developer_options">Mga opsyon ng developer</string>
 </resources>

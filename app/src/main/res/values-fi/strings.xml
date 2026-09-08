@@ -93,4 +93,6 @@
     <string name="waveform_ready">Spektri valmis</string>
     <string name="show_touches">Näytä kosketukset</string>
     <string name="show_touches_desc">Korosta napautukset ja eleet näytön tallennuksen aikana</string>
+    <string name="show_touches_dev_desc">Tässä Android-versiossa järjestelmä rajoittaa tämän asetuksen automaattista muuttamista. Voit ottaa \'Näytä kosketukset\' käyttöön suoraan Kehittäjäasetuksissa.</string>
+    <string name="open_developer_options">Kehittäjäasetukset</string>
 </resources>

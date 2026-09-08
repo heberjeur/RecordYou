@@ -93,4 +93,6 @@
     <string name="waveform_ready">Спектр готов</string>
     <string name="show_touches">Показывать нажатия</string>
     <string name="show_touches_desc">Выделять нажатия и жесты во время записи экрана</string>
+    <string name="show_touches_dev_desc">В этой версии Android система ограничивает автоматическое изменение этой настройки. Вы можете включить \'Показывать нажатия\' напрямую в Параметрах разработчика.</string>
+    <string name="open_developer_options">Параметры разработчика</string>
 </resources>

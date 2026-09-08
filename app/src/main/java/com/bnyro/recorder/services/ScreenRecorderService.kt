@@ -91,10 +91,13 @@ class ScreenRecorderService : RecorderService() {
 
     override fun start() {
         val showTouches = Preferences.prefs.getBoolean(Preferences.showTouchesKey, false)
-        if (showTouches && Settings.System.canWrite(this)) {
-            previousShowTouches = Settings.System.getInt(contentResolver, "show_touches", 0)
-            Settings.System.putInt(contentResolver, "show_touches", 1)
-            touchesEnabled = true
+        if (showTouches) {
+            previousShowTouches = runCatching {
+                Settings.System.getInt(contentResolver, "show_touches", 0)
+            }.getOrDefault(0)
+            if (trySetShowTouches(1)) {
+                touchesEnabled = true
+            }
         }
 
         val audioSource = AudioSource.fromInt(
@@ -241,9 +244,7 @@ class ScreenRecorderService : RecorderService() {
 
     override fun stopRecording() {
         if (touchesEnabled) {
-            if (Settings.System.canWrite(this)) {
-                Settings.System.putInt(contentResolver, "show_touches", previousShowTouches)
-            }
+            trySetShowTouches(previousShowTouches)
             touchesEnabled = false
         }
         displayManager?.unregisterDisplayListener(displayListener)
@@ -256,14 +257,31 @@ class ScreenRecorderService : RecorderService() {
 
     override fun onDestroy() {
         if (touchesEnabled) {
-            runCatching {
-                if (Settings.System.canWrite(this)) {
-                    Settings.System.putInt(contentResolver, "show_touches", previousShowTouches)
-                }
-            }
+            trySetShowTouches(previousShowTouches)
             touchesEnabled = false
         }
         super.onDestroy()
+    }
+
+    private fun trySetShowTouches(value: Int): Boolean {
+        try {
+            if (Settings.System.canWrite(this)) {
+                return Settings.System.putInt(contentResolver, "show_touches", value)
+            }
+        } catch (e: Exception) {
+            Log.w("ScreenRecorderService", "Settings.System.putInt failed: ${e.message}")
+        }
+        return tryRootSetShowTouches(value)
+    }
+
+    private fun tryRootSetShowTouches(value: Int): Boolean {
+        return try {
+            val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "settings put system show_touches $value"))
+            process.waitFor() == 0
+        } catch (e: Exception) {
+            Log.w("ScreenRecorderService", "Root settings put failed: ${e.message}")
+            false
+        }
     }
 
     override fun getCurrentAmplitude() = recorder?.maxAmplitude

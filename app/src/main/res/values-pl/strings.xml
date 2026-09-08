@@ -91,4 +91,6 @@
     <string name="waveform_ready">Widmo gotowe</string>
     <string name="show_touches">Pokaż dotknięcia</string>
     <string name="show_touches_desc">Wyróżnij dotknięcia i gesty podczas nagrywania ekranu</string>
+    <string name="show_touches_dev_desc">W tej wersji systemu Android system ogranicza automatyczną zmianę tego ustawienia. Możesz włączyć \'Pokaż dotknięcia\' bezpośrednio w Opcjach programisty.</string>
+    <string name="open_developer_options">Opcje programisty</string>
 </resources>

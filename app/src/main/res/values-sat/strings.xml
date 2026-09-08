@@ -22,4 +22,6 @@
     <string name="waveform_ready">ᱥᱯᱮᱠᱴᱨᱚᱢ ᱛᱮᱭᱟᱨ ᱢᱮᱱᱟᱜᱼᱟ</string>
     <string name="show_touches">ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ</string>
     <string name="show_touches_desc">ᱥᱠᱨᱤᱱ ᱨᱮᱠᱚᱨᱰᱤᱝ ᱚᱠᱛᱚ ᱡᱚᱴᱮᱫ ᱟᱨ ᱤᱥᱟᱹᱨᱟ ᱩᱫᱩᱜᱽ ᱢᱮ</string>
+    <string name="show_touches_dev_desc">ᱱᱚᱶᱟ Android ᱨᱮ ᱥᱤᱥᱴᱚᱢ ᱱᱚᱶᱟ ᱥᱮᱴᱤᱝ ᱟᱯᱱᱟᱨ ᱛᱮ ᱵᱚᱫᱚᱞ ᱮ ᱵᱟᱨᱚᱱ ᱮᱫᱟ᱾ ᱟᱢ ᱰᱮᱵᱷᱮᱞᱚᱯᱟᱨ ᱵᱟᱪᱷᱟᱣ ᱨᱮ \'ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ\' ᱮᱢ ᱪᱟᱹᱞᱩ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ᱾</string>
+    <string name="open_developer_options">ᱰᱮᱵᱷᱮᱞᱚᱯᱟᱨ ᱵᱟᱪᱷᱟᱣ</string>
 </resources>

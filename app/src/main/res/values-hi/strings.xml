@@ -93,4 +93,6 @@
     <string name="waveform_ready">स्पेक्ट्रम तैयार है</string>
     <string name="show_touches">टच दिखाएं</string>
     <string name="show_touches_desc">स्क्रीन रिकॉर्डिंग के दौरान टैप और जेस्चर हाइलाइट करें</string>
+    <string name="show_touches_dev_desc">इस एंड्रॉइड संस्करण में सिस्टम इस सेटिंग को स्वचालित रूप से बदलने पर रोक लगाता है। आप डेवलपर विकल्पों में सीधे \'टैप दिखाएं\' सक्षम कर सकते हैं।</string>
+    <string name="open_developer_options">डेवलपर विकल्प</string>
 </resources>

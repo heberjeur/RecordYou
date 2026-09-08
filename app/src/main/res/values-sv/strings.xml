@@ -54,4 +54,6 @@
     <string name="waveform_ready">Spektrum redo</string>
     <string name="show_touches">Visa tryck</string>
     <string name="show_touches_desc">Markera tryck och gester under skärminspelning</string>
+    <string name="show_touches_dev_desc">På den här Android-versionen begränsar systemet automatisk ändring av denna inställning. Du kan aktivera \'Visa tryck\' direkt i Utvecklaralternativ.</string>
+    <string name="open_developer_options">Utvecklaralternativ</string>
 </resources>

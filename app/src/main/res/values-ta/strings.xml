@@ -93,4 +93,6 @@
     <string name="waveform_ready">அலைவரிசை தயார்</string>
     <string name="show_touches">தொடுதல்களைக் காட்டு</string>
     <string name="show_touches_desc">திரைப் பதிவின் போது தட்டுகள் மற்றும் சைகைகளை முன்னிலைப்படுத்தவும்</string>
+    <string name="show_touches_dev_desc">இந்த Android பதிப்பில், இந்த அமைப்பைத் தானாக மாற்றுவதை கணினி கட்டுப்படுத்துகிறது. டெவலப்பர் விருப்பங்களில் நேரடியாக \'தொடுதல்களைக் காட்டு\' என்பதை இயக்கலாம்.</string>
+    <string name="open_developer_options">டெவலப்பர் விருப்பங்கள்</string>
 </resources>

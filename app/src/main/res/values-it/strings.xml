@@ -93,4 +93,6 @@
     <string name="waveform_ready">Spettro pronto</string>
     <string name="show_touches">Mostra tocchi</string>
     <string name="show_touches_desc">Evidenzia tocchi e gesti durante la registrazione dello schermo</string>
+    <string name="show_touches_dev_desc">Su questa versione di Android, il sistema limita la modifica automatica di questa impostazione. Puoi abilitare \'Mostra tocchi\' direttamente nelle Opzioni sviluppatore.</string>
+    <string name="open_developer_options">Opzioni sviluppatore</string>
 </resources>

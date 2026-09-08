@@ -93,4 +93,6 @@
     <string name="waveform_ready">الطيف جاهز</string>
     <string name="show_touches">إظهار النقرات</string>
     <string name="show_touches_desc">تمييز النقرات والإيماءات أثناء تسجيل الشاشة</string>
+    <string name="show_touches_dev_desc">في هذا الإصدار من أندرويد، يقيد النظام تغيير هذا الإعداد تلقائيًا. يمكنك تفعيل \'إظهار النقرات\' مباشرة في خيارات المطور.</string>
+    <string name="open_developer_options">خيارات المطور</string>
 </resources>

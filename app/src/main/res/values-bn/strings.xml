@@ -35,4 +35,6 @@
     <string name="waveform_ready">স্পেকট্রাম প্রস্তুত</string>
     <string name="show_touches">স্পর্শ দেখান</string>
     <string name="show_touches_desc">স্ক্রিন রেকর্ডিংয়ের সময় স্পর্শ এবং অঙ্গভঙ্গি হাইলাইট করুন</string>
+    <string name="show_touches_dev_desc">এই অ্যান্ড্রয়েড সংস্করণে সিস্টেম এই সেটিং স্বয়ংক্রিয়ভাবে পরিবর্তন সীমাবদ্ধ করে। আপনি বিকাশকারী বিকল্পগুলিতে সরাসরি \'স্পর্শ দেখান\' সক্রিয় করতে পারেন।</string>
+    <string name="open_developer_options">বিকাশকারী বিকল্প</string>
 </resources>

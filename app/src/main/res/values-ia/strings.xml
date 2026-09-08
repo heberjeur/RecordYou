@@ -93,4 +93,6 @@
     <string name="waveform_ready">Spectro preste</string>
     <string name="show_touches">Monstrar toccamentos</string>
     <string name="show_touches_desc">Evidentiar toccamentos e gestos durante le registration del schermo</string>
+    <string name="show_touches_dev_desc">In iste version de Android, le systema restringe le cambio automatic de iste configuration. Tu pote activar \'Monstrar toccamentos\' directemente in le Optiones pro disveloppatores.</string>
+    <string name="open_developer_options">Optiones pro disveloppatores</string>
 </resources>

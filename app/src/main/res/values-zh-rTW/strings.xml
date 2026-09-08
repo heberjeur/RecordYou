@@ -93,4 +93,6 @@
     <string name="waveform_ready">頻譜就緒</string>
     <string name="show_touches">顯示輕觸操作</string>
     <string name="show_touches_desc">在螢幕錄製過程中突顯點按與手勢</string>
+    <string name="show_touches_dev_desc">在此Android版本中，系統限制自動變更此設定。您可以直接在開發人員選項中啟用「顯示輕觸操作」。</string>
+    <string name="open_developer_options">開發人員選項</string>
 </resources>

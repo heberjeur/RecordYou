@@ -93,4 +93,6 @@
     <string name="waveform_ready">Спектр готовий</string>
     <string name="show_touches">Показувати натискання</string>
     <string name="show_touches_desc">Виділяти натискання та жести під час запису екрана</string>
+    <string name="show_touches_dev_desc">У цій версії Android система обмежує автоматичну зміну цього параметра. Ви можете ввімкнути \'Показувати натискання\' безпосередньо в Параметрах розробника.</string>
+    <string name="open_developer_options">Параметри розробника</string>
 </resources>

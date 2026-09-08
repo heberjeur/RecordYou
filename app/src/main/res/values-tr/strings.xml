@@ -93,4 +93,6 @@
     <string name="waveform_ready">Spektrum hazır</string>
     <string name="show_touches">Dokunmaları göster</string>
     <string name="show_touches_desc">Ekran kaydı sırasında dokunmaları ve hareketleri vurgula</string>
+    <string name="show_touches_dev_desc">Bu Android sürümünde sistem bu ayarın otomatik olarak değiştirilmesini kısıtlar. \'Dokunmaları göster\' seçeneğini doğrudan Geliştirici seçeneklerinden etkinleştirebilirsiniz.</string>
+    <string name="open_developer_options">Geliştirici seçenekleri</string>
 </resources>

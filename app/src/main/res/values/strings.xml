@@ -100,4 +100,6 @@
     <string name="waveform_ready">Spectrum ready</string>
     <string name="show_touches">Show touches</string>
     <string name="show_touches_desc">Highlight taps and gestures during screen recording</string>
+    <string name="show_touches_dev_desc">On this Android version, the system restricts changing this setting automatically. You can enable \'Show taps\' directly in Developer options.</string>
+    <string name="open_developer_options">Developer options</string>
 </resources>

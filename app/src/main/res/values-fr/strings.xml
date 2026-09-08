@@ -93,4 +93,6 @@
     <string name="waveform_ready">Spectre prêt</string>
     <string name="show_touches">Afficher les touches</string>
     <string name="show_touches_desc">Mettre en surbrillance les gestes et appuis lors de l\'enregistrement de l\'écran</string>
+    <string name="show_touches_dev_desc">Sur cette version d\'Android, le système restreint la modification automatique de ce paramètre. Vous pouvez activer directement « Afficher les appuis » dans les Options de développement.</string>
+    <string name="open_developer_options">Options de développement</string>
 </resources>

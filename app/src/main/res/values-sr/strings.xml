@@ -97,4 +97,6 @@
     <string name="waveform_ready">Спектар је спреман</string>
     <string name="show_touches">Прикажи додире</string>
     <string name="show_touches_desc">Истакни додире и покрете током снимања екрана</string>
+    <string name="show_touches_dev_desc">На овој верзији Андроид-а систем ограничава аутоматску промену овог подешавања. Можете укључити \'Прикажи додире\' директно у Опцијама за програмере.</string>
+    <string name="open_developer_options">Опције за програмере</string>
 </resources>

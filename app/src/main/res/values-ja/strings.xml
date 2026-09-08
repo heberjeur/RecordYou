@@ -93,4 +93,6 @@
     <string name="waveform_ready">波形準備完了</string>
     <string name="show_touches">タップを表示</string>
     <string name="show_touches_desc">画面録画中にタップやジェスチャーをハイライト表示</string>
+    <string name="show_touches_dev_desc">このAndroidバージョンでは、システムによりこの設定の自動変更が制限されています。開発者向けオプションで直接「タップを表示」を有効にできます。</string>
+    <string name="open_developer_options">開発者向けオプション</string>
 </resources>

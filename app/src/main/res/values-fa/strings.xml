@@ -91,4 +91,6 @@
     <string name="waveform_ready">طیف آماده است</string>
     <string name="show_touches">نمایش لمس‌ها</string>
     <string name="show_touches_desc">برجسته‌سازی لمس‌ها و حرکات هنگام ضبط صفحه</string>
+    <string name="show_touches_dev_desc">در این نسخه اندروید، سیستم تغییر خودکار این تنظیم را محدود می‌کند. می‌توانید مستقیماً \'نمایش لمس‌ها\' را در گزینه‌های توسعه‌دهنده فعال کنید.</string>
+    <string name="open_developer_options">گزینه‌های توسعه‌دهنده</string>
 </resources>

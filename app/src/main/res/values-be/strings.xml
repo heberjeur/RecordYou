@@ -89,4 +89,6 @@
     <string name="waveform_ready">Спектр гатовы</string>
     <string name="show_touches">Паказваць націсканні</string>
     <string name="show_touches_desc">Вылучаць дотыкі і жэсты падчас запісу экрана</string>
+    <string name="show_touches_dev_desc">У гэтай версіі Android сістэма абмяжоўвае аўтаматычную змену гэтага параметра. Вы можаце ўключыць \'Паказваць націсканні\' непасрэдна ў параметрах распрацоўшчыка.</string>
+    <string name="open_developer_options">Параметры распрацоўшчыка</string>
 </resources>

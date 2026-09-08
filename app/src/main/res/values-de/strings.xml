@@ -91,4 +91,6 @@
     <string name="waveform_ready">Spektrum bereit</string>
     <string name="show_touches">Berührungen anzeigen</string>
     <string name="show_touches_desc">Tippen und Gesten während der Bildschirmaufnahme hervorheben</string>
+    <string name="show_touches_dev_desc">Auf dieser Android-Version schränkt das System die automatische Änderung dieser Einstellung ein. Sie können \'Tippen anzeigen\' direkt in den Entwickleroptionen aktivieren.</string>
+    <string name="open_developer_options">Entwickleroptionen</string>
 </resources>

@@ -93,4 +93,6 @@
     <string name="waveform_ready">Spektrum siap</string>
     <string name="show_touches">Tampilkan sentuhan</string>
     <string name="show_touches_desc">Sorot ketukan dan gestur selama perekaman layar</string>
+    <string name="show_touches_dev_desc">Pada versi Android ini, sistem membatasi pengubahan setelan ini secara otomatis. Anda dapat mengaktifkan \'Tampilkan ketukan\' langsung di Opsi pengembang.</string>
+    <string name="open_developer_options">Opsi pengembang</string>
 </resources>

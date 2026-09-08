@@ -62,4 +62,6 @@
     <string name="waveform_ready">Spektrum sedia</string>
     <string name="show_touches">Tunjukkan sentuhan</string>
     <string name="show_touches_desc">Serlahkan ketukan dan gerak isyarat semasa rakaman skrin</string>
+    <string name="show_touches_dev_desc">Pada versi Android ini, sistem mengehadkan penukaran tetapan ini secara automatik. Anda boleh mendayakan \'Tunjukkan ketukan\' terus dalam Pilihan pembangun.</string>
+    <string name="open_developer_options">Pilihan pembangun</string>
 </resources>

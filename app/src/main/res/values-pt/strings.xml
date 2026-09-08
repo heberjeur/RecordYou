@@ -90,4 +90,6 @@
     <string name="waveform_ready">Espetro pronto</string>
     <string name="show_touches">Mostrar toques</string>
     <string name="show_touches_desc">Destacar toques e gestos durante a gravação do ecrã</string>
+    <string name="show_touches_dev_desc">Nesta versão do Android, o sistema restringe a alteração automática desta definição. Pode ativar \'Mostrar toques\' diretamente nas Opções de programador.</string>
+    <string name="open_developer_options">Opções de programador</string>
 </resources>

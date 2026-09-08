@@ -93,4 +93,6 @@
     <string name="waveform_ready">频谱就绪</string>
     <string name="show_touches">显示触摸操作</string>
     <string name="show_touches_desc">在屏幕录制过程中突出显示点按和手势</string>
+    <string name="show_touches_dev_desc">在此Android版本中，系统限制自动更改此设置。您可以直接在开发者选项中启用“显示点按操作”。</string>
+    <string name="open_developer_options">开发者选项</string>
 </resources>

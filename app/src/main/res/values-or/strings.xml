@@ -19,4 +19,6 @@
     <string name="waveform_ready">ସ୍ପେକ୍ଟ୍ରମ୍ ପ୍ରସ୍ତୁତ</string>
     <string name="show_touches">ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ</string>
     <string name="show_touches_desc">ସ୍କ୍ରିନ୍ ରେକର୍ଡିଂ ସମୟରେ ଟ୍ୟାପ୍ ଏବଂ ଇଙ୍ଗିତଗୁଡ଼ିକୁ ହାଇଲାଇଟ୍ କରନ୍ତୁ</string>
+    <string name="show_touches_dev_desc">ଏହି ଆଣ୍ଡ୍ରଏଡ୍ ସଂସ୍କରଣରେ ସିଷ୍ଟମ୍ ଏହି ସେଟିଂକୁ ସ୍ୱୟଂଚାଳିତ ଭାବରେ ପରିବର୍ତ୍ତନ କରିବାକୁ ପ୍ରତିବନ୍ଧିତ କରେ। ଆପଣ ଡେଭଲପର୍ ବିକଳ୍ପଗୁଡ଼ିକରେ ସିଧାସଳଖ \'ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ\' ସକ୍ଷମ କରିପାରିବେ।</string>
+    <string name="open_developer_options">ଡେଭଲପର୍ ବିକଳ୍ପ</string>
 </resources>

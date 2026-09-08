@@ -32,10 +32,12 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
@@ -110,6 +112,9 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
     }
 
     var showLanguagePref by remember {
+        mutableStateOf(false)
+    }
+    var showTouchesDevDialog by remember {
         mutableStateOf(false)
     }
     var audioTargetFolder by remember {
@@ -389,12 +394,35 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                 title = stringResource(R.string.show_touches),
                 summary = stringResource(R.string.show_touches_desc),
                 onCheckedChange = { isChecked ->
-                    if (isChecked && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.System.canWrite(context)) {
-                        val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
-                            data = Uri.parse("package:${context.packageName}")
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    if (isChecked) {
+                        var canWriteDirectly = false
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (!Settings.System.canWrite(context)) {
+                                val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
+                                    data = Uri.parse("package:${context.packageName}")
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                }
+                                context.startActivity(intent)
+                            } else {
+                                canWriteDirectly = runCatching {
+                                    val current = Settings.System.getInt(context.contentResolver, "show_touches", 0)
+                                    Settings.System.putInt(context.contentResolver, "show_touches", current)
+                                }.isSuccess
+                            }
+                        } else {
+                            canWriteDirectly = true
                         }
-                        context.startActivity(intent)
+
+                        if (!canWriteDirectly) {
+                            val hasRoot = runCatching {
+                                val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "settings get system show_touches"))
+                                process.waitFor() == 0
+                            }.getOrDefault(false)
+
+                            if (!hasRoot) {
+                                showTouchesDevDialog = true
+                            }
+                        }
                     }
                 }
             )
@@ -473,5 +501,39 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
             showLanguagePref = false
             (currentContext as? ComponentActivity)?.recreate()
         }
+    }
+
+    if (showTouchesDevDialog) {
+        AlertDialog(
+            onDismissRequest = { showTouchesDevDialog = false },
+            title = { Text(stringResource(R.string.show_touches)) },
+            text = { Text(stringResource(R.string.show_touches_dev_desc)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showTouchesDevDialog = false
+                        runCatching {
+                            val intent = Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS).apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            }
+                            context.startActivity(intent)
+                        }.onFailure {
+                            runCatching {
+                                context.startActivity(Intent(Settings.ACTION_SETTINGS).apply {
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                })
+                            }
+                        }
+                    }
+                ) {
+                    Text(stringResource(R.string.open_developer_options))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showTouchesDevDialog = false }) {
+                    Text(stringResource(R.string.close))
+                }
+            }
+        )
     }
 }

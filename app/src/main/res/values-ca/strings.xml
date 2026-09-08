@@ -89,4 +89,6 @@
     <string name="waveform_ready">Espectre a punt</string>
     <string name="show_touches">Mostra els tocs</string>
     <string name="show_touches_desc">Ressalta els tocs i gestos durant la gravació de la pantalla</string>
+    <string name="show_touches_dev_desc">En aquesta versió d\'Android, el sistema restringeix el canvi automàtic d\'aquest paràmetre. Podeu activar \'Mostra els tocs\' directament a les Opcions per a desenvolupadors.</string>
+    <string name="open_developer_options">Opcions per a desenvolupadors</string>
 </resources>

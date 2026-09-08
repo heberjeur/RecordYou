@@ -93,4 +93,6 @@
     <string name="waveform_ready">Espectro listo</string>
     <string name="show_touches">Mostrar toques</string>
     <string name="show_touches_desc">Resaltar toques y gestos durante la grabación de pantalla</string>
+    <string name="show_touches_dev_desc">En esta versión de Android, el sistema restringe cambiar este ajuste automáticamente. Puedes activar \'Mostrar toques\' directamente en Opciones de desarrollador.</string>
+    <string name="open_developer_options">Opciones de desarrollador</string>
 </resources>

@@ -87,4 +87,6 @@
     <string name="waveform_ready">ספקטרום מוכן</string>
     <string name="show_touches">הצגת נגיעות</string>
     <string name="show_touches_desc">הדגשת לחיצות ומחוות במהלך הקלטת מסך</string>
+    <string name="show_touches_dev_desc">בגרסת אנדרואיד זו, המערכת מגבילה את השינוי האוטומטי של הגדרה זו. ניתן להפעיל את \'הצגת נגיעות\' ישירות באפשרויות למפתחים.</string>
+    <string name="open_developer_options">אפשרויות למפתחים</string>
 </resources>

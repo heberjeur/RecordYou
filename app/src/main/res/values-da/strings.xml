@@ -93,4 +93,6 @@
     <string name="waveform_ready">Spektrum klar</string>
     <string name="show_touches">Vis berøringer</string>
     <string name="show_touches_desc">Fremhæv tryk og bevægelser under skærmoptagelse</string>
+    <string name="show_touches_dev_desc">På denne Android-version begrænser systemet automatisk ændring af denne indstilling. Du kan aktivere \'Vis berøringer\' direkte i Udviklerindstillinger.</string>
+    <string name="open_developer_options">Udviklerindstillinger</string>
 </resources>

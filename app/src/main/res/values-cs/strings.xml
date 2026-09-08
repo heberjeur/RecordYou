@@ -93,4 +93,6 @@
     <string name="waveform_ready">Spektrum připraveno</string>
     <string name="show_touches">Zobrazit dotyky</string>
     <string name="show_touches_desc">Zvýraznit klepnutí a gesta během nahrávání obrazovky</string>
+    <string name="show_touches_dev_desc">V této verzi Androidu systém omezuje automatickou změnu tohoto nastavení. Můžete zapnout \'Zobrazit klepnutí\' přímo v Možnostech pro vývojáře.</string>
+    <string name="open_developer_options">Možnosti pro vývojáře</string>
 </resources>

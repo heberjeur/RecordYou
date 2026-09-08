@@ -64,4 +64,6 @@
     <string name="waveform_ready">Spektr hazırdır</string>
     <string name="show_touches">Toxunuşları göstər</string>
     <string name="show_touches_desc">Ekran qeydi zamanı toxunuşları və jestləri vurğula</string>
+    <string name="show_touches_dev_desc">Bu Android versiyasında sistem bu parametri avtomatik dəyişməyi məhdudlaşdırır. Tərtibatçı seçimlərində \'Toxunuşları göstər\' seçimini birbaşa aktivləşdirə bilərsiniz.</string>
+    <string name="open_developer_options">Tərtibatçı seçimləri</string>
 </resources>
