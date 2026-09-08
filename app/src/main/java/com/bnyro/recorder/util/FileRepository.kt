@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 
 interface FileRepository {
@@ -108,9 +109,21 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
 
     private val videoThumbnailCache = android.util.LruCache<String, Bitmap>(50)
     private val audioWaveformCache = android.util.LruCache<String, List<Float>>(100)
+    private val thumbnailDir = java.io.File(context.cacheDir, "thumbnails").apply { mkdirs() }
     private var cachedAudio: List<RecordingItemData>? = null
     private var cachedVideos: List<RecordingItemData>? = null
     private val cacheFile = java.io.File(context.cacheDir, "recordings.json")
+
+    private fun getThumbnailFile(uriStr: String, modified: Long, size: Long): java.io.File {
+        val hash = try {
+            val md = java.security.MessageDigest.getInstance("MD5")
+            val bytes = md.digest(uriStr.toByteArray())
+            bytes.joinToString("") { "%02x".format(it) }
+        } catch (e: Exception) {
+            uriStr.hashCode().toString()
+        }
+        return java.io.File(thumbnailDir, "thumb_${hash}_${modified}_${size}.jpg")
+    }
 
     init {
         readCache()
@@ -149,13 +162,25 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                         if (wave != null) {
                             audioWaveformCache.put(doc.uri.toString(), wave)
                         }
+                        val thumb = if (isVideo) {
+                            videoThumbnailCache.get(doc.uri.toString()) ?: run {
+                                val diskFile = getThumbnailFile(doc.uri.toString(), modified, size)
+                                if (diskFile.exists() && diskFile.length() > 0) {
+                                    val b = runCatching { BitmapFactory.decodeFile(diskFile.absolutePath) }.getOrNull()
+                                    if (b != null) {
+                                        videoThumbnailCache.put(doc.uri.toString(), b)
+                                    }
+                                    b
+                                } else null
+                            }
+                        } else null
                         val item = RecordingItemData(
                             recordingFile = doc,
                             recorderType = if (isVideo) RecorderType.VIDEO else RecorderType.AUDIO,
                             name = if (name.isNotEmpty()) name else (uri.lastPathSegment ?: ""),
                             lastModified = modified,
                             size = size,
-                            thumbnail = if (isVideo) videoThumbnailCache.get(doc.uri.toString()) else null,
+                            thumbnail = thumb,
                             waveform = wave
                         )
                         if (isVideo) video.add(item) else audio.add(item)
@@ -207,8 +232,23 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
 
     override fun loadVideoThumbnail(file: DocumentFile): Bitmap? {
         val uriStr = file.uri.toString()
+        val currentModified = file.lastModified()
+        val currentSize = file.length()
+
         videoThumbnailCache.get(uriStr)?.let { return it }
-        return kotlin.runCatching {
+
+        val diskFile = getThumbnailFile(uriStr, currentModified, currentSize)
+        if (diskFile.exists() && diskFile.length() > 0) {
+            val cachedBitmap = runCatching {
+                BitmapFactory.decodeFile(diskFile.absolutePath)
+            }.getOrNull()
+            if (cachedBitmap != null) {
+                videoThumbnailCache.put(uriStr, cachedBitmap)
+                return cachedBitmap
+            }
+        }
+
+        return runCatching {
             val retriever = MediaMetadataRetriever()
             try {
                 retriever.setDataSource(context, file.uri)
@@ -220,6 +260,14 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                 }
                 if (bitmap != null) {
                     videoThumbnailCache.put(uriStr, bitmap)
+                    runCatching {
+                        diskFile.outputStream().use { out ->
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)
+                        }
+                    }
+                    cachedVideos = cachedVideos?.map {
+                        if (it.recordingFile.uri == file.uri) it.copy(thumbnail = bitmap) else it
+                    }
                 }
                 bitmap
             } finally {
@@ -275,10 +323,19 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                 val currentSize = it.length()
                 val currentModified = it.lastModified()
                 val existing = cachedVideos?.firstOrNull { c -> c.recordingFile.uri == it.uri }
-                val thumb = if (existing != null && existing.size == currentSize && existing.lastModified == currentModified) {
-                    videoThumbnailCache.get(uriStr) ?: existing.thumbnail
+                val thumb = if (existing != null && existing.size == currentSize && existing.lastModified == currentModified && existing.thumbnail != null) {
+                    existing.thumbnail
                 } else {
-                    null
+                    videoThumbnailCache.get(uriStr) ?: run {
+                        val diskFile = getThumbnailFile(uriStr, currentModified, currentSize)
+                        if (diskFile.exists() && diskFile.length() > 0) {
+                            val b = runCatching { BitmapFactory.decodeFile(diskFile.absolutePath) }.getOrNull()
+                            if (b != null) {
+                                videoThumbnailCache.put(uriStr, b)
+                            }
+                            b
+                        } else null
+                    }
                 }
                 RecordingItemData(
                     recordingFile = it,
@@ -341,9 +398,13 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                     }
                 }
             }
-            uris.forEach { uri ->
-                audioWaveformCache.remove(uri.toString())
-                videoThumbnailCache.remove(uri.toString())
+            files.forEach { file ->
+                val uriStr = file.uri.toString()
+                runCatching {
+                    getThumbnailFile(uriStr, file.lastModified(), file.length()).delete()
+                }
+                videoThumbnailCache.remove(uriStr)
+                audioWaveformCache.remove(uriStr)
             }
             cachedAudio = cachedAudio?.filterNot { uris.contains(it.recordingFile.uri) }
             cachedVideos = cachedVideos?.filterNot { uris.contains(it.recordingFile.uri) }
@@ -369,6 +430,9 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
             }
             audioWaveformCache.evictAll()
             videoThumbnailCache.evictAll()
+            runCatching {
+                thumbnailDir.listFiles()?.forEach { it.delete() }
+            }
             cachedAudio = emptyList()
             cachedVideos = emptyList()
             writeCache()

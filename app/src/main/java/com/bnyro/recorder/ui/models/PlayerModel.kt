@@ -72,16 +72,20 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
                 screenRecordingItems = video
             }
 
-            video.forEach { item ->
-                if (item.thumbnail == null) {
-                    val thumb = fileRepository.loadVideoThumbnail(item.recordingFile)
-                    if (thumb != null) {
-                        withContext(Dispatchers.Main) {
-                            screenRecordingItems = screenRecordingItems.map {
-                                if (it.recordingFile.uri == item.recordingFile.uri) {
-                                    it.copy(thumbnail = thumb)
-                                } else {
-                                    it
+            val pendingVideo = video.filter { it.thumbnail == null }
+            val videoSemaphore = Semaphore(3)
+            val videoJobs = pendingVideo.map { item ->
+                launch(Dispatchers.IO) {
+                    videoSemaphore.withPermit {
+                        val thumb = fileRepository.loadVideoThumbnail(item.recordingFile)
+                        if (thumb != null) {
+                            withContext(Dispatchers.Main) {
+                                screenRecordingItems = screenRecordingItems.map {
+                                    if (it.recordingFile.uri == item.recordingFile.uri) {
+                                        it.copy(thumbnail = thumb)
+                                    } else {
+                                        it
+                                    }
                                 }
                             }
                         }
