@@ -139,4 +139,6 @@ Ota \'Syöttö\'-osiossa käyttöön \'%s\'.</string>
     <string name="zoom_in">Lähennä</string>
     <string name="zoom_out">Loitonna</string>
     <string name="select_all">Valitse kaikki</string>
+    <string name="segment_cut">Segmentti leikattu</string>
+    <string name="select_part">Valitse alue</string>
 </resources>

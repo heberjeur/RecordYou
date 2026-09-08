@@ -139,4 +139,6 @@ V sekci \'Zadávání\' zapněte \'%s\'.</string>
     <string name="zoom_in">Přiblížit</string>
     <string name="zoom_out">Oddálit</string>
     <string name="select_all">Vybrat vše</string>
+    <string name="segment_cut">Segment vyjmut</string>
+    <string name="select_part">Vybrat rozsah</string>
 </resources>

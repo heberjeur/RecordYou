@@ -133,4 +133,6 @@
     <string name="zoom_in">התקרב</string>
     <string name="zoom_out">התרחק</string>
     <string name="select_all">בחר הכל</string>
+    <string name="segment_cut">המקטע נגזר</string>
+    <string name="select_part">בחירת טווח</string>
 </resources>

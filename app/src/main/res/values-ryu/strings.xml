@@ -139,4 +139,6 @@
     <string name="zoom_in">拡大</string>
     <string name="zoom_out">縮小</string>
     <string name="select_all">全ち選ぶ</string>
+    <string name="segment_cut">セグメント切取たん</string>
+    <string name="select_part">範囲選ぶ</string>
 </resources>

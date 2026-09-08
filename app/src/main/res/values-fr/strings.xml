@@ -139,4 +139,6 @@ Dans la section « Saisie », activez « %s » (ou « Vignettes pour d
     <string name="zoom_in">Zoom avant</string>
     <string name="zoom_out">Zoom arrière</string>
     <string name="select_all">Tout sélectionner</string>
+    <string name="segment_cut">Segment coupé</string>
+    <string name="select_part">Sélectionner une plage</string>
 </resources>

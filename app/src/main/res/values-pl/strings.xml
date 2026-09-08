@@ -137,4 +137,6 @@ W sekcji \'Wprowadzanie\' włącz \'%s\'.</string>
     <string name="zoom_in">Powiększ</string>
     <string name="zoom_out">Pomniejsz</string>
     <string name="select_all">Zaznacz wszystko</string>
+    <string name="segment_cut">Segment wycięty</string>
+    <string name="select_part">Wybierz zakres</string>
 </resources>

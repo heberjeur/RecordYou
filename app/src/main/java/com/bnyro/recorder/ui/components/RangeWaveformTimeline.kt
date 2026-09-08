@@ -67,6 +67,8 @@ fun RangeWaveformTimeline(
     onSelectSegment: (Int) -> Unit,
     onStartChanged: (Long) -> Unit,
     onEndChanged: (Long) -> Unit,
+    onSlideSegment: (Long) -> Unit = {},
+    onDragStart: () -> Unit = {},
     onSeek: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -97,6 +99,8 @@ fun RangeWaveformTimeline(
     val updatedOnSelectSegment by rememberUpdatedState(onSelectSegment)
     val updatedOnStartChanged by rememberUpdatedState(onStartChanged)
     val updatedOnEndChanged by rememberUpdatedState(onEndChanged)
+    val updatedOnSlideSegment by rememberUpdatedState(onSlideSegment)
+    val updatedOnDragStart by rememberUpdatedState(onDragStart)
     val updatedOnSeek by rememberUpdatedState(onSeek)
 
     LaunchedEffect(currentPositionMs, zoomFactor) {
@@ -130,6 +134,7 @@ fun RangeWaveformTimeline(
 
                     var dragMode = 0
                     var initialDistance = 0f
+                    var hasDragged = false
 
                     val activeSeg = updatedSegments.getOrNull(updatedSelectedIndex)
                     val curSafeStart = activeSeg?.startMs ?: 0L
@@ -137,27 +142,44 @@ fun RangeWaveformTimeline(
 
                     val startX = (curSafeStart.toFloat() / updatedDuration) * totalVirtualW - scrollOffsetX
                     val endX = (curSafeEnd.toFloat() / updatedDuration) * totalVirtualW - scrollOffsetX
+                    val playheadScreenX = (currentPositionMs.toFloat() / updatedDuration) * totalVirtualW - scrollOffsetX
                     val touchX = down.position.x
                     val touchVirtualX = (touchX + scrollOffsetX).coerceIn(0f, totalVirtualW)
+                    val touchMs = ((touchVirtualX / totalVirtualW) * updatedDuration).toLong()
 
-                    if (abs(touchX - startX) <= handleTolerance) {
-                        dragMode = 1
-                    } else if (abs(touchX - endX) <= handleTolerance) {
-                        dragMode = 2
-                    } else {
-                        val touchMs = ((touchVirtualX / totalVirtualW) * updatedDuration).toLong()
-                        val hitIndex = updatedSegments.indexOfFirst { touchMs in it.startMs..it.endMs }
-                        if (hitIndex >= 0 && hitIndex != updatedSelectedIndex) {
-                            updatedOnSelectSegment(hitIndex)
-                        }
-                        updatedOnSeek(touchMs)
+                    var lastDragVirtualX = touchVirtualX
+                    val distStart = abs(touchX - startX)
+                    val distEnd = abs(touchX - endX)
+                    val distPlayhead = abs(touchX - playheadScreenX)
+
+                    if (distStart <= handleTolerance || distEnd <= handleTolerance) {
+                        dragMode = if (distStart <= distEnd) 1 else 2
+                    } else if (distPlayhead <= 18.dp.toPx()) {
                         dragMode = 3
+                    } else if (touchMs in curSafeStart..curSafeEnd) {
+                        dragMode = 4
+                    } else {
+                        val hitIndex = updatedSegments.indexOfFirst { touchMs in it.startMs..it.endMs }
+                        if (hitIndex >= 0) {
+                            if (hitIndex != updatedSelectedIndex) {
+                                updatedOnSelectSegment(hitIndex)
+                            }
+                            dragMode = 4
+                        } else {
+                            dragMode = 3
+                            updatedOnSeek(touchMs)
+                        }
                     }
 
                     while (true) {
                         val event = awaitPointerEvent()
                         val activePointers = event.changes.filter { it.pressed }
-                        if (activePointers.isEmpty()) break
+                        if (activePointers.isEmpty()) {
+                            if (!hasDragged && dragMode == 4) {
+                                updatedOnSeek(touchMs)
+                            }
+                            break
+                        }
 
                         if (activePointers.size >= 2) {
                             val p1 = activePointers[0].position
@@ -183,6 +205,11 @@ fun RangeWaveformTimeline(
                             val segStart = curSeg?.startMs ?: 0L
                             val segEnd = curSeg?.endMs ?: updatedDuration
 
+                            if (!hasDragged && abs(curVirtualX - touchVirtualX) > 4.dp.toPx()) {
+                                hasDragged = true
+                                updatedOnDragStart()
+                            }
+
                             when (dragMode) {
                                 1 -> {
                                     val safeMin = if (updatedSelectedIndex > 0) updatedSegments[updatedSelectedIndex - 1].endMs else 0L
@@ -196,6 +223,14 @@ fun RangeWaveformTimeline(
                                 }
                                 3 -> {
                                     updatedOnSeek(curMs.coerceIn(0L, updatedDuration))
+                                }
+                                4 -> {
+                                    val deltaVirtualX = curVirtualX - lastDragVirtualX
+                                    val deltaMs = ((deltaVirtualX / totalVirtualW) * updatedDuration).toLong()
+                                    if (deltaMs != 0L) {
+                                        updatedOnSlideSegment(deltaMs)
+                                        lastDragVirtualX = curVirtualX
+                                    }
                                 }
                             }
                             change.consume()

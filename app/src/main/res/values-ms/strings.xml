@@ -108,4 +108,6 @@ Di bahagian \'Input\', dayakan \'%s\'.</string>
     <string name="zoom_in">Zum masuk</string>
     <string name="zoom_out">Zum keluar</string>
     <string name="select_all">Pilih semua</string>
+    <string name="segment_cut">Segmen dipotong</string>
+    <string name="select_part">Pilih julat</string>
 </resources>

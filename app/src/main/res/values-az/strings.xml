@@ -110,4 +110,6 @@ Aktivləşdirmək üçün:
     <string name="zoom_in">Böyüt</string>
     <string name="zoom_out">Kiçilt</string>
     <string name="select_all">Hamısını seç</string>
+    <string name="segment_cut">Seqment kəsildi</string>
+    <string name="select_part">Aralıq seç</string>
 </resources>

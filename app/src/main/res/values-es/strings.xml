@@ -139,4 +139,6 @@ En la sección \'Entrada\', activa \'%s\'.</string>
     <string name="zoom_in">Acercar</string>
     <string name="zoom_out">Alejar</string>
     <string name="select_all">Seleccionar todo</string>
+    <string name="segment_cut">Segmento cortado</string>
+    <string name="select_part">Seleccionar rango</string>
 </resources>

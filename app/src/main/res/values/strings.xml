@@ -146,4 +146,6 @@ In the \'Input\' section, enable \'%s\' (or use \'Quick settings developer tiles
     <string name="zoom_in">Zoom in</string>
     <string name="zoom_out">Zoom out</string>
     <string name="select_all">Select all</string>
+    <string name="segment_cut">Segment cut</string>
+    <string name="select_part">Select range</string>
 </resources>

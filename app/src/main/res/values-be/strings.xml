@@ -135,4 +135,6 @@
     <string name="zoom_in">Наблізіць</string>
     <string name="zoom_out">Аддаліць</string>
     <string name="select_all">Выбраць усё</string>
+    <string name="segment_cut">Сегмент выразаны</string>
+    <string name="select_part">Выбраць дыяпазон</string>
 </resources>

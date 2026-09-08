@@ -139,4 +139,6 @@ Di bagian \'Masukan\', aktifkan \'%s\'.</string>
     <string name="zoom_in">Perbesar</string>
     <string name="zoom_out">Perkecil</string>
     <string name="select_all">Pilih semua</string>
+    <string name="segment_cut">Segmen dipotong</string>
+    <string name="select_part">Pilih rentang</string>
 </resources>

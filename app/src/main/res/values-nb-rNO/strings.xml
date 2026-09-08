@@ -133,4 +133,6 @@ I delen \'Inndata\', aktiver \'%s\'.</string>
     <string name="zoom_in">Zoom inn</string>
     <string name="zoom_out">Zoom ut</string>
     <string name="select_all">Velg alle</string>
+    <string name="segment_cut">Segment klippet ut</string>
+    <string name="select_part">Velg område</string>
 </resources>

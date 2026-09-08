@@ -143,4 +143,6 @@
     <string name="zoom_in">Увећај</string>
     <string name="zoom_out">Умањи</string>
     <string name="select_all">Изабери све</string>
+    <string name="segment_cut">Сегмент је исечен</string>
+    <string name="select_part">Изабери опсег</string>
 </resources>

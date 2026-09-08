@@ -139,4 +139,6 @@
     <string name="zoom_in">ज़ूम इन</string>
     <string name="zoom_out">ज़ूम आउट</string>
     <string name="select_all">सभी चुनें</string>
+    <string name="segment_cut">खंड कट किया गया</string>
+    <string name="select_part">रेंज चुनें</string>
 </resources>

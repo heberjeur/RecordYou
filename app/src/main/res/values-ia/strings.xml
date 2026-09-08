@@ -139,4 +139,6 @@ In le section \'Entrata\', activa \'%s\'.</string>
     <string name="zoom_in">Ingrandir</string>
     <string name="zoom_out">Diminuer</string>
     <string name="select_all">Seliger toto</string>
+    <string name="segment_cut">Segmento taliate</string>
+    <string name="select_part">Seliger intervallo</string>
 </resources>

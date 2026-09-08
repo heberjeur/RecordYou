@@ -139,4 +139,6 @@ Nella sezione \'Input\', attiva \'%s\'.</string>
     <string name="zoom_in">Ingrandisci</string>
     <string name="zoom_out">Rimpicciolisci</string>
     <string name="select_all">Seleziona tutto</string>
+    <string name="segment_cut">Segmento tagliato</string>
+    <string name="select_part">Seleziona intervallo</string>
 </resources>

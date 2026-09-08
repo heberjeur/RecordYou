@@ -123,4 +123,6 @@ Pentru a le activa:
     <string name="zoom_in">Mărește</string>
     <string name="zoom_out">Micșorează</string>
     <string name="select_all">Selectează tot</string>
+    <string name="segment_cut">Segment decupat</string>
+    <string name="select_part">Selectează intervalul</string>
 </resources>

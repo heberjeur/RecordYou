@@ -139,4 +139,6 @@ I afsnittet \'Input\' aktiveres \'%s\'.</string>
     <string name="zoom_in">Zoom ind</string>
     <string name="zoom_out">Zoom ud</string>
     <string name="select_all">Vælg alle</string>
+    <string name="segment_cut">Segment klippet</string>
+    <string name="select_part">Vælg interval</string>
 </resources>

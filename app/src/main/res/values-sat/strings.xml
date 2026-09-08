@@ -68,4 +68,6 @@
     <string name="zoom_in">ᱢᱟᱨᱟᱝ</string>
     <string name="zoom_out">ᱦᱩᱰᱤᱧ</string>
     <string name="select_all">ᱡᱚᱛᱚ ᱵᱟᱪᱷᱟᱣ</string>
+    <string name="segment_cut">ᱦᱟᱹᱴᱤᱧ ᱜᱮᱫ ᱮᱱᱟ</string>
+    <string name="select_part">ᱥᱤᱢᱟᱹ ᱵᱟᱪᱷᱟᱣ</string>
 </resources>

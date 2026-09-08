@@ -137,4 +137,6 @@ Aktivieren Sie im Bereich \'Eingabe\' die Option \'%s\'.</string>
     <string name="zoom_in">Vergrößern</string>
     <string name="zoom_out">Verkleinern</string>
     <string name="select_all">Alles auswählen</string>
+    <string name="segment_cut">Segment ausgeschnitten</string>
+    <string name="select_part">Bereich auswählen</string>
 </resources>

@@ -81,4 +81,6 @@
     <string name="zoom_in">জুম ইন</string>
     <string name="zoom_out">জুম আউট</string>
     <string name="select_all">সব নির্বাচন করুন</string>
+    <string name="segment_cut">সেগমেন্ট কাটা হয়েছে</string>
+    <string name="select_part">পরিসীমা নির্বাচন করুন</string>
 </resources>

@@ -139,4 +139,6 @@ Etkinleştirmek için:
     <string name="zoom_in">Yakınlaştır</string>
     <string name="zoom_out">Uzaklaştır</string>
     <string name="select_all">Tümünü seç</string>
+    <string name="segment_cut">Segment kesildi</string>
+    <string name="select_part">Aralık seç</string>
 </resources>

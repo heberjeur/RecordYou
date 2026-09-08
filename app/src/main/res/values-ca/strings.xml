@@ -135,4 +135,6 @@ A la secció \'Entrada\', activeu \'%s\'.</string>
     <string name="zoom_in">Apropa</string>
     <string name="zoom_out">Allunya</string>
     <string name="select_all">Selecciona-ho tot</string>
+    <string name="segment_cut">Segment retallat</string>
+    <string name="select_part">Selecciona l\'interval</string>
 </resources>

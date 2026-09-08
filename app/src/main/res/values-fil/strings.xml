@@ -108,4 +108,6 @@ Sa seksyong \'Input\', paganahin ang \'%s\'.</string>
     <string name="zoom_in">Palakihin</string>
     <string name="zoom_out">Paliitin</string>
     <string name="select_all">Piliin lahat</string>
+    <string name="segment_cut">Nagupit ang segment</string>
+    <string name="select_part">Pumili ng hanay</string>
 </resources>

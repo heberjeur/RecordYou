@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ContentCut
 import androidx.compose.material.icons.filled.ContentPaste
+import androidx.compose.material.icons.filled.Crop
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.GraphicEq
 import androidx.compose.material.icons.filled.SelectAll
@@ -67,6 +68,7 @@ fun TrimmerControlBar(
     onCopy: () -> Unit,
     onPaste: () -> Unit,
     onDelete: () -> Unit,
+    onSelectPart: () -> Unit,
     onSelectAll: () -> Unit,
     onMoveLeft: () -> Unit,
     onMoveRight: () -> Unit,
@@ -176,21 +178,43 @@ fun TrimmerControlBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            OutlinedButton(
-                onClick = onSelectAll,
-                enabled = canSelectAll,
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Default.SelectAll,
-                    contentDescription = null,
-                    modifier = Modifier.size(15.dp)
-                )
-                Text(
-                    text = stringResource(R.string.select_all),
-                    fontSize = 11.sp,
-                    modifier = Modifier.padding(start = 3.dp)
-                )
+                OutlinedButton(
+                    onClick = onSelectPart,
+                    enabled = canSelectAll,
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Crop,
+                        contentDescription = null,
+                        modifier = Modifier.size(15.dp)
+                    )
+                    Text(
+                        text = stringResource(R.string.select_part),
+                        fontSize = 11.sp,
+                        modifier = Modifier.padding(start = 3.dp)
+                    )
+                }
+
+                OutlinedButton(
+                    onClick = onSelectAll,
+                    enabled = canSelectAll,
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.SelectAll,
+                        contentDescription = null,
+                        modifier = Modifier.size(15.dp)
+                    )
+                    Text(
+                        text = stringResource(R.string.select_all),
+                        fontSize = 11.sp,
+                        modifier = Modifier.padding(start = 3.dp)
+                    )
+                }
             }
 
             Row(

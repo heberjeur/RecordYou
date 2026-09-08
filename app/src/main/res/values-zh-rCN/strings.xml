@@ -139,4 +139,6 @@
     <string name="zoom_in">放大</string>
     <string name="zoom_out">缩小</string>
     <string name="select_all">全选</string>
+    <string name="segment_cut">已剪切片段</string>
+    <string name="select_part">选择范围</string>
 </resources>

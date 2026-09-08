@@ -135,4 +135,6 @@
     <string name="zoom_in">ချဲ့ပါ</string>
     <string name="zoom_out">ချုံ့ပါ</string>
     <string name="select_all">အားလုံးရွေးပါ</string>
+    <string name="segment_cut">အပိုင်းဖြတ်ပြီးပါပြီ</string>
+    <string name="select_part">အပိုင်းအခြားရွေးပါ</string>
 </resources>

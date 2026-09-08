@@ -139,4 +139,6 @@ Jaotises \'Sisend\' lubage \'%s\'.</string>
     <string name="zoom_in">Suurenda</string>
     <string name="zoom_out">Vähenda</string>
     <string name="select_all">Vali kõik</string>
+    <string name="segment_cut">Segment lõigatud</string>
+    <string name="select_part">Vali vahemik</string>
 </resources>

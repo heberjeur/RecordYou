@@ -229,6 +229,8 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                 onSelectSegment = { trimmerModel.selectSegment(it) },
                 onStartChanged = { trimmerModel.updateSelectedSegmentStart(it) },
                 onEndChanged = { trimmerModel.updateSelectedSegmentEnd(it) },
+                onSlideSegment = { trimmerModel.slideSelectedSegment(it) },
+                onDragStart = { trimmerModel.beginSegmentEdit() },
                 onSeek = {
                     trimmerModel.player.seekTo(it)
                     trimmerModel.currentPositionMs = it
@@ -304,7 +306,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                 onSplit = { trimmerModel.splitAtCurrentPosition() },
                 onCut = {
                     if (trimmerModel.cutSelectedSegment()) {
-                        Toast.makeText(context, context.getString(R.string.segment_copied), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.segment_cut), Toast.LENGTH_SHORT).show()
                     }
                 },
                 onCopy = {
@@ -314,6 +316,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                 },
                 onPaste = { trimmerModel.pasteSegment() },
                 onDelete = { trimmerModel.deleteSelectedSegment() },
+                onSelectPart = { trimmerModel.selectPartAtCurrentPosition() },
                 onSelectAll = { trimmerModel.selectAllOrReset() },
                 onMoveLeft = { trimmerModel.moveSelectedSegmentLeft() },
                 onMoveRight = { trimmerModel.moveSelectedSegmentRight() },
