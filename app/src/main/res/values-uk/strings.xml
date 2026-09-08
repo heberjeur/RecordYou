@@ -127,4 +127,9 @@
     <string name="audio_fade">Згасання звуку</string>
     <string name="replace_original">Замінити оригінал</string>
     <string name="play_result">Відтворити</string>
+    <string name="split">Розділити</string>
+    <string name="move_left">Перемістити ліворуч</string>
+    <string name="move_right">Перемістити праворуч</string>
+    <string name="reset_zoom">Скинути масштаб</string>
+    <string name="segment_label">Сегмент %1$d/%2$d</string>
 </resources>

@@ -125,4 +125,9 @@ Aktivieren Sie im Bereich \'Eingabe\' die Option \'%s\'.</string>
     <string name="audio_fade">Überblendung</string>
     <string name="replace_original">Original ersetzen</string>
     <string name="play_result">Abspielen</string>
+    <string name="split">Teilen</string>
+    <string name="move_left">Nach links verschieben</string>
+    <string name="move_right">Nach rechts verschieben</string>
+    <string name="reset_zoom">Zoom zurücksetzen</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

@@ -127,4 +127,9 @@ Di bagian \'Masukan\', aktifkan \'%s\'.</string>
     <string name="audio_fade">Pudar Audio</string>
     <string name="replace_original">Ganti Asli</string>
     <string name="play_result">Putar</string>
+    <string name="split">Bagi</string>
+    <string name="move_left">Pindah ke kiri</string>
+    <string name="move_right">Pindah ke kanan</string>
+    <string name="reset_zoom">Atur ulang zoom</string>
+    <string name="segment_label">Segmen %1$d/%2$d</string>
 </resources>

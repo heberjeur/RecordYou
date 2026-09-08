@@ -123,4 +123,9 @@
     <string name="audio_fade">Згасанне гуку</string>
     <string name="replace_original">Замяніць арыгінал</string>
     <string name="play_result">Прайграць</string>
+    <string name="split">Раздзяліць</string>
+    <string name="move_left">Перамясціць улева</string>
+    <string name="move_right">Перамясціць управа</string>
+    <string name="reset_zoom">Скінуць маштаб</string>
+    <string name="segment_label">Сегмент %1$d/%2$d</string>
 </resources>

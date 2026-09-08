@@ -123,4 +123,9 @@
     <string name="audio_fade">အသံအဝင်အထွက် အပျော့</string>
     <string name="replace_original">မူရင်းကို အစားထိုးပါ</string>
     <string name="play_result">ဖွင့်ပါ</string>
+    <string name="split">ပိုင်းဖြတ်ပါ</string>
+    <string name="move_left">ဘယ်ဘက်သို့ရွှေ့ပါ</string>
+    <string name="move_right">ညာဘက်သို့ရွှေ့ပါ</string>
+    <string name="reset_zoom">ဇူးမ်ပြန်လည်သတ်မှတ်ပါ</string>
+    <string name="segment_label">အပိုင်း %1$d/%2$d</string>
 </resources>

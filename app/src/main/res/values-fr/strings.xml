@@ -127,4 +127,9 @@ Dans la section « Saisie », activez « %s » (ou « Vignettes pour d
     <string name="audio_fade">Fondu sonore</string>
     <string name="replace_original">Remplacer l\'original</string>
     <string name="play_result">Lire</string>
+    <string name="split">Scinder</string>
+    <string name="move_left">Déplacer à gauche</string>
+    <string name="move_right">Déplacer à droite</string>
+    <string name="reset_zoom">Réinitialiser zoom</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

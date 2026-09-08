@@ -127,4 +127,9 @@ V sekci \'Zadávání\' zapněte \'%s\'.</string>
     <string name="audio_fade">Prolínání zvuku</string>
     <string name="replace_original">Nahradit původní</string>
     <string name="play_result">Přehrát</string>
+    <string name="split">Rozdělit</string>
+    <string name="move_left">Posunout doleva</string>
+    <string name="move_right">Posunout doprava</string>
+    <string name="reset_zoom">Resetovat přiblížení</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

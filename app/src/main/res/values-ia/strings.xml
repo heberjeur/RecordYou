@@ -127,4 +127,9 @@ In le section \'Entrata\', activa \'%s\'.</string>
     <string name="audio_fade">Dissolution audio</string>
     <string name="replace_original">Reimplaciar original</string>
     <string name="play_result">Reproducer</string>
+    <string name="split">Divider</string>
+    <string name="move_left">Mover a sinistra</string>
+    <string name="move_right">Mover a dextra</string>
+    <string name="reset_zoom">Reinitialisar zoom</string>
+    <string name="segment_label">Segmento %1$d/%2$d</string>
 </resources>

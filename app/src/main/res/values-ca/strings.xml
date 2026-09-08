@@ -123,4 +123,9 @@ A la secció \'Entrada\', activeu \'%s\'.</string>
     <string name="audio_fade">Esvaïment d\'àudio</string>
     <string name="replace_original">Substitueix l\'original</string>
     <string name="play_result">Reprodueix</string>
+    <string name="split">Divideix</string>
+    <string name="move_left">Mou a l\'esquerra</string>
+    <string name="move_right">Mou a la dreta</string>
+    <string name="reset_zoom">Restableix el zoom</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

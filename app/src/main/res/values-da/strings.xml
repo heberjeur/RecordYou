@@ -127,4 +127,9 @@ I afsnittet \'Input\' aktiveres \'%s\'.</string>
     <string name="audio_fade">Lydudtoning</string>
     <string name="replace_original">Erstat original</string>
     <string name="play_result">Afspil</string>
+    <string name="split">Opdel</string>
+    <string name="move_left">Flyt til venstre</string>
+    <string name="move_right">Flyt til højre</string>
+    <string name="reset_zoom">Nulstil zoom</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

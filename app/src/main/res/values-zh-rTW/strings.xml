@@ -127,4 +127,9 @@
     <string name="audio_fade">音訊淡入淡出</string>
     <string name="replace_original">取代原始檔案</string>
     <string name="play_result">播放</string>
+    <string name="split">分割</string>
+    <string name="move_left">向左移動</string>
+    <string name="move_right">向右移動</string>
+    <string name="reset_zoom">重設縮放</string>
+    <string name="segment_label">片段 %1$d/%2$d</string>
 </resources>

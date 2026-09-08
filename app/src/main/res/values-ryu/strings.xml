@@ -127,4 +127,9 @@
     <string name="audio_fade">音声フェード</string>
     <string name="replace_original">元ぬファイル上書き</string>
     <string name="play_result">再生</string>
+    <string name="split">分割</string>
+    <string name="move_left">左ゆ移動</string>
+    <string name="move_right">右ゆ移動</string>
+    <string name="reset_zoom">ズームリセット</string>
+    <string name="segment_label">セグメント %1$d/%2$d</string>
 </resources>

@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -44,6 +45,9 @@ class TrimmerModel(context: Context) : ViewModel() {
     var currentPositionMs by mutableLongStateOf(0L)
 
     var segments by mutableStateOf<List<MediaSegment>>(emptyList())
+    var selectedSegmentIndex by mutableIntStateOf(0)
+    var zoomFactor by mutableFloatStateOf(1.0f)
+
     val undoStack = ArrayDeque<List<MediaSegment>>()
     val redoStack = ArrayDeque<List<MediaSegment>>()
 
@@ -62,6 +66,9 @@ class TrimmerModel(context: Context) : ViewModel() {
 
     var trimmerState: TrimmerState by mutableStateOf(TrimmerState.NoJob)
 
+    val selectedSegment: MediaSegment?
+        get() = segments.getOrNull(selectedSegmentIndex)
+
     private val playerListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
             if (playbackState == Player.STATE_READY && totalDurationMs == 0L) {
@@ -71,7 +78,8 @@ class TrimmerModel(context: Context) : ViewModel() {
                     endTimeStamp = dur
                 }
                 if (segments.isEmpty() && dur > 0L) {
-                    segments = listOf(MediaSegment(0L, dur))
+                    segments = listOf(MediaSegment(startMs = 0L, endMs = dur))
+                    selectedSegmentIndex = 0
                 }
             }
         }
@@ -96,6 +104,8 @@ class TrimmerModel(context: Context) : ViewModel() {
         endTimeStamp = null
         totalDurationMs = 0L
         segments = emptyList()
+        selectedSegmentIndex = 0
+        zoomFactor = 1.0f
         undoStack.clear()
         redoStack.clear()
         waveform = null
@@ -137,34 +147,84 @@ class TrimmerModel(context: Context) : ViewModel() {
     fun updatePosition(pos: Long) {
         currentPositionMs = pos
         if (isPreviewingSelection) {
-            val endT = endTimeStamp ?: totalDurationMs
-            if (pos >= endT) {
+            val seg = selectedSegment
+            val targetEnd = seg?.endMs ?: (endTimeStamp ?: totalDurationMs)
+            if (pos >= targetEnd) {
                 player.pause()
                 isPreviewingSelection = false
+                val restartPos = seg?.startMs ?: startTimeStamp
+                player.seekTo(restartPos)
+                currentPositionMs = restartPos
+            }
+            return
+        }
+
+        if (segments.isNotEmpty() && player.isPlaying) {
+            val inSegment = segments.any { pos in it.startMs until it.endMs }
+            if (!inSegment) {
+                val nextSeg = segments.firstOrNull { it.startMs > pos }
+                if (nextSeg != null) {
+                    player.seekTo(nextSeg.startMs)
+                    currentPositionMs = nextSeg.startMs
+                } else {
+                    player.pause()
+                    val firstSeg = segments.firstOrNull()
+                    if (firstSeg != null) {
+                        player.seekTo(firstSeg.startMs)
+                        currentPositionMs = firstSeg.startMs
+                    }
+                }
             }
         }
     }
 
     fun previewSelection() {
-        val endT = endTimeStamp ?: totalDurationMs
-        if (endT <= startTimeStamp) return
+        val seg = selectedSegment ?: return
+        if (seg.endMs <= seg.startMs) return
         isPreviewingSelection = true
-        player.seekTo(startTimeStamp)
+        player.seekTo(seg.startMs)
         player.play()
     }
 
-    fun adjustStart(deltaMs: Long) {
-        val newStart = (startTimeStamp + deltaMs).coerceIn(0L, (endTimeStamp ?: totalDurationMs) - 100L)
-        startTimeStamp = newStart
-        player.seekTo(newStart)
+    fun selectSegment(index: Int) {
+        if (index in segments.indices) {
+            selectedSegmentIndex = index
+            val seg = segments[index]
+            startTimeStamp = seg.startMs
+            endTimeStamp = seg.endMs
+            if (currentPositionMs < seg.startMs || currentPositionMs > seg.endMs) {
+                player.seekTo(seg.startMs)
+                currentPositionMs = seg.startMs
+            }
+        }
     }
 
-    fun adjustEnd(deltaMs: Long) {
-        val maxDur = if (totalDurationMs > 0L) totalDurationMs else Long.MAX_VALUE
-        val curEnd = endTimeStamp ?: maxDur
-        val newEnd = (curEnd + deltaMs).coerceIn(startTimeStamp + 100L, maxDur)
-        endTimeStamp = newEnd
-        player.seekTo(newEnd)
+    fun resetZoom() {
+        zoomFactor = 1.0f
+    }
+
+    fun updateSelectedSegmentStart(newStartMs: Long) {
+        val index = selectedSegmentIndex
+        if (index !in segments.indices) return
+        val seg = segments[index]
+        val prevSegEnd = if (index > 0) segments[index - 1].endMs else 0L
+        val safeStart = newStartMs.coerceIn(prevSegEnd, seg.endMs - 100L)
+        val updated = segments.toMutableList()
+        updated[index] = seg.copy(startMs = safeStart)
+        segments = updated
+        startTimeStamp = safeStart
+    }
+
+    fun updateSelectedSegmentEnd(newEndMs: Long) {
+        val index = selectedSegmentIndex
+        if (index !in segments.indices) return
+        val seg = segments[index]
+        val nextSegStart = if (index < segments.size - 1) segments[index + 1].startMs else totalDurationMs
+        val safeEnd = newEndMs.coerceIn(seg.startMs + 100L, nextSegStart)
+        val updated = segments.toMutableList()
+        updated[index] = seg.copy(endMs = safeEnd)
+        segments = updated
+        endTimeStamp = safeEnd
     }
 
     private fun pushUndoState() {
@@ -176,6 +236,8 @@ class TrimmerModel(context: Context) : ViewModel() {
         if (undoStack.isNotEmpty()) {
             redoStack.addLast(segments.toList())
             segments = undoStack.removeLast()
+            selectedSegmentIndex = selectedSegmentIndex.coerceIn(0, (segments.size - 1).coerceAtLeast(0))
+            syncSelectionTimes()
         }
     }
 
@@ -183,101 +245,114 @@ class TrimmerModel(context: Context) : ViewModel() {
         if (redoStack.isNotEmpty()) {
             undoStack.addLast(segments.toList())
             segments = redoStack.removeLast()
+            selectedSegmentIndex = selectedSegmentIndex.coerceIn(0, (segments.size - 1).coerceAtLeast(0))
+            syncSelectionTimes()
         }
     }
 
-    fun trimToSelection() {
-        val end = endTimeStamp ?: totalDurationMs
-        if (end <= startTimeStamp) return
-        pushUndoState()
-        segments = listOf(MediaSegment(startTimeStamp, end, selectedSpeed))
+    private fun syncSelectionTimes() {
+        val seg = selectedSegment
+        if (seg != null) {
+            startTimeStamp = seg.startMs
+            endTimeStamp = seg.endMs
+        }
     }
 
-    fun deleteSelection() {
-        val end = endTimeStamp ?: totalDurationMs
-        if (end <= startTimeStamp || segments.isEmpty()) return
+    fun splitAtCurrentPosition() {
+        val pos = currentPositionMs
+        val index = segments.indexOfFirst { pos > it.startMs + 150L && pos < it.endMs - 150L }
+        if (index < 0) return
         pushUndoState()
+        val seg = segments[index]
+        val left = seg.copy(id = System.nanoTime(), endMs = pos)
+        val right = seg.copy(id = System.nanoTime() + 1, startMs = pos)
+        val updated = segments.toMutableList()
+        updated[index] = left
+        updated.add(index + 1, right)
+        segments = updated
+        selectedSegmentIndex = index + 1
+        syncSelectionTimes()
+    }
 
-        val newSegments = mutableListOf<MediaSegment>()
-        for (seg in segments) {
-            if (seg.endMs <= startTimeStamp || seg.startMs >= end) {
-                newSegments.add(seg)
-            } else if (seg.startMs < startTimeStamp && seg.endMs > end) {
-                newSegments.add(seg.copy(endMs = startTimeStamp))
-                newSegments.add(seg.copy(startMs = end))
-            } else if (seg.startMs < startTimeStamp) {
-                newSegments.add(seg.copy(endMs = startTimeStamp))
-            } else if (seg.endMs > end) {
-                newSegments.add(seg.copy(startMs = end))
+    fun deleteSelectedSegment() {
+        if (segments.size <= 1) return
+        pushUndoState()
+        val index = selectedSegmentIndex
+        if (index !in segments.indices) return
+        val updated = segments.toMutableList()
+        updated.removeAt(index)
+        segments = updated
+        selectedSegmentIndex = index.coerceAtMost(segments.size - 1)
+        syncSelectionTimes()
+        selectedSegment?.let {
+            player.seekTo(it.startMs)
+            currentPositionMs = it.startMs
+        }
+    }
+
+    fun moveSelectedSegmentLeft() {
+        val index = selectedSegmentIndex
+        if (index <= 0 || index >= segments.size) return
+        pushUndoState()
+        val updated = segments.toMutableList()
+        val item = updated.removeAt(index)
+        updated.add(index - 1, item)
+        segments = updated
+        selectedSegmentIndex = index - 1
+        syncSelectionTimes()
+    }
+
+    fun moveSelectedSegmentRight() {
+        val index = selectedSegmentIndex
+        if (index < 0 || index >= segments.size - 1) return
+        pushUndoState()
+        val updated = segments.toMutableList()
+        val item = updated.removeAt(index)
+        updated.add(index + 1, item)
+        segments = updated
+        selectedSegmentIndex = index + 1
+        syncSelectionTimes()
+    }
+
+    fun previousSegment() {
+        if (selectedSegmentIndex > 0) {
+            selectSegment(selectedSegmentIndex - 1)
+        } else {
+            selectedSegment?.let {
+                player.seekTo(it.startMs)
+                currentPositionMs = it.startMs
             }
         }
-        segments = newSegments.filter { it.endMs > it.startMs }
     }
 
-    fun moveSelectionToStart() {
-        val end = endTimeStamp ?: totalDurationMs
-        if (end <= startTimeStamp) return
-        pushUndoState()
-        val selectedSeg = MediaSegment(startTimeStamp, end, selectedSpeed)
-        val remaining = mutableListOf<MediaSegment>()
-        for (seg in segments) {
-            if (seg.endMs <= startTimeStamp || seg.startMs >= end) {
-                remaining.add(seg)
-            } else if (seg.startMs < startTimeStamp && seg.endMs > end) {
-                remaining.add(seg.copy(endMs = startTimeStamp))
-                remaining.add(seg.copy(startMs = end))
-            } else if (seg.startMs < startTimeStamp) {
-                remaining.add(seg.copy(endMs = startTimeStamp))
-            } else if (seg.endMs > end) {
-                remaining.add(seg.copy(startMs = end))
-            }
+    fun nextSegment() {
+        if (selectedSegmentIndex < segments.size - 1) {
+            selectSegment(selectedSegmentIndex + 1)
         }
-        segments = listOf(selectedSeg) + remaining.filter { it.endMs > it.startMs }
-    }
-
-    fun moveSelectionToEnd() {
-        val end = endTimeStamp ?: totalDurationMs
-        if (end <= startTimeStamp) return
-        pushUndoState()
-        val selectedSeg = MediaSegment(startTimeStamp, end, selectedSpeed)
-        val remaining = mutableListOf<MediaSegment>()
-        for (seg in segments) {
-            if (seg.endMs <= startTimeStamp || seg.startMs >= end) {
-                remaining.add(seg)
-            } else if (seg.startMs < startTimeStamp && seg.endMs > end) {
-                remaining.add(seg.copy(endMs = startTimeStamp))
-                remaining.add(seg.copy(startMs = end))
-            } else if (seg.startMs < startTimeStamp) {
-                remaining.add(seg.copy(endMs = startTimeStamp))
-            } else if (seg.endMs > end) {
-                remaining.add(seg.copy(startMs = end))
-            }
-        }
-        segments = remaining.filter { it.endMs > it.startMs } + listOf(selectedSeg)
     }
 
     fun toggleMuteSelection() {
-        val end = endTimeStamp ?: totalDurationMs
-        if (end <= startTimeStamp) return
+        val seg = selectedSegment ?: return
         pushUndoState()
-        segments = segments.map {
-            if (it.startMs >= startTimeStamp && it.endMs <= end) {
-                it.copy(isMuted = !it.isMuted)
-            } else it
-        }
+        val updated = segments.toMutableList()
+        updated[selectedSegmentIndex] = seg.copy(isMuted = !seg.isMuted)
+        segments = updated
     }
 
-    fun applySpeedToSelection(speed: Float) {
-        selectedSpeed = speed
-        player.playbackParameters = PlaybackParameters(speed)
-        val end = endTimeStamp ?: totalDurationMs
-        if (end <= startTimeStamp) return
-        pushUndoState()
-        segments = segments.map {
-            if (it.startMs >= startTimeStamp && it.endMs <= end) {
-                it.copy(speed = speed)
-            } else it
+    fun cycleSpeed() {
+        val nextSpeed = when (selectedSpeed) {
+            0.5f -> 1.0f
+            1.0f -> 1.5f
+            1.5f -> 2.0f
+            else -> 0.5f
         }
+        selectedSpeed = nextSpeed
+        player.playbackParameters = PlaybackParameters(nextSpeed)
+        val seg = selectedSegment ?: return
+        pushUndoState()
+        val updated = segments.toMutableList()
+        updated[selectedSegmentIndex] = seg.copy(speed = nextSpeed)
+        segments = updated
     }
 
     fun autoCutSilences() {
@@ -287,15 +362,15 @@ class TrimmerModel(context: Context) : ViewModel() {
         pushUndoState()
         detectedSilencesCount = silences.size
 
-        var currentList = segments.ifEmpty { listOf(MediaSegment(0L, totalDurationMs)) }
+        var currentList = segments.ifEmpty { listOf(MediaSegment(startMs = 0L, endMs = totalDurationMs)) }
         for ((silenceStart, silenceEnd) in silences) {
             val updated = mutableListOf<MediaSegment>()
             for (seg in currentList) {
                 if (seg.endMs <= silenceStart || seg.startMs >= silenceEnd) {
                     updated.add(seg)
                 } else if (seg.startMs < silenceStart && seg.endMs > silenceEnd) {
-                    updated.add(seg.copy(endMs = silenceStart))
-                    updated.add(seg.copy(startMs = silenceEnd))
+                    updated.add(seg.copy(id = System.nanoTime(), endMs = silenceStart))
+                    updated.add(seg.copy(id = System.nanoTime() + 1, startMs = silenceEnd))
                 } else if (seg.startMs < silenceStart) {
                     updated.add(seg.copy(endMs = silenceStart))
                 } else if (seg.endMs > silenceEnd) {
@@ -305,6 +380,8 @@ class TrimmerModel(context: Context) : ViewModel() {
             currentList = updated.filter { it.endMs > it.startMs }
         }
         segments = currentList
+        selectedSegmentIndex = 0
+        syncSelectionTimes()
     }
 
     fun captureSnapshot(context: Context, inputFile: DocumentFile) {
@@ -318,7 +395,7 @@ class TrimmerModel(context: Context) : ViewModel() {
     fun startExport(context: Context, inputFile: DocumentFile) {
         val segs = if (segments.isNotEmpty()) segments else {
             val end = endTimeStamp ?: totalDurationMs
-            listOf(MediaSegment(startTimeStamp, end, selectedSpeed))
+            listOf(MediaSegment(startMs = startTimeStamp, endMs = end, speed = selectedSpeed))
         }
         viewModelScope.launch {
             trimmerState = TrimmerState.Running

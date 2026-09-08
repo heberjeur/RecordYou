@@ -127,4 +127,9 @@
     <string name="audio_fade">ஆடியோ மறைவு</string>
     <string name="replace_original">அசலை மாற்றவும்</string>
     <string name="play_result">இயக்கு</string>
+    <string name="split">பிரிக்கவும்</string>
+    <string name="move_left">இடதுபுறம் நகர்த்தவும்</string>
+    <string name="move_right">வலதுபுறம் நகர்த்தவும்</string>
+    <string name="reset_zoom">பெரிதாக்கலை மீட்டமைக்கவும்</string>
+    <string name="segment_label">பிரிவு %1$d/%2$d</string>
 </resources>

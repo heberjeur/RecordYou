@@ -69,4 +69,9 @@
     <string name="audio_fade">অডিও ফেড</string>
     <string name="replace_original">আসল প্রতিস্থাপন</string>
     <string name="play_result">চালান</string>
+    <string name="split">বিভক্ত করুন</string>
+    <string name="move_left">বামে সরান</string>
+    <string name="move_right">ডানে সরান</string>
+    <string name="reset_zoom">জুম রিসেট</string>
+    <string name="segment_label">সেগমেন্ট %1$d/%2$d</string>
 </resources>

@@ -127,4 +127,9 @@ Jaotises \'Sisend\' lubage \'%s\'.</string>
     <string name="audio_fade">Heli hajumine</string>
     <string name="replace_original">Asenda algne</string>
     <string name="play_result">Esita</string>
+    <string name="split">Poolita</string>
+    <string name="move_left">Liiguta vasakule</string>
+    <string name="move_right">Liiguta paremale</string>
+    <string name="reset_zoom">Lähtesta suum</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

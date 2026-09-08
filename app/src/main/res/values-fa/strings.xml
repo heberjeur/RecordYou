@@ -125,4 +125,9 @@
     <string name="audio_fade">محو شدن صدا</string>
     <string name="replace_original">جایگزینی نسخه اصلی</string>
     <string name="play_result">پخش</string>
+    <string name="split">تقسیم</string>
+    <string name="move_left">انتقال به چپ</string>
+    <string name="move_right">انتقال به راست</string>
+    <string name="reset_zoom">بازنشانی بزرگ‌نمایی</string>
+    <string name="segment_label">بخش %1$d/%2$d</string>
 </resources>

@@ -131,4 +131,9 @@
     <string name="audio_fade">Утишавање звука</string>
     <string name="replace_original">Замени оригинал</string>
     <string name="play_result">Пусти</string>
+    <string name="split">Подели</string>
+    <string name="move_left">Помери лево</string>
+    <string name="move_right">Помери десно</string>
+    <string name="reset_zoom">Ресетуј зум</string>
+    <string name="segment_label">Сегмент %1$d/%2$d</string>
 </resources>

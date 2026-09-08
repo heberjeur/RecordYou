@@ -134,4 +134,9 @@ In the \'Input\' section, enable \'%s\' (or use \'Quick settings developer tiles
     <string name="audio_fade">Fade In/Out</string>
     <string name="replace_original">Replace Original</string>
     <string name="play_result">Play</string>
+    <string name="split">Split</string>
+    <string name="move_left">Move Left</string>
+    <string name="move_right">Move Right</string>
+    <string name="reset_zoom">Reset zoom</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

@@ -127,4 +127,9 @@ Nella sezione \'Input\', attiva \'%s\'.</string>
     <string name="audio_fade">Dissolvenza audio</string>
     <string name="replace_original">Sostituisci originale</string>
     <string name="play_result">Riproduci</string>
+    <string name="split">Dividi</string>
+    <string name="move_left">Sposta a sinistra</string>
+    <string name="move_right">Sposta a destra</string>
+    <string name="reset_zoom">Ripristina zoom</string>
+    <string name="segment_label">Segmento %1$d/%2$d</string>
 </resources>

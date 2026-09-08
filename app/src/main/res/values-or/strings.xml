@@ -53,4 +53,9 @@
     <string name="audio_fade">ଅଡିଓ ଫେଡ୍</string>
     <string name="replace_original">ମୂଳ ବଦଳାନ୍ତୁ</string>
     <string name="play_result">ଚଲାନ୍ତୁ</string>
+    <string name="split">ବିଭାଜନ କରନ୍ତୁ</string>
+    <string name="move_left">ବାମକୁ ଘୁଞ୍ଚାନ୍ତୁ</string>
+    <string name="move_right">ଡାହାଣକୁ ଘୁଞ୍ଚାନ୍ତୁ</string>
+    <string name="reset_zoom">ଜୁମ୍ ପୁନଃସେଟ୍ କରନ୍ତୁ</string>
+    <string name="segment_label">ଖଣ୍ଡ %1$d/%2$d</string>
 </resources>

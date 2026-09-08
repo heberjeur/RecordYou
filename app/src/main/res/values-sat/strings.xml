@@ -56,4 +56,9 @@
     <string name="audio_fade">ᱟᱲᱟᱝ ᱦᱩᱰᱤᱧ</string>
     <string name="replace_original">ᱢᱩᱲᱩᱫ ᱵᱚᱫᱚᱞ</string>
     <string name="play_result">ᱪᱟᱞᱟᱣ</string>
+    <string name="split">ᱦᱟᱹᱴᱤᱧ</string>
+    <string name="move_left">ᱞᱮᱸᱜᱟ ᱥᱮᱫ ᱤᱫᱤ</string>
+    <string name="move_right">ᱡᱚᱡᱚᱢ ᱥᱮᱫ ᱤᱫᱤ</string>
+    <string name="reset_zoom">ᱡᱩᱢ ᱨᱩᱣᱟᱹᱲ</string>
+    <string name="segment_label">ᱦᱟᱹᱴᱤᱧ %1$d/%2$d</string>
 </resources>

@@ -127,4 +127,9 @@ Etkinleştirmek için:
     <string name="audio_fade">Ses karartma</string>
     <string name="replace_original">Orijinalin üzerine yaz</string>
     <string name="play_result">Oynat</string>
+    <string name="split">Böl</string>
+    <string name="move_left">Sola taşı</string>
+    <string name="move_right">Sağa taşı</string>
+    <string name="reset_zoom">Yakınlaştırmayı sıfırla</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

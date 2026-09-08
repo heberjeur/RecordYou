@@ -88,4 +88,9 @@ Aktivera \'%s\' i avsnittet \'Inmatning\'.</string>
     <string name="audio_fade">Ljudtoning</string>
     <string name="replace_original">Ersätt original</string>
     <string name="play_result">Spela</string>
+    <string name="split">Dela</string>
+    <string name="move_left">Flytta till vänster</string>
+    <string name="move_right">Flytta till höger</string>
+    <string name="reset_zoom">Återställ zoom</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

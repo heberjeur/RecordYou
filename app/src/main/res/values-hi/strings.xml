@@ -127,4 +127,9 @@
     <string name="audio_fade">ऑडियो फेड</string>
     <string name="replace_original">मूल बदलें</string>
     <string name="play_result">चलाएं</string>
+    <string name="split">विभाजित करें</string>
+    <string name="move_left">बाईं ओर ले जाएं</string>
+    <string name="move_right">दाईं ओर ले जाएं</string>
+    <string name="reset_zoom">ज़ूम रीसेट करें</string>
+    <string name="segment_label">खंड %1$d/%2$d</string>
 </resources>

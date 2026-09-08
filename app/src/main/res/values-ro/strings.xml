@@ -111,4 +111,9 @@ Pentru a le activa:
     <string name="audio_fade">Atenuare audio</string>
     <string name="replace_original">Înlocuiește originalul</string>
     <string name="play_result">Redă</string>
+    <string name="split">Împarte</string>
+    <string name="move_left">Mută la stânga</string>
+    <string name="move_right">Mută la dreapta</string>
+    <string name="reset_zoom">Resetează zoomul</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

@@ -127,4 +127,9 @@
     <string name="audio_fade">تلاشي الصوت</string>
     <string name="replace_original">استبدال الأصل</string>
     <string name="play_result">تشغيل</string>
+    <string name="split">تقسيم</string>
+    <string name="move_left">تحريك لليسار</string>
+    <string name="move_right">تحريك لليمين</string>
+    <string name="reset_zoom">إعادة ضبط التكبير</string>
+    <string name="segment_label">مقطع %1$d/%2$d</string>
 </resources>

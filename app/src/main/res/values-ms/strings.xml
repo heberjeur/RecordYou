@@ -96,4 +96,9 @@ Di bahagian \'Input\', dayakan \'%s\'.</string>
     <string name="audio_fade">Pudar Audio</string>
     <string name="replace_original">Gantikan Asal</string>
     <string name="play_result">Main</string>
+    <string name="split">Pisah</string>
+    <string name="move_left">Gerak ke kiri</string>
+    <string name="move_right">Gerak ke kanan</string>
+    <string name="reset_zoom">Tetapkan semula zum</string>
+    <string name="segment_label">Segmen %1$d/%2$d</string>
 </resources>

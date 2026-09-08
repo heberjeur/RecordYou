@@ -4,12 +4,7 @@ import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
-import androidx.compose.animation.graphics.res.animatedVectorResource
-import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
-import androidx.compose.animation.graphics.vector.AnimatedImageVector
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,22 +15,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Audiotrack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.FastForward
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -44,6 +43,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -55,12 +55,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -70,12 +69,12 @@ import androidx.media3.common.Player
 import androidx.media3.ui.PlayerView
 import com.bnyro.recorder.R
 import com.bnyro.recorder.enums.TrimmerState
-import com.bnyro.recorder.ui.components.AudioWaveformPreview
 import com.bnyro.recorder.ui.components.RangeWaveformTimeline
 import com.bnyro.recorder.ui.components.TrimmerControlBar
 import com.bnyro.recorder.ui.models.TrimmerModel
 import com.bnyro.recorder.util.ExportFormat
 import com.bnyro.recorder.util.IntentHelper
+import com.bnyro.recorder.util.TimeFormatHelper
 import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -113,7 +112,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
     LaunchedEffect(isPlayerPlaying) {
         while (isPlayerPlaying) {
             trimmerModel.updatePosition(trimmerModel.player.currentPosition)
-            delay(40L)
+            delay(30L)
         }
     }
 
@@ -150,7 +149,9 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp),
+                        .height(190.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentAlignment = Alignment.Center
                 ) {
                     AndroidView(
@@ -164,73 +165,140 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                     )
                 }
             } else {
-                Box(
+                ElevatedCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(110.dp),
-                    contentAlignment = Alignment.Center
+                        .clip(RoundedCornerShape(12.dp)),
+                    colors = CardDefaults.elevatedCardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
                 ) {
-                    val progressFraction = if (trimmerModel.totalDurationMs > 0L) {
-                        (trimmerModel.currentPositionMs.toFloat() / trimmerModel.totalDurationMs).coerceIn(0f, 1f)
-                    } else null
-                    AudioWaveformPreview(
-                        amplitudes = trimmerModel.waveform,
-                        seed = inputFile.name.hashCode(),
-                        progress = progressFraction,
-                        onSeek = { fraction ->
-                            val seekMs = (fraction * trimmerModel.totalDurationMs).toLong()
-                            trimmerModel.player.seekTo(seekMs)
-                            trimmerModel.currentPositionMs = seekMs
-                        },
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(100.dp)
-                    )
+                            .padding(14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(46.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Audiotrack,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(26.dp)
+                            )
+                        }
+
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = inputFile.name.orEmpty(),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = TimeFormatHelper.formatDuration(trimmerModel.totalDurationMs / 1000),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                 }
             }
 
             RangeWaveformTimeline(
                 totalDurationMs = trimmerModel.totalDurationMs,
-                startMs = trimmerModel.startTimeStamp,
-                endMs = trimmerModel.endTimeStamp ?: trimmerModel.totalDurationMs,
+                segments = trimmerModel.segments,
+                selectedSegmentIndex = trimmerModel.selectedSegmentIndex,
                 currentPositionMs = trimmerModel.currentPositionMs,
                 waveform = trimmerModel.waveform,
                 filmstrip = trimmerModel.filmstrip,
-                onStartChanged = { trimmerModel.startTimeStamp = it },
-                onEndChanged = { trimmerModel.endTimeStamp = it },
+                zoomFactor = trimmerModel.zoomFactor,
+                onZoomChange = { trimmerModel.zoomFactor = it },
+                onResetZoom = { trimmerModel.resetZoom() },
+                onSelectSegment = { trimmerModel.selectSegment(it) },
+                onStartChanged = { trimmerModel.updateSelectedSegmentStart(it) },
+                onEndChanged = { trimmerModel.updateSelectedSegmentEnd(it) },
                 onSeek = {
                     trimmerModel.player.seekTo(it)
                     trimmerModel.currentPositionMs = it
                 }
             )
 
+            val curPosFormatted = TimeFormatHelper.formatDuration(trimmerModel.currentPositionMs / 1000)
+            val selectedDur = trimmerModel.selectedSegment?.durationMs ?: 0L
+            val selDurFormatted = TimeFormatHelper.formatDuration(selectedDur / 1000)
+            val totalDurFormatted = TimeFormatHelper.formatDuration(trimmerModel.totalDurationMs / 1000)
+            val segIndex = (trimmerModel.selectedSegmentIndex + 1).coerceAtLeast(1)
+            val segTotal = trimmerModel.segments.size.coerceAtLeast(1)
+
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                shape = RoundedCornerShape(20.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 6.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = curPosFormatted,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    Text(
+                        text = "${stringResource(R.string.segment_label, segIndex, segTotal)} ($selDurFormatted)",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    Text(
+                        text = totalDurFormatted,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            val curSeg = trimmerModel.selectedSegment
+            val canSplit = curSeg != null &&
+                    trimmerModel.currentPositionMs > curSeg.startMs + 150L &&
+                    trimmerModel.currentPositionMs < curSeg.endMs - 150L
+
             TrimmerControlBar(
-                startMs = trimmerModel.startTimeStamp,
-                endMs = trimmerModel.endTimeStamp ?: trimmerModel.totalDurationMs,
-                totalDurationMs = trimmerModel.totalDurationMs,
+                canSplit = canSplit,
+                canDelete = trimmerModel.segments.size > 1,
+                canMoveLeft = trimmerModel.selectedSegmentIndex > 0,
+                canMoveRight = trimmerModel.selectedSegmentIndex < trimmerModel.segments.size - 1,
                 canUndo = trimmerModel.undoStack.isNotEmpty(),
                 canRedo = trimmerModel.redoStack.isNotEmpty(),
                 isVideo = isVideo,
+                isSegmentMuted = curSeg?.isMuted == true,
                 selectedSpeed = trimmerModel.selectedSpeed,
-                onAdjustStart = { trimmerModel.adjustStart(it) },
-                onAdjustEnd = { trimmerModel.adjustEnd(it) },
-                onTrim = { trimmerModel.trimToSelection() },
-                onDelete = { trimmerModel.deleteSelection() },
-                onMoveStart = { trimmerModel.moveSelectionToStart() },
-                onMoveEnd = { trimmerModel.moveSelectionToEnd() },
-                onToggleMute = { trimmerModel.toggleMuteSelection() },
-                onCycleSpeed = {
-                    val nextSpeed = when (trimmerModel.selectedSpeed) {
-                        0.5f -> 1.0f
-                        1.0f -> 1.5f
-                        1.5f -> 2.0f
-                        else -> 0.5f
-                    }
-                    trimmerModel.applySpeedToSelection(nextSpeed)
-                },
-                onAutoCutSilences = { trimmerModel.autoCutSilences() },
+                onSplit = { trimmerModel.splitAtCurrentPosition() },
+                onDelete = { trimmerModel.deleteSelectedSegment() },
+                onMoveLeft = { trimmerModel.moveSelectedSegmentLeft() },
+                onMoveRight = { trimmerModel.moveSelectedSegmentRight() },
                 onUndo = { trimmerModel.undo() },
                 onRedo = { trimmerModel.redo() },
+                onToggleMute = { trimmerModel.toggleMuteSelection() },
+                onCycleSpeed = { trimmerModel.cycleSpeed() },
+                onAutoCutSilences = { trimmerModel.autoCutSilences() },
                 onSnapshot = { trimmerModel.captureSnapshot(context, inputFile) }
             )
 
@@ -238,33 +306,54 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                IconButton(
+                    onClick = { trimmerModel.previousSegment() },
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(Icons.Default.SkipPrevious, contentDescription = null, modifier = Modifier.size(24.dp))
+                }
+
                 ElevatedCard(
                     colors = CardDefaults.elevatedCardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     ),
-                    shape = CircleShape
+                    shape = CircleShape,
+                    modifier = Modifier.size(52.dp)
                 ) {
                     IconButton(
                         onClick = {
                             if (isPlayerPlaying) trimmerModel.player.pause() else trimmerModel.player.play()
-                        }
+                        },
+                        modifier = Modifier.fillMaxSize()
                     ) {
                         Icon(
                             imageVector = if (isPlayerPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                            contentDescription = null
+                            contentDescription = null,
+                            modifier = Modifier.size(28.dp)
                         )
                     }
+                }
+
+                IconButton(
+                    onClick = { trimmerModel.nextSegment() },
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(Icons.Default.SkipNext, contentDescription = null, modifier = Modifier.size(24.dp))
                 }
 
                 OutlinedButton(
                     onClick = { trimmerModel.previewSelection() }
                 ) {
                     Icon(Icons.Default.Visibility, contentDescription = null, modifier = Modifier.size(16.dp))
-                    Text(stringResource(R.string.preview_selection), modifier = Modifier.padding(start = 6.dp), fontSize = 13.sp)
+                    Text(
+                        text = stringResource(R.string.preview_selection),
+                        modifier = Modifier.padding(start = 6.dp),
+                        fontSize = 12.sp
+                    )
                 }
             }
 
@@ -301,7 +390,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable { trimmerModel.enableFade = !trimmerModel.enableFade }
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Checkbox(
                         checked = trimmerModel.enableFade,
@@ -312,7 +401,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable { trimmerModel.replaceOriginal = !trimmerModel.replaceOriginal }
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Checkbox(
                         checked = trimmerModel.replaceOriginal,
@@ -324,84 +413,65 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
 
             Button(
                 onClick = { trimmerModel.startExport(context, inputFile) },
+                enabled = trimmerModel.trimmerState != TrimmerState.Running,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
-                enabled = trimmerModel.trimmerState != TrimmerState.Running
+                    .padding(vertical = 8.dp)
             ) {
-                Text(stringResource(R.string.start_trimming), fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                if (trimmerModel.trimmerState == TrimmerState.Running) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(20.dp),
+                        strokeWidth = 2.dp
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(stringResource(R.string.trimming), fontSize = 14.sp)
+                } else {
+                    Text(stringResource(R.string.start_trimming), fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                }
             }
-
-            Spacer(Modifier.height(32.dp))
         }
     }
 
-    if (trimmerModel.trimmerState != TrimmerState.NoJob) {
-        val notRunning = trimmerModel.trimmerState != TrimmerState.Running
+    if (trimmerModel.trimmerState == TrimmerState.Success && trimmerModel.lastExportedFile != null) {
+        val exportedFile = trimmerModel.lastExportedFile!!
         AlertDialog(
-            onDismissRequest = {
-                if (notRunning) trimmerModel.trimmerState = TrimmerState.NoJob
-            },
+            onDismissRequest = { trimmerModel.trimmerState = TrimmerState.NoJob },
+            title = { Text(stringResource(R.string.trim_successful)) },
+            text = { Text(exportedFile.name.orEmpty()) },
             confirmButton = {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (trimmerModel.trimmerState == TrimmerState.Success && trimmerModel.lastExportedFile != null) {
-                        val file = trimmerModel.lastExportedFile!!
-                        OutlinedButton(
-                            onClick = {
-                                IntentHelper.shareFile(context, file)
-                            }
-                        ) {
-                            Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp))
-                            Text(stringResource(R.string.share), modifier = Modifier.padding(start = 4.dp))
-                        }
-                        Button(
-                            onClick = {
-                                IntentHelper.openFile(context, file)
-                                trimmerModel.trimmerState = TrimmerState.NoJob
-                                onDismissRequest()
-                            }
-                        ) {
-                            Text(stringResource(R.string.play_result))
-                        }
-                    } else {
-                        Button(
-                            onClick = { trimmerModel.trimmerState = TrimmerState.NoJob },
-                            enabled = notRunning
-                        ) {
-                            Text(stringResource(R.string.okay))
-                        }
+                Button(
+                    onClick = {
+                        IntentHelper.openFile(context, exportedFile)
+                        trimmerModel.trimmerState = TrimmerState.NoJob
+                        onDismissRequest()
                     }
-                }
-            },
-            title = {
-                when (trimmerModel.trimmerState) {
-                    TrimmerState.Failed -> Text(stringResource(R.string.trim_failed))
-                    TrimmerState.Running -> Text(stringResource(R.string.trimming))
-                    TrimmerState.Success -> Text(stringResource(R.string.trim_successful))
-                    else -> {}
-                }
-            },
-            text = {
-                val image = AnimatedImageVector.animatedVectorResource(id = R.drawable.ic_trimmer)
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.alpha(0.35f)
                 ) {
-                    Image(
-                        modifier = Modifier.size(260.dp),
-                        painter = painterResource(id = R.drawable.blob),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondaryContainer)
-                    )
-                    Image(
-                        modifier = Modifier.size(180.dp),
-                        painter = rememberAnimatedVectorPainter(
-                            animatedImageVector = image,
-                            atEnd = notRunning
-                        ),
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer),
-                        contentDescription = null
-                    )
+                    Text(stringResource(R.string.play_result))
+                }
+            },
+            dismissButton = {
+                OutlinedButton(
+                    onClick = {
+                        IntentHelper.shareFile(context, exportedFile)
+                    }
+                ) {
+                    Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(stringResource(R.string.share))
+                }
+            }
+        )
+    }
+
+    if (trimmerModel.trimmerState == TrimmerState.Failed) {
+        AlertDialog(
+            onDismissRequest = { trimmerModel.trimmerState = TrimmerState.NoJob },
+            title = { Text(stringResource(R.string.trim_failed)) },
+            text = { Text(stringResource(R.string.cant_access_selected_folder)) },
+            confirmButton = {
+                Button(onClick = { trimmerModel.trimmerState = TrimmerState.NoJob }) {
+                    Text(stringResource(R.string.close))
                 }
             }
         )

@@ -127,4 +127,9 @@ Ota \'Syöttö\'-osiossa käyttöön \'%s\'.</string>
     <string name="audio_fade">Äänen häivytys</string>
     <string name="replace_original">Korvaa alkuperäinen</string>
     <string name="play_result">Toista</string>
+    <string name="split">Jaa</string>
+    <string name="move_left">Siirrä vasemmalle</string>
+    <string name="move_right">Siirrä oikealle</string>
+    <string name="reset_zoom">Nollaa zoomaus</string>
+    <string name="segment_label">Segmentti %1$d/%2$d</string>
 </resources>

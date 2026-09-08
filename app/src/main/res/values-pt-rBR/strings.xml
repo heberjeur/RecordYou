@@ -127,4 +127,9 @@ Na seção \'Entrada\', ative \'%s\'.</string>
     <string name="audio_fade">Esmaecimento de áudio</string>
     <string name="replace_original">Substituir original</string>
     <string name="play_result">Reproduzir</string>
+    <string name="split">Dividir</string>
+    <string name="move_left">Mover para a esquerda</string>
+    <string name="move_right">Mover para a direita</string>
+    <string name="reset_zoom">Redefinir zoom</string>
+    <string name="segment_label">Segmento %1$d/%2$d</string>
 </resources>

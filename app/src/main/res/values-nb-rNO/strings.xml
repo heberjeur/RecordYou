@@ -121,4 +121,9 @@ I delen \'Inndata\', aktiver \'%s\'.</string>
     <string name="audio_fade">Lydtoning</string>
     <string name="replace_original">Erstatt original</string>
     <string name="play_result">Spill av</string>
+    <string name="split">Del opp</string>
+    <string name="move_left">Flytt til venstre</string>
+    <string name="move_right">Flytt til høyre</string>
+    <string name="reset_zoom">Tilbakestill zoom</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

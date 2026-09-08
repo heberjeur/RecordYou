@@ -10,7 +10,6 @@ import android.media.MediaMetadataRetriever
 import android.media.MediaMuxer
 import android.net.Uri
 import android.os.Build
-import android.os.ParcelFileDescriptor
 import android.util.Log
 import android.util.SparseIntArray
 import androidx.annotation.RequiresApi
@@ -48,7 +47,7 @@ class MediaTrimmer {
         endMs: Long
     ): Boolean {
         if (!isValidTrimRange(startMs, endMs)) return false
-        val segments = listOf(MediaSegment(startMs, endMs))
+        val segments = listOf(MediaSegment(startMs = startMs, endMs = endMs))
         val result = processMedia(context, inputFile, segments, TrimOptions())
         return result != null
     }
@@ -134,12 +133,18 @@ class MediaTrimmer {
                     }
                 }
 
+                if (trackMap.size() == 0) {
+                    throw IllegalStateException("No compatible tracks found")
+                }
+
                 muxer.start()
                 val buffer = ByteBuffer.allocate(bufferSize)
                 val bufferInfo = MediaCodec.BufferInfo()
 
                 var totalVideoTimeUs = 0L
                 var totalAudioTimeUs = 0L
+                var lastWrittenVideoPtsUs = -1L
+                var lastWrittenAudioPtsUs = -1L
 
                 for (seg in segments) {
                     if (seg.endMs <= seg.startMs) continue
@@ -148,60 +153,77 @@ class MediaTrimmer {
 
                     var segFirstVideoPts = -1L
                     var segFirstAudioPts = -1L
-                    var segLastVideoPts = -1L
-                    var segLastAudioPts = -1L
+                    var isVideoDone = (videoTrackIndex < 0)
+                    var isAudioDone = (audioTrackIndex < 0)
+                    var firstKeyframeFound = (videoTrackIndex < 0)
 
                     extractor.seekTo(segStartUs, MediaExtractor.SEEK_TO_PREVIOUS_SYNC)
 
-                    while (true) {
+                    while (!isVideoDone || !isAudioDone) {
                         bufferInfo.offset = 0
                         bufferInfo.size = extractor.readSampleData(buffer, 0)
                         if (bufferInfo.size < 0) break
 
                         val sampleTimeUs = extractor.sampleTime
-                        if (sampleTimeUs > segEndUs) break
-
                         val track = extractor.sampleTrackIndex
                         val dstTrack = trackMap.get(track, -1)
 
                         if (dstTrack >= 0) {
-                            val isAudioSample = (track == audioTrackIndex)
                             val isVideoSample = (track == videoTrackIndex)
+                            val isAudioSample = (track == audioTrackIndex)
 
-                            if (sampleTimeUs >= segStartUs || isVideoSample) {
-                                if (isAudioSample && seg.isMuted) {
-                                    extractor.advance()
-                                    continue
-                                }
-
-                                val adjustedPts: Long = if (isVideoSample) {
-                                    if (segFirstVideoPts < 0) segFirstVideoPts = sampleTimeUs
-                                    segLastVideoPts = sampleTimeUs
-                                    totalVideoTimeUs + (sampleTimeUs - segFirstVideoPts)
+                            if (isVideoSample) {
+                                if (sampleTimeUs > segEndUs) {
+                                    isVideoDone = true
                                 } else {
-                                    if (segFirstAudioPts < 0) segFirstAudioPts = sampleTimeUs
-                                    segLastAudioPts = sampleTimeUs
-                                    totalAudioTimeUs + (sampleTimeUs - segFirstAudioPts)
+                                    val isKeyframe = (extractor.sampleFlags and MediaCodec.BUFFER_FLAG_KEY_FRAME) != 0
+                                    if (!firstKeyframeFound && isKeyframe) {
+                                        firstKeyframeFound = true
+                                    }
+                                    if (firstKeyframeFound && (sampleTimeUs >= segStartUs || isKeyframe)) {
+                                        if (segFirstVideoPts < 0) segFirstVideoPts = sampleTimeUs
+                                        var targetPts = totalVideoTimeUs + (sampleTimeUs - segFirstVideoPts)
+                                        if (targetPts <= lastWrittenVideoPtsUs) {
+                                            targetPts = lastWrittenVideoPtsUs + 1000L
+                                        }
+                                        lastWrittenVideoPtsUs = targetPts
+                                        bufferInfo.presentationTimeUs = targetPts
+                                        bufferInfo.flags = extractor.sampleFlags
+                                        muxer.writeSampleData(dstTrack, buffer, bufferInfo)
+                                    }
                                 }
-
-                                bufferInfo.presentationTimeUs = adjustedPts
-                                bufferInfo.flags = extractor.sampleFlags
-                                muxer.writeSampleData(dstTrack, buffer, bufferInfo)
+                            } else if (isAudioSample) {
+                                if (sampleTimeUs > segEndUs) {
+                                    isAudioDone = true
+                                } else if (sampleTimeUs >= segStartUs) {
+                                    if (!seg.isMuted) {
+                                        if (segFirstAudioPts < 0) segFirstAudioPts = sampleTimeUs
+                                        var targetPts = totalAudioTimeUs + (sampleTimeUs - segFirstAudioPts)
+                                        if (targetPts <= lastWrittenAudioPtsUs) {
+                                            targetPts = lastWrittenAudioPtsUs + 1000L
+                                        }
+                                        lastWrittenAudioPtsUs = targetPts
+                                        bufferInfo.presentationTimeUs = targetPts
+                                        bufferInfo.flags = extractor.sampleFlags
+                                        muxer.writeSampleData(dstTrack, buffer, bufferInfo)
+                                    }
+                                }
                             }
                         }
-                        extractor.advance()
+                        if (!extractor.advance()) break
                     }
 
-                    val segVideoDuration = if (segLastVideoPts > segFirstVideoPts && segFirstVideoPts >= 0) {
-                        segLastVideoPts - segFirstVideoPts + 33_333L
-                    } else (seg.endMs - seg.startMs) * 1000L
+                    if (lastWrittenVideoPtsUs >= 0L) {
+                        totalVideoTimeUs = lastWrittenVideoPtsUs + 33_333L
+                    } else {
+                        totalVideoTimeUs += (seg.endMs - seg.startMs) * 1000L
+                    }
 
-                    val segAudioDuration = if (segLastAudioPts > segFirstAudioPts && segFirstAudioPts >= 0) {
-                        segLastAudioPts - segFirstAudioPts + 23_220L
-                    } else (seg.endMs - seg.startMs) * 1000L
-
-                    totalVideoTimeUs += segVideoDuration
-                    totalAudioTimeUs += segAudioDuration
+                    if (lastWrittenAudioPtsUs >= 0L) {
+                        totalAudioTimeUs = lastWrittenAudioPtsUs + 23_220L
+                    } else {
+                        totalAudioTimeUs += (seg.endMs - seg.startMs) * 1000L
+                    }
                 }
 
                 muxer.stop()
@@ -301,6 +323,7 @@ class MediaTrimmer {
                         val segStartUs = seg.startMs * 1000L
                         val segEndUs = seg.endMs * 1000L
                         extractor.seekTo(segStartUs, MediaExtractor.SEEK_TO_PREVIOUS_SYNC)
+                        decoder.flush()
 
                         var isSegDone = false
                         var consecutiveIdle = 0

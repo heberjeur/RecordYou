@@ -121,4 +121,9 @@
     <string name="audio_fade">עמעום שמע</string>
     <string name="replace_original">החלף מקור</string>
     <string name="play_result">נגן</string>
+    <string name="split">פצל</string>
+    <string name="move_left">הזז שמאלה</string>
+    <string name="move_right">הזז ימינה</string>
+    <string name="reset_zoom">אפס מרחק</string>
+    <string name="segment_label">מקטע %1$d/%2$d</string>
 </resources>

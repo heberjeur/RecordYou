@@ -96,4 +96,9 @@ Sa seksyong \'Input\', paganahin ang \'%s\'.</string>
     <string name="audio_fade">Audio Fade</string>
     <string name="replace_original">Palitan ang Orihinal</string>
     <string name="play_result">I-play</string>
+    <string name="split">Hatiin</string>
+    <string name="move_left">Ilipat sa kaliwa</string>
+    <string name="move_right">Ilipat sa kanan</string>
+    <string name="reset_zoom">I-reset ang zoom</string>
+    <string name="segment_label">Segment %1$d/%2$d</string>
 </resources>

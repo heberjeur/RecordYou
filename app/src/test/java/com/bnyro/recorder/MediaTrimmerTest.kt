@@ -53,4 +53,26 @@ class MediaTrimmerTest {
         val seg = com.bnyro.recorder.obj.MediaSegment(1000L, 5000L, speed = 2.0f)
         org.junit.Assert.assertEquals(2000L, seg.durationMs)
     }
+
+    @Test
+    fun testSegmentSplitting() {
+        val initialSeg = com.bnyro.recorder.obj.MediaSegment(0L, 10000L)
+        val splitPos = 4000L
+        val left = initialSeg.copy(endMs = splitPos)
+        val right = initialSeg.copy(startMs = splitPos)
+        org.junit.Assert.assertEquals(4000L, left.durationMs)
+        org.junit.Assert.assertEquals(6000L, right.durationMs)
+        org.junit.Assert.assertEquals(initialSeg.durationMs, left.durationMs + right.durationMs)
+    }
+
+    @Test
+    fun testSegmentReordering() {
+        val seg1 = com.bnyro.recorder.obj.MediaSegment(0L, 2000L)
+        val seg2 = com.bnyro.recorder.obj.MediaSegment(4000L, 7000L)
+        val list = mutableListOf(seg1, seg2)
+        val moved = list.removeAt(1)
+        list.add(0, moved)
+        org.junit.Assert.assertEquals(seg2, list[0])
+        org.junit.Assert.assertEquals(seg1, list[1])
+    }
 }
