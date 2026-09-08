@@ -79,4 +79,19 @@
     <string name="show_touches_desc">Evidențiază atingerile și gesturile în timpul înregistrării ecranului</string>
     <string name="show_touches_dev_desc">Pe această versiune de Android, sistemul restricționează modificarea automată a acestei setări. Puteți activa \'Afișează atingerile\' direct în Opțiuni pentru dezvoltatori.</string>
     <string name="open_developer_options">Opțiuni pentru dezvoltatori</string>
+    <string name="developer_options_disabled_title">Opțiuni pentru dezvoltatori dezactivate</string>
+    <string name="developer_options_disabled_desc">Opțiunile pentru dezvoltatori nu sunt încă activate.
+
+Pentru a le activa:
+1. Atingeți \'Despre telefon\' mai jos.
+2. Atingeți de 7 ori la rând \'Număr versiune\'.
+3. Reveniți la RecordYou pentru a activa atingerile.</string>
+    <string name="open_about_phone">Despre telefon</string>
+    <string name="show_touches_guide_desc">Pentru a afișa atingerile, activați opțiunea în Opțiuni pentru dezvoltatori:
+
+În secțiunea \'Introducere\', activați \'%s\'.</string>
+    <string name="show_touches_label_samsung">Afișează atingerile</string>
+    <string name="show_touches_label_xiaomi">Afișează atingerile</string>
+    <string name="show_touches_label_huawei">Afișează atingerile</string>
+    <string name="show_touches_label_default">Afișează atingerile</string>
 </resources>

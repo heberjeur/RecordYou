@@ -1,5 +1,6 @@
 package com.bnyro.recorder.ui.screens
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -44,12 +45,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.bnyro.recorder.util.LanguageHelper
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -114,8 +119,31 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
     var showLanguagePref by remember {
         mutableStateOf(false)
     }
+    val isTouchesActiveOnSystem = remember {
+        mutableStateOf(
+            Settings.System.getInt(context.contentResolver, "show_touches", 0) == 1
+        )
+    }
+    var showDevModeDisabledDialog by remember {
+        mutableStateOf(false)
+    }
     var showTouchesDevDialog by remember {
         mutableStateOf(false)
+    }
+
+    DisposableEffect(context) {
+        val lifecycleOwner = context as? LifecycleOwner
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                val systemState = Settings.System.getInt(context.contentResolver, "show_touches", 0) == 1
+                isTouchesActiveOnSystem.value = systemState
+                Preferences.edit { putBoolean(Preferences.showTouchesKey, systemState) }
+            }
+        }
+        lifecycleOwner?.lifecycle?.addObserver(observer)
+        onDispose {
+            lifecycleOwner?.lifecycle?.removeObserver(observer)
+        }
     }
     var audioTargetFolder by remember {
         mutableStateOf(Preferences.prefs.getString(Preferences.audioTargetFolderKey, ""))
@@ -393,6 +421,7 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                 prefKey = Preferences.showTouchesKey,
                 title = stringResource(R.string.show_touches),
                 summary = stringResource(R.string.show_touches_desc),
+                externalChecked = isTouchesActiveOnSystem.value,
                 onCheckedChange = { isChecked ->
                     if (isChecked) {
                         var canWriteDirectly = false
@@ -405,22 +434,60 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                                 context.startActivity(intent)
                             } else {
                                 canWriteDirectly = runCatching {
-                                    val current = Settings.System.getInt(context.contentResolver, "show_touches", 0)
-                                    Settings.System.putInt(context.contentResolver, "show_touches", current)
-                                }.isSuccess
+                                    Settings.System.putInt(context.contentResolver, "show_touches", 1)
+                                }.getOrDefault(false)
                             }
                         } else {
-                            canWriteDirectly = true
+                            canWriteDirectly = runCatching {
+                                Settings.System.putInt(context.contentResolver, "show_touches", 1)
+                            }.getOrDefault(false)
                         }
 
-                        if (!canWriteDirectly) {
+                        if (canWriteDirectly) {
+                            isTouchesActiveOnSystem.value = true
+                        } else {
                             val hasRoot = runCatching {
-                                val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "settings get system show_touches"))
+                                val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "settings put system show_touches 1"))
                                 process.waitFor() == 0
                             }.getOrDefault(false)
 
-                            if (!hasRoot) {
-                                showTouchesDevDialog = true
+                            if (hasRoot) {
+                                isTouchesActiveOnSystem.value = true
+                            } else {
+                                isTouchesActiveOnSystem.value = false
+                                Preferences.edit { putBoolean(Preferences.showTouchesKey, false) }
+                                if (!isDeveloperModeEnabled(context)) {
+                                    showDevModeDisabledDialog = true
+                                } else {
+                                    showTouchesDevDialog = true
+                                }
+                            }
+                        }
+                    } else {
+                        val canWriteDirectly = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.System.canWrite(context)) {
+                            runCatching {
+                                Settings.System.putInt(context.contentResolver, "show_touches", 0)
+                            }.getOrDefault(false)
+                        } else false
+
+                        if (canWriteDirectly) {
+                            isTouchesActiveOnSystem.value = false
+                        } else {
+                            val hasRoot = runCatching {
+                                val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "settings put system show_touches 0"))
+                                process.waitFor() == 0
+                            }.getOrDefault(false)
+
+                            if (hasRoot) {
+                                isTouchesActiveOnSystem.value = false
+                            } else {
+                                isTouchesActiveOnSystem.value = Settings.System.getInt(context.contentResolver, "show_touches", 0) == 1
+                                Preferences.edit { putBoolean(Preferences.showTouchesKey, isTouchesActiveOnSystem.value) }
+                                if (!isDeveloperModeEnabled(context)) {
+                                    showDevModeDisabledDialog = true
+                                } else {
+                                    showTouchesDevDialog = true
+                                }
                             }
                         }
                     }
@@ -503,11 +570,46 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
         }
     }
 
+    if (showDevModeDisabledDialog) {
+        AlertDialog(
+            onDismissRequest = { showDevModeDisabledDialog = false },
+            title = { Text(stringResource(R.string.developer_options_disabled_title)) },
+            text = { Text(stringResource(R.string.developer_options_disabled_desc)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDevModeDisabledDialog = false
+                        runCatching {
+                            val intent = Intent(Settings.ACTION_DEVICE_INFO_SETTINGS).apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            }
+                            context.startActivity(intent)
+                        }.onFailure {
+                            runCatching {
+                                context.startActivity(Intent(Settings.ACTION_SETTINGS).apply {
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                })
+                            }
+                        }
+                    }
+                ) {
+                    Text(stringResource(R.string.open_about_phone))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDevModeDisabledDialog = false }) {
+                    Text(stringResource(R.string.close))
+                }
+            }
+        )
+    }
+
     if (showTouchesDevDialog) {
+        val brandLabel = getShowTouchesBrandLabel(context)
         AlertDialog(
             onDismissRequest = { showTouchesDevDialog = false },
             title = { Text(stringResource(R.string.show_touches)) },
-            text = { Text(stringResource(R.string.show_touches_dev_desc)) },
+            text = { Text(stringResource(R.string.show_touches_guide_desc, brandLabel)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -540,5 +642,25 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                 }
             }
         )
+    }
+}
+
+private fun isDeveloperModeEnabled(context: Context): Boolean {
+    return runCatching {
+        Settings.Global.getInt(
+            context.contentResolver,
+            Settings.Global.DEVELOPMENT_SETTINGS_ENABLED,
+            0
+        ) != 0
+    }.getOrDefault(false)
+}
+
+private fun getShowTouchesBrandLabel(context: Context): String {
+    val manufacturer = Build.MANUFACTURER.lowercase()
+    return when {
+        manufacturer.contains("samsung") -> context.getString(R.string.show_touches_label_samsung)
+        manufacturer.contains("xiaomi") || manufacturer.contains("redmi") || manufacturer.contains("poco") -> context.getString(R.string.show_touches_label_xiaomi)
+        manufacturer.contains("huawei") || manufacturer.contains("honor") -> context.getString(R.string.show_touches_label_huawei)
+        else -> context.getString(R.string.show_touches_label_default)
     }
 }

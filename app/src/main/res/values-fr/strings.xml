@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Mettre en surbrillance les gestes et appuis lors de l\'enregistrement de l\'écran</string>
     <string name="show_touches_dev_desc">Sur cette version d\'Android, le système restreint la modification automatique de ce paramètre. Vous pouvez activer directement « Afficher les appuis » dans les Options de développement.</string>
     <string name="open_developer_options">Options de développement</string>
+    <string name="developer_options_disabled_title">Options de développement désactivées</string>
+    <string name="developer_options_disabled_desc">Les options pour les développeurs ne sont pas encore activées sur votre appareil.
+
+Pour les activer :
+1. Appuyez sur « À propos du téléphone » ci-dessous.
+2. Appuyez 7 fois de suite sur « Numéro de version » (ou « Numéro de build »).
+3. Revenez dans RecordYou pour activer les touches.</string>
+    <string name="open_about_phone">À propos du téléphone</string>
+    <string name="show_touches_guide_desc">Pour afficher vos gestes sur l\'écran, activez l\'option dans les Options de développement :
+
+Dans la section « Saisie », activez « %s » (ou « Vignettes pour développeurs » pour un accès direct depuis le volet rapide).</string>
+    <string name="show_touches_label_samsung">Afficher touches</string>
+    <string name="show_touches_label_xiaomi">Afficher les contacts</string>
+    <string name="show_touches_label_huawei">Afficher les contacts</string>
+    <string name="show_touches_label_default">Afficher les appuis / Afficher les touches</string>
 </resources>

@@ -95,4 +95,19 @@
     <string name="show_touches_desc">在屏幕录制过程中突出显示点按和手势</string>
     <string name="show_touches_dev_desc">在此Android版本中，系统限制自动更改此设置。您可以直接在开发者选项中启用“显示点按操作”。</string>
     <string name="open_developer_options">开发者选项</string>
+    <string name="developer_options_disabled_title">开发者选项已停用</string>
+    <string name="developer_options_disabled_desc">您的设备尚未启用开发者选项。
+
+启用方法：
+1. 点击下方的“关于手机”。
+2. 连续点击“版本号”7次。
+3. 返回RecordYou启用触摸操作。</string>
+    <string name="open_about_phone">关于手机</string>
+    <string name="show_touches_guide_desc">要在屏幕上显示触摸操作，请在开发者选项中启用：
+
+在“输入”部分中，启用“%s”。</string>
+    <string name="show_touches_label_samsung">显示触摸操作</string>
+    <string name="show_touches_label_xiaomi">显示点按操作反馈</string>
+    <string name="show_touches_label_huawei">显示触摸操作</string>
+    <string name="show_touches_label_default">显示点按操作 / 显示触摸操作</string>
 </resources>

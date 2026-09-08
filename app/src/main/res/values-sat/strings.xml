@@ -24,4 +24,19 @@
     <string name="show_touches_desc">ᱥᱠᱨᱤᱱ ᱨᱮᱠᱚᱨᱰᱤᱝ ᱚᱠᱛᱚ ᱡᱚᱴᱮᱫ ᱟᱨ ᱤᱥᱟᱹᱨᱟ ᱩᱫᱩᱜᱽ ᱢᱮ</string>
     <string name="show_touches_dev_desc">ᱱᱚᱶᱟ Android ᱨᱮ ᱥᱤᱥᱴᱚᱢ ᱱᱚᱶᱟ ᱥᱮᱴᱤᱝ ᱟᱯᱱᱟᱨ ᱛᱮ ᱵᱚᱫᱚᱞ ᱮ ᱵᱟᱨᱚᱱ ᱮᱫᱟ᱾ ᱟᱢ ᱰᱮᱵᱷᱮᱞᱚᱯᱟᱨ ᱵᱟᱪᱷᱟᱣ ᱨᱮ \'ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ\' ᱮᱢ ᱪᱟᱹᱞᱩ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ᱾</string>
     <string name="open_developer_options">ᱰᱮᱵᱷᱮᱞᱚᱯᱟᱨ ᱵᱟᱪᱷᱟᱣ</string>
+    <string name="developer_options_disabled_title">ᱰᱮᱵᱷᱮᱞᱚᱯᱟᱨ ᱵᱟᱪᱷᱟᱣ ᱵᱚᱸᱫᱽ ᱜᱮᱭᱟ</string>
+    <string name="developer_options_disabled_desc">ᱰᱮᱵᱷᱮᱞᱚᱯᱟᱨ ᱵᱟᱪᱷᱟᱣ ᱱᱤᱛ ᱦᱚᱸ ᱪᱟᱹᱞᱩ ᱵᱟᱹᱱᱩᱜᱼᱟ᱾
+
+ᱪᱟᱹᱞᱩ ᱞᱟᱹᱜᱤᱫ:
+1. ᱞᱟᱛᱟᱨ ᱨᱮ \'ᱯᱷᱳᱱ ᱵᱟᱵᱚᱛ\' ᱴᱤᱯᱟᱹᱣ ᱢᱮ᱾
+2. ᱞᱮᱛᱟᱲ 7 ᱫᱷᱟᱣ \'ᱵᱤᱞᱰ ᱱᱚᱢᱵᱚᱨ\' ᱴᱤᱯᱟᱹᱣ ᱢᱮ᱾
+3. ᱡᱚᱴᱮᱫ ᱪᱟᱹᱞᱩ ᱞᱟᱹᱜᱤᱫ RecordYou ᱛᱮ ᱨᱩᱣᱟᱹᱲ ᱦᱤᱡᱩᱜ ᱢᱮ᱾</string>
+    <string name="open_about_phone">ᱯᱷᱳᱱ ᱵᱟᱵᱚᱛ</string>
+    <string name="show_touches_guide_desc">ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ ᱞᱟᱹᱜᱤᱫ ᱰᱮᱵᱷᱮᱞᱚᱯᱟᱨ ᱵᱟᱪᱷᱟᱣ ᱨᱮ ᱪᱟᱹᱞᱩᱭ ᱢᱮ:
+
+\'ᱤᱱᱯᱩᱴ\' ᱨᱮ \'%s\' ᱪᱟᱹᱞᱩᱭ ᱢᱮ᱾</string>
+    <string name="show_touches_label_samsung">ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ</string>
+    <string name="show_touches_label_xiaomi">ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ</string>
+    <string name="show_touches_label_huawei">ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ</string>
+    <string name="show_touches_label_default">ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ</string>
 </resources>

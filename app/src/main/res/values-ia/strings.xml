@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Evidentiar toccamentos e gestos durante le registration del schermo</string>
     <string name="show_touches_dev_desc">In iste version de Android, le systema restringe le cambio automatic de iste configuration. Tu pote activar \'Monstrar toccamentos\' directemente in le Optiones pro disveloppatores.</string>
     <string name="open_developer_options">Optiones pro disveloppatores</string>
+    <string name="developer_options_disabled_title">Optiones de disveloppator disactivate</string>
+    <string name="developer_options_disabled_desc">Le optiones de disveloppator non es ancora activate.
+
+Pro activar les:
+1. Tocca \'A proposito del telephono\'.
+2. Tocca 7 vices super \'Numero de version\'.
+3. Retorna a RecordYou pro activar le toccamentos.</string>
+    <string name="open_about_phone">A proposito del telephono</string>
+    <string name="show_touches_guide_desc">Pro monstrar toccamentos, activa le option in le Optiones de disveloppator:
+
+In le section \'Entrata\', activa \'%s\'.</string>
+    <string name="show_touches_label_samsung">Monstrar toccamentos</string>
+    <string name="show_touches_label_xiaomi">Monstrar toccamentos</string>
+    <string name="show_touches_label_huawei">Monstrar toccamentos</string>
+    <string name="show_touches_label_default">Monstrar toccamentos</string>
 </resources>

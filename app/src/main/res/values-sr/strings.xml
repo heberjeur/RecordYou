@@ -99,4 +99,19 @@
     <string name="show_touches_desc">Истакни додире и покрете током снимања екрана</string>
     <string name="show_touches_dev_desc">На овој верзији Андроид-а систем ограничава аутоматску промену овог подешавања. Можете укључити \'Прикажи додире\' директно у Опцијама за програмере.</string>
     <string name="open_developer_options">Опције за програмере</string>
+    <string name="developer_options_disabled_title">Опције за програмере су искључене</string>
+    <string name="developer_options_disabled_desc">Опције за програмере још нису омогућене на вашем уређају.
+
+Да их омогућите:
+1. Додирните \'О телефону\' испод.
+2. Додирните 7 пута заредом \'Број верзије\'.
+3. Вратите се у RecordYou да омогућите додире.</string>
+    <string name="open_about_phone">О телефону</string>
+    <string name="show_touches_guide_desc">Да прикажете додире, омогућите опцију у Опцијама за програмере:
+
+У одељку \'Унос\', омогућите \'%s\'.</string>
+    <string name="show_touches_label_samsung">Прикажи додире</string>
+    <string name="show_touches_label_xiaomi">Прикажи додире</string>
+    <string name="show_touches_label_huawei">Прикажи додире</string>
+    <string name="show_touches_label_default">Прикажи додире</string>
 </resources>

@@ -93,4 +93,19 @@
     <string name="show_touches_desc">برجسته‌سازی لمس‌ها و حرکات هنگام ضبط صفحه</string>
     <string name="show_touches_dev_desc">در این نسخه اندروید، سیستم تغییر خودکار این تنظیم را محدود می‌کند. می‌توانید مستقیماً \'نمایش لمس‌ها\' را در گزینه‌های توسعه‌دهنده فعال کنید.</string>
     <string name="open_developer_options">گزینه‌های توسعه‌دهنده</string>
+    <string name="developer_options_disabled_title">گزینه‌های توسعه‌دهنده غیرفعال است</string>
+    <string name="developer_options_disabled_desc">گزینه‌های توسعه‌دهنده هنوز در دستگاه شما فعال نشده است.
+
+برای فعال‌سازی:
+۱. روی \'درباره تلفن\' در زیر ضربه بزنید.
+۲. ۷ بار متوالی روی \'شماره ساخت\' ضربه بزنید.
+۳. برای فعال کردن لمس‌ها به RecordYou بازگردید.</string>
+    <string name="open_about_phone">درباره تلفن</string>
+    <string name="show_touches_guide_desc">برای نمایش لمس‌ها، گزینه را در گزینه‌های توسعه‌دهنده فعال کنید:
+
+در بخش \'ورودی\'، \'%s\' را فعال کنید.</string>
+    <string name="show_touches_label_samsung">نمایش لمس‌ها</string>
+    <string name="show_touches_label_xiaomi">نمایش ضربه‌ها</string>
+    <string name="show_touches_label_huawei">نمایش لمس‌ها</string>
+    <string name="show_touches_label_default">نمایش لمس‌ها</string>
 </resources>

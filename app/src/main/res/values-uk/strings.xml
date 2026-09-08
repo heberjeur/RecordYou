@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Виділяти натискання та жести під час запису екрана</string>
     <string name="show_touches_dev_desc">У цій версії Android система обмежує автоматичну зміну цього параметра. Ви можете ввімкнути \'Показувати натискання\' безпосередньо в Параметрах розробника.</string>
     <string name="open_developer_options">Параметри розробника</string>
+    <string name="developer_options_disabled_title">Параметри розробника вимкнено</string>
+    <string name="developer_options_disabled_desc">Параметри розробника ще не ввімкнено на вашому пристрої.
+
+Щоб увімкнути їх:
+1. Натисніть \'Про телефон\' нижче.
+2. Натисніть 7 разів поспіль на \'Номер збірки\'.
+3. Поверніться до RecordYou, щоб увімкнути натискання.</string>
+    <string name="open_about_phone">Про телефон</string>
+    <string name="show_touches_guide_desc">Щоб показувати натискання, увімкніть параметр у Параметрах розробника:
+
+У розділі \'Введення\' увімкніть \'%s\'.</string>
+    <string name="show_touches_label_samsung">Показувати натискання</string>
+    <string name="show_touches_label_xiaomi">Показувати дотики</string>
+    <string name="show_touches_label_huawei">Показувати натискання</string>
+    <string name="show_touches_label_default">Показувати натискання</string>
 </resources>

@@ -56,4 +56,19 @@
     <string name="show_touches_desc">Markera tryck och gester under skärminspelning</string>
     <string name="show_touches_dev_desc">På den här Android-versionen begränsar systemet automatisk ändring av denna inställning. Du kan aktivera \'Visa tryck\' direkt i Utvecklaralternativ.</string>
     <string name="open_developer_options">Utvecklaralternativ</string>
+    <string name="developer_options_disabled_title">Utvecklaralternativ inaktiverade</string>
+    <string name="developer_options_disabled_desc">Utvecklaralternativ är inte aktiverade på din enhet än.
+
+Så här aktiverar du dem:
+1. Tryck på \'Om telefonen\' nedan.
+2. Tryck 7 gånger i rad på \'Versionsnummer\'.
+3. Återvänd till RecordYou för att aktivera tryck.</string>
+    <string name="open_about_phone">Om telefonen</string>
+    <string name="show_touches_guide_desc">För att visa tryck, aktivera alternativet i Utvecklaralternativ:
+
+Aktivera \'%s\' i avsnittet \'Inmatning\'.</string>
+    <string name="show_touches_label_samsung">Visa tryck</string>
+    <string name="show_touches_label_xiaomi">Visa tryck</string>
+    <string name="show_touches_label_huawei">Visa tryck</string>
+    <string name="show_touches_label_default">Visa tryck</string>
 </resources>

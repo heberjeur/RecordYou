@@ -95,4 +95,19 @@
     <string name="show_touches_desc">திரைப் பதிவின் போது தட்டுகள் மற்றும் சைகைகளை முன்னிலைப்படுத்தவும்</string>
     <string name="show_touches_dev_desc">இந்த Android பதிப்பில், இந்த அமைப்பைத் தானாக மாற்றுவதை கணினி கட்டுப்படுத்துகிறது. டெவலப்பர் விருப்பங்களில் நேரடியாக \'தொடுதல்களைக் காட்டு\' என்பதை இயக்கலாம்.</string>
     <string name="open_developer_options">டெவலப்பர் விருப்பங்கள்</string>
+    <string name="developer_options_disabled_title">டெவலப்பர் விருப்பங்கள் முடக்கப்பட்டுள்ளன</string>
+    <string name="developer_options_disabled_desc">உங்கள் சாதனத்தில் டெவலப்பர் விருப்பங்கள் இன்னும் இயக்கப்படவில்லை.
+
+இயக்க:
+1. கீழே உள்ள \'தொலைபேசி பற்றி\' தட்டவும்.
+2. தொடர்ச்சியாக 7 முறை \'பில்ட் எண்\' தட்டவும்.
+3. தொடுதல்களை இயக்க RecordYou க்குத் திரும்பவும்.</string>
+    <string name="open_about_phone">தொலைபேசி பற்றி</string>
+    <string name="show_touches_guide_desc">தொடுதல்களைக் காட்ட, டெவலப்பர் விருப்பங்களில் இயக்கவும்:
+
+\'உள்ளீடு\' பிரிவில், \'%s\' ஐ இயக்கவும்.</string>
+    <string name="show_touches_label_samsung">தொடுதல்களைக் காட்டு</string>
+    <string name="show_touches_label_xiaomi">தட்டுகளைக் காட்டு</string>
+    <string name="show_touches_label_huawei">தொடுதல்களைக் காட்டு</string>
+    <string name="show_touches_label_default">தொடுதல்களைக் காட்டு</string>
 </resources>

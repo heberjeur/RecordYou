@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Fremhæv tryk og bevægelser under skærmoptagelse</string>
     <string name="show_touches_dev_desc">På denne Android-version begrænser systemet automatisk ændring af denne indstilling. Du kan aktivere \'Vis berøringer\' direkte i Udviklerindstillinger.</string>
     <string name="open_developer_options">Udviklerindstillinger</string>
+    <string name="developer_options_disabled_title">Udviklerindstillinger deaktiveret</string>
+    <string name="developer_options_disabled_desc">Udviklerindstillinger er endnu ikke aktiveret.
+
+Sådan aktiverer du dem:
+1. Tryk på \'Om telefonen\' nedenfor.
+2. Tryk på \'Versionsnummer\' 7 gange i træk.
+3. Vend tilbage til RecordYou for at aktivere berøringer.</string>
+    <string name="open_about_phone">Om telefonen</string>
+    <string name="show_touches_guide_desc">For at vise berøringer skal du aktivere indstillingen under Udviklerindstillinger:
+
+I afsnittet \'Input\' aktiveres \'%s\'.</string>
+    <string name="show_touches_label_samsung">Vis berøringer</string>
+    <string name="show_touches_label_xiaomi">Vis tryk</string>
+    <string name="show_touches_label_huawei">Vis berøringer</string>
+    <string name="show_touches_label_default">Vis berøringer</string>
 </resources>

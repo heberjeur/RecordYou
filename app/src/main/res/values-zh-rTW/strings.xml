@@ -95,4 +95,19 @@
     <string name="show_touches_desc">在螢幕錄製過程中突顯點按與手勢</string>
     <string name="show_touches_dev_desc">在此Android版本中，系統限制自動變更此設定。您可以直接在開發人員選項中啟用「顯示輕觸操作」。</string>
     <string name="open_developer_options">開發人員選項</string>
+    <string name="developer_options_disabled_title">開發人員選項已停用</string>
+    <string name="developer_options_disabled_desc">您的裝置尚未啟用開發人員選項。
+
+啟用方法：
+1. 點按底下的「關於手機」。
+2. 連續點按「版本號碼」7次。
+3. 返回RecordYou啟用輕觸操作。</string>
+    <string name="open_about_phone">關於手機</string>
+    <string name="show_touches_guide_desc">要在螢幕上顯示輕觸操作，請在開發人員選項中啟用：
+
+在「輸入」部分中，啟用「%s」。</string>
+    <string name="show_touches_label_samsung">顯示輕觸操作</string>
+    <string name="show_touches_label_xiaomi">顯示點按反饋</string>
+    <string name="show_touches_label_huawei">顯示輕觸操作</string>
+    <string name="show_touches_label_default">顯示輕觸操作</string>
 </resources>

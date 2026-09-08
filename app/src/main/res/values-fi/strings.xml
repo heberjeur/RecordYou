@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Korosta napautukset ja eleet näytön tallennuksen aikana</string>
     <string name="show_touches_dev_desc">Tässä Android-versiossa järjestelmä rajoittaa tämän asetuksen automaattista muuttamista. Voit ottaa \'Näytä kosketukset\' käyttöön suoraan Kehittäjäasetuksissa.</string>
     <string name="open_developer_options">Kehittäjäasetukset</string>
+    <string name="developer_options_disabled_title">Kehittäjäasetukset pois käytöstä</string>
+    <string name="developer_options_disabled_desc">Kehittäjäasetukset eivät ole vielä käytössä laitteellasi.
+
+Ota ne käyttöön näin:
+1. Napauta alla \'Tietoja puhelimesta\'.
+2. Napauta \'Koontiversio\' 7 kertaa peräkkäin.
+3. Palaa RecordYou-sovellukseen ottaaksesi kosketukset käyttöön.</string>
+    <string name="open_about_phone">Tietoja puhelimesta</string>
+    <string name="show_touches_guide_desc">Näytä kosketukset ottamalla asetus käyttöön Kehittäjäasetuksissa:
+
+Ota \'Syöttö\'-osiossa käyttöön \'%s\'.</string>
+    <string name="show_touches_label_samsung">Näytä kosketukset</string>
+    <string name="show_touches_label_xiaomi">Näytä napautukset</string>
+    <string name="show_touches_label_huawei">Näytä kosketukset</string>
+    <string name="show_touches_label_default">Näytä kosketukset</string>
 </resources>

@@ -64,4 +64,19 @@
     <string name="show_touches_desc">Serlahkan ketukan dan gerak isyarat semasa rakaman skrin</string>
     <string name="show_touches_dev_desc">Pada versi Android ini, sistem mengehadkan penukaran tetapan ini secara automatik. Anda boleh mendayakan \'Tunjukkan ketukan\' terus dalam Pilihan pembangun.</string>
     <string name="open_developer_options">Pilihan pembangun</string>
+    <string name="developer_options_disabled_title">Pilihan pembangun dinyahdayakan</string>
+    <string name="developer_options_disabled_desc">Pilihan pembangun belum didayakan pada peranti anda.
+
+Untuk mendayakannya:
+1. Ketik \'Perihal telefon\' di bawah.
+2. Ketik \'Nombor binaan\' 7 kali berturut-turut.
+3. Kembali ke RecordYou untuk mendayakan sentuhan.</string>
+    <string name="open_about_phone">Perihal telefon</string>
+    <string name="show_touches_guide_desc">Untuk memaparkan sentuhan, dayakan pilihan dalam Pilihan pembangun:
+
+Di bahagian \'Input\', dayakan \'%s\'.</string>
+    <string name="show_touches_label_samsung">Tunjukkan sentuhan</string>
+    <string name="show_touches_label_xiaomi">Tunjukkan ketukan</string>
+    <string name="show_touches_label_huawei">Tunjukkan sentuhan</string>
+    <string name="show_touches_label_default">Tunjukkan ketukan / sentuhan</string>
 </resources>

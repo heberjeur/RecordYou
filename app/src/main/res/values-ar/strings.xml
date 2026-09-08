@@ -95,4 +95,19 @@
     <string name="show_touches_desc">تمييز النقرات والإيماءات أثناء تسجيل الشاشة</string>
     <string name="show_touches_dev_desc">في هذا الإصدار من أندرويد، يقيد النظام تغيير هذا الإعداد تلقائيًا. يمكنك تفعيل \'إظهار النقرات\' مباشرة في خيارات المطور.</string>
     <string name="open_developer_options">خيارات المطور</string>
+    <string name="developer_options_disabled_title">خيارات المطور معطلة</string>
+    <string name="developer_options_disabled_desc">خيارات المطور غير مفعلة بعد على جهازك.
+
+لتفعيلها:
+1. اضغط على \'حول الهاتف\' أدناه.
+2. اضغط على \'رقم الإصدار\' 7 مرات متتالية.
+3. عد إلى RecordYou لتفعيل النقرات.</string>
+    <string name="open_about_phone">حول الهاتف</string>
+    <string name="show_touches_guide_desc">لإظهار النقرات على الشاشة، قم بتفعيل الخيار في خيارات المطور:
+
+في قسم \'الإدخال\'، فعل \'%s\' (أو استخدم \'مربعات مطور الإعدادات السريعة\' للوصول السريع).</string>
+    <string name="show_touches_label_samsung">إظهار النقرات</string>
+    <string name="show_touches_label_xiaomi">عرض النقرات</string>
+    <string name="show_touches_label_huawei">إظهار اللمسات</string>
+    <string name="show_touches_label_default">إظهار النقرات / اللمسات</string>
 </resources>

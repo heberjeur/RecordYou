@@ -93,4 +93,19 @@
     <string name="show_touches_desc">Tippen und Gesten während der Bildschirmaufnahme hervorheben</string>
     <string name="show_touches_dev_desc">Auf dieser Android-Version schränkt das System die automatische Änderung dieser Einstellung ein. Sie können \'Tippen anzeigen\' direkt in den Entwickleroptionen aktivieren.</string>
     <string name="open_developer_options">Entwickleroptionen</string>
+    <string name="developer_options_disabled_title">Entwickleroptionen deaktiviert</string>
+    <string name="developer_options_disabled_desc">Entwickleroptionen sind auf Ihrem Gerät noch nicht aktiviert.
+
+So aktivieren Sie sie:
+1. Tippen Sie unten auf \'Über das Telefon\'.
+2. Tippen Sie 7-mal hintereinander auf \'Build-Nummer\'.
+3. Kehren Sie zu RecordYou zurück, um Berührungen zu aktivieren.</string>
+    <string name="open_about_phone">Über das Telefon</string>
+    <string name="show_touches_guide_desc">Um Berührungen anzuzeigen, aktivieren Sie die Option in den Entwickleroptionen:
+
+Aktivieren Sie im Bereich \'Eingabe\' die Option \'%s\'.</string>
+    <string name="show_touches_label_samsung">Berührungen anzeigen</string>
+    <string name="show_touches_label_xiaomi">Tippen anzeigen</string>
+    <string name="show_touches_label_huawei">Berührungen anzeigen</string>
+    <string name="show_touches_label_default">Tippen anzeigen / Berührungen anzeigen</string>
 </resources>

@@ -91,4 +91,19 @@
     <string name="show_touches_desc">Вылучаць дотыкі і жэсты падчас запісу экрана</string>
     <string name="show_touches_dev_desc">У гэтай версіі Android сістэма абмяжоўвае аўтаматычную змену гэтага параметра. Вы можаце ўключыць \'Паказваць націсканні\' непасрэдна ў параметрах распрацоўшчыка.</string>
     <string name="open_developer_options">Параметры распрацоўшчыка</string>
+    <string name="developer_options_disabled_title">Параметры распрацоўшчыка адключаныя</string>
+    <string name="developer_options_disabled_desc">Параметры распрацоўшчыка яшчэ не ўключаны на вашай прыладзе.
+
+Каб уключыць іх:
+1. Націсніце \'Аб тэлефоне\' ніжэй.
+2. Націсніце \'Нумар зборкі\' 7 разоў запар.
+3. Вярніцеся ў RecordYou, каб уключыць націсканні.</string>
+    <string name="open_about_phone">Аб тэлефоне</string>
+    <string name="show_touches_guide_desc">Каб паказваць націсканні, уключыце параметр у Параметрах распрацоўшчыка:
+
+У раздзеле \'Увод\' уключыце \'%s\'.</string>
+    <string name="show_touches_label_samsung">Паказваць націсканні</string>
+    <string name="show_touches_label_xiaomi">Паказваць дотыкі</string>
+    <string name="show_touches_label_huawei">Паказваць націсканні</string>
+    <string name="show_touches_label_default">Паказваць націсканні</string>
 </resources>

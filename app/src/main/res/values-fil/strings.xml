@@ -64,4 +64,19 @@
     <string name="show_touches_desc">I-highlight ang mga pag-tap at kilos habang nagre-record ng screen</string>
     <string name="show_touches_dev_desc">Sa bersyong ito ng Android, pinipigilan ng system ang awtomatikong pagbabago ng setting na ito. Maaari mong direktang paganahin ang \'Ipakita ang mga pag-tap\' sa Mga opsyon ng developer.</string>
     <string name="open_developer_options">Mga opsyon ng developer</string>
+    <string name="developer_options_disabled_title">Naka-disable ang mga opsyon ng developer</string>
+    <string name="developer_options_disabled_desc">Hindi pa pinagana ang mga opsyon ng developer.
+
+Para paganahin:
+1. I-tap ang \'Tungkol sa telepono\' sa ibaba.
+2. I-tap ang \'Build number\' nang 7 beses nang sunud-sunod.
+3. Bumalik sa RecordYou para paganahin ang mga pagpindot.</string>
+    <string name="open_about_phone">Tungkol sa telepono</string>
+    <string name="show_touches_guide_desc">Para ipakita ang mga pagpindot, paganahin ang opsyon sa Mga opsyon ng developer:
+
+Sa seksyong \'Input\', paganahin ang \'%s\'.</string>
+    <string name="show_touches_label_samsung">Ipakita ang mga pagpindot</string>
+    <string name="show_touches_label_xiaomi">Ipakita ang mga pag-tap</string>
+    <string name="show_touches_label_huawei">Ipakita ang mga pagpindot</string>
+    <string name="show_touches_label_default">Ipakita ang mga pag-tap</string>
 </resources>

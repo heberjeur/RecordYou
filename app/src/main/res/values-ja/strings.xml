@@ -95,4 +95,19 @@
     <string name="show_touches_desc">画面録画中にタップやジェスチャーをハイライト表示</string>
     <string name="show_touches_dev_desc">このAndroidバージョンでは、システムによりこの設定の自動変更が制限されています。開発者向けオプションで直接「タップを表示」を有効にできます。</string>
     <string name="open_developer_options">開発者向けオプション</string>
+    <string name="developer_options_disabled_title">開発者向けオプションが無効です</string>
+    <string name="developer_options_disabled_desc">開発者向けオプションがまだ有効になっていません。
+
+有効にする手順:
+1. 下の「端末情報」をタップします。
+2. 「ビルド番号」を連続で7回タップします。
+3. RecordYouに戻ってタップ表示を有効にします。</string>
+    <string name="open_about_phone">端末情報</string>
+    <string name="show_touches_guide_desc">画面にタップを表示するには、開発者向けオプションで設定を有効にしてください:
+
+「入力」セクションで「%s」を有効にします。</string>
+    <string name="show_touches_label_samsung">タップを表示</string>
+    <string name="show_touches_label_xiaomi">タップを表示</string>
+    <string name="show_touches_label_huawei">タップを表示</string>
+    <string name="show_touches_label_default">タップを表示</string>
 </resources>

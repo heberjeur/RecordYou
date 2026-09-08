@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Tõsta ekraanisalvestuse ajal esile puudutused ja žestid</string>
     <string name="show_touches_dev_desc">Selles Androidi versioonis piirab süsteem selle seade automaatset muutmist. Saate \'Kuva puudutused\' lubada otse Arendaja valikutes.</string>
     <string name="open_developer_options">Arendaja valikud</string>
+    <string name="developer_options_disabled_title">Arendaja valikud keelatud</string>
+    <string name="developer_options_disabled_desc">Arendaja valikud pole seadmes veel lubatud.
+
+Nende lubamiseks:
+1. Puudutage allpool \'Teave telefoni kohta\'.
+2. Puudutage 7 korda järjest nuppu \'Järgu number\'.
+3. Naaske puudutuste lubamiseks rakendusse RecordYou.</string>
+    <string name="open_about_phone">Teave telefoni kohta</string>
+    <string name="show_touches_guide_desc">Puudutuste kuvamiseks lubage valik Arendaja valikutes:
+
+Jaotises \'Sisend\' lubage \'%s\'.</string>
+    <string name="show_touches_label_samsung">Kuva puudutused</string>
+    <string name="show_touches_label_xiaomi">Kuva puudutused</string>
+    <string name="show_touches_label_huawei">Kuva puudutused</string>
+    <string name="show_touches_label_default">Kuva puudutused</string>
 </resources>

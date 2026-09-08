@@ -95,4 +95,19 @@
     <string name="show_touches_desc">स्क्रीन रिकॉर्डिंग के दौरान टैप और जेस्चर हाइलाइट करें</string>
     <string name="show_touches_dev_desc">इस एंड्रॉइड संस्करण में सिस्टम इस सेटिंग को स्वचालित रूप से बदलने पर रोक लगाता है। आप डेवलपर विकल्पों में सीधे \'टैप दिखाएं\' सक्षम कर सकते हैं।</string>
     <string name="open_developer_options">डेवलपर विकल्प</string>
+    <string name="developer_options_disabled_title">डेवलपर विकल्प अक्षम हैं</string>
+    <string name="developer_options_disabled_desc">आपके डिवाइस पर डेवलपर विकल्प अभी सक्षम नहीं हैं।
+
+सक्षम करने के लिए:
+1. नीचे \'फ़ोन के बारे में\' पर टैप करें।
+2. लगातार 7 बार \'बिल्ड नंबर\' पर टैप करें।
+3. टच सक्षम करने के लिए RecordYou पर वापस आएं।</string>
+    <string name="open_about_phone">फ़ोन के बारे में</string>
+    <string name="show_touches_guide_desc">स्क्रीन पर टच दिखाने के लिए, डेवलपर विकल्पों में सेटिंग चालू करें:
+
+\'इनपुट\' अनुभाग में, \'%s\' सक्षम करें।</string>
+    <string name="show_touches_label_samsung">टच दिखाएं</string>
+    <string name="show_touches_label_xiaomi">टैप दिखाएं</string>
+    <string name="show_touches_label_huawei">टच दिखाएं</string>
+    <string name="show_touches_label_default">टैप दिखाएं / टच दिखाएं</string>
 </resources>

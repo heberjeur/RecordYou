@@ -30,13 +30,15 @@ fun CheckboxPref(
     title: String,
     summary: String? = null,
     defaultValue: Boolean = false,
+    externalChecked: Boolean? = null,
     onCheckedChange: (Boolean) -> Unit = {}
 ) {
-    var checked by remember {
+    var internalChecked by remember {
         mutableStateOf(
             Preferences.prefs.getBoolean(prefKey, defaultValue)
         )
     }
+    val currentChecked = externalChecked ?: internalChecked
     val interactionSource = remember { MutableInteractionSource() }
     val view = LocalView.current
 
@@ -48,9 +50,10 @@ fun CheckboxPref(
                 indication = null
             ) {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                checked = !checked
-                Preferences.edit { putBoolean(prefKey, checked) }
-                onCheckedChange.invoke(checked)
+                val newChecked = !currentChecked
+                internalChecked = newChecked
+                Preferences.edit { putBoolean(prefKey, newChecked) }
+                onCheckedChange.invoke(newChecked)
             },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -71,9 +74,9 @@ fun CheckboxPref(
         }
         Spacer(modifier = Modifier.width(5.dp))
         Checkbox(
-            checked = checked,
+            checked = currentChecked,
             onCheckedChange = {
-                checked = it
+                internalChecked = it
                 Preferences.edit { putBoolean(prefKey, it) }
                 onCheckedChange.invoke(it)
             }

@@ -89,4 +89,19 @@
     <string name="show_touches_desc">Uthev trykk og bevegelser under skjermopptak</string>
     <string name="show_touches_dev_desc">På denne Android-versjonen begrenser systemet automatisk endring av denne innstillingen. Du kan aktivere \'Vis berøringer\' direkte i Utvikleralternativer.</string>
     <string name="open_developer_options">Utvikleralternativer</string>
+    <string name="developer_options_disabled_title">Utvikleralternativer er deaktivert</string>
+    <string name="developer_options_disabled_desc">Utvikleralternativer er ikke aktivert på enheten din ennå.
+
+Slik aktiverer du dem:
+1. Trykk på \'Om telefonen\' nedenfor.
+2. Trykk på \'Byggnummer\' 7 ganger på rad.
+3. Gå tilbake til RecordYou for å aktivere berøringer.</string>
+    <string name="open_about_phone">Om telefonen</string>
+    <string name="show_touches_guide_desc">For å vise berøringer, aktiver alternativet i Utvikleralternativer:
+
+I delen \'Inndata\', aktiver \'%s\'.</string>
+    <string name="show_touches_label_samsung">Vis berøringer</string>
+    <string name="show_touches_label_xiaomi">Vis trykk</string>
+    <string name="show_touches_label_huawei">Vis berøringer</string>
+    <string name="show_touches_label_default">Vis berøringer</string>
 </resources>

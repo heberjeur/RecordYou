@@ -102,4 +102,19 @@
     <string name="show_touches_desc">Highlight taps and gestures during screen recording</string>
     <string name="show_touches_dev_desc">On this Android version, the system restricts changing this setting automatically. You can enable \'Show taps\' directly in Developer options.</string>
     <string name="open_developer_options">Developer options</string>
+    <string name="developer_options_disabled_title">Developer options disabled</string>
+    <string name="developer_options_disabled_desc">Developer options are not yet enabled on your device.
+
+To enable them:
+1. Tap \'About phone\' below.
+2. Tap \'Build number\' 7 times in a row.
+3. Return to RecordYou to enable touches.</string>
+    <string name="open_about_phone">About phone</string>
+    <string name="show_touches_guide_desc">To show touches on your screen, enable the option in Developer options:
+
+In the \'Input\' section, enable \'%s\' (or use \'Quick settings developer tiles\' for quick access in your notification panel).</string>
+    <string name="show_touches_label_samsung">Show touches</string>
+    <string name="show_touches_label_xiaomi">Show taps</string>
+    <string name="show_touches_label_huawei">Show touches</string>
+    <string name="show_touches_label_default">Show taps / Show touches</string>
 </resources>

@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Sorot ketukan dan gestur selama perekaman layar</string>
     <string name="show_touches_dev_desc">Pada versi Android ini, sistem membatasi pengubahan setelan ini secara otomatis. Anda dapat mengaktifkan \'Tampilkan ketukan\' langsung di Opsi pengembang.</string>
     <string name="open_developer_options">Opsi pengembang</string>
+    <string name="developer_options_disabled_title">Opsi pengembang dinonaktifkan</string>
+    <string name="developer_options_disabled_desc">Opsi pengembang belum diaktifkan di perangkat Anda.
+
+Untuk mengaktifkannya:
+1. Ketuk \'Tentang ponsel\' di bawah.
+2. Ketuk \'Nomor versi\' 7 kali berturut-turut.
+3. Kembali ke RecordYou untuk mengaktifkan sentuhan.</string>
+    <string name="open_about_phone">Tentang ponsel</string>
+    <string name="show_touches_guide_desc">Untuk menampilkan sentuhan, aktifkan opsi di Opsi pengembang:
+
+Di bagian \'Masukan\', aktifkan \'%s\'.</string>
+    <string name="show_touches_label_samsung">Tampilkan sentuhan</string>
+    <string name="show_touches_label_xiaomi">Tampilkan ketukan</string>
+    <string name="show_touches_label_huawei">Tampilkan sentuhan</string>
+    <string name="show_touches_label_default">Tampilkan ketukan / sentuhan</string>
 </resources>

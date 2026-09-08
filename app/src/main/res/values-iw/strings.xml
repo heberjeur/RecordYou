@@ -89,4 +89,19 @@
     <string name="show_touches_desc">הדגשת לחיצות ומחוות במהלך הקלטת מסך</string>
     <string name="show_touches_dev_desc">בגרסת אנדרואיד זו, המערכת מגבילה את השינוי האוטומטי של הגדרה זו. ניתן להפעיל את \'הצגת נגיעות\' ישירות באפשרויות למפתחים.</string>
     <string name="open_developer_options">אפשרויות למפתחים</string>
+    <string name="developer_options_disabled_title">אפשרויות למפתחים מושבתות</string>
+    <string name="developer_options_disabled_desc">אפשרויות למפתחים אינן מופעלות עדיין במכשיר שלך.
+
+כדי להפעיל אותן:
+1. הקש על \'מידע על הטלפון\' למטה.
+2. הקש 7 פעמים ברצף על \'מספר גרסת build\'.
+3. חזור ל-RecordYou כדי להפעיל נגיעות.</string>
+    <string name="open_about_phone">מידע על הטלפון</string>
+    <string name="show_touches_guide_desc">כדי להציג נגיעות, הפעל את האפשרות באפשרויות למפתחים:
+
+בקטע \'קלט\', הפעל את \'%s\'.</string>
+    <string name="show_touches_label_samsung">הצגת נגיעות</string>
+    <string name="show_touches_label_xiaomi">הצגת לחיצות</string>
+    <string name="show_touches_label_huawei">הצגת נגיעות</string>
+    <string name="show_touches_label_default">הצגת נגיעות</string>
 </resources>

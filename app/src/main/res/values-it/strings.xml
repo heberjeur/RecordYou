@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Evidenzia tocchi e gesti durante la registrazione dello schermo</string>
     <string name="show_touches_dev_desc">Su questa versione di Android, il sistema limita la modifica automatica di questa impostazione. Puoi abilitare \'Mostra tocchi\' direttamente nelle Opzioni sviluppatore.</string>
     <string name="open_developer_options">Opzioni sviluppatore</string>
+    <string name="developer_options_disabled_title">Opzioni sviluppatore disattivate</string>
+    <string name="developer_options_disabled_desc">Le opzioni sviluppatore non sono ancora attive sul dispositivo.
+
+Per attivarle:
+1. Tocca \'Info sul telefono\' qui sotto.
+2. Tocca 7 volte di seguito su \'Numero build\'.
+3. Torna in RecordYou per attivare i tocchi.</string>
+    <string name="open_about_phone">Info sul telefono</string>
+    <string name="show_touches_guide_desc">Per mostrare i tocchi, attiva l\'opzione nelle Opzioni sviluppatore:
+
+Nella sezione \'Input\', attiva \'%s\'.</string>
+    <string name="show_touches_label_samsung">Mostra tocchi</string>
+    <string name="show_touches_label_xiaomi">Mostra tocchi</string>
+    <string name="show_touches_label_huawei">Mostra tocchi</string>
+    <string name="show_touches_label_default">Mostra tocchi</string>
 </resources>

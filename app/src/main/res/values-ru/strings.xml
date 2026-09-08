@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Выделять нажатия и жесты во время записи экрана</string>
     <string name="show_touches_dev_desc">В этой версии Android система ограничивает автоматическое изменение этой настройки. Вы можете включить \'Показывать нажатия\' напрямую в Параметрах разработчика.</string>
     <string name="open_developer_options">Параметры разработчика</string>
+    <string name="developer_options_disabled_title">Параметры разработчика отключены</string>
+    <string name="developer_options_disabled_desc">Параметры разработчика ещё не включены на вашем устройстве.
+
+Чтобы включить их:
+1. Нажмите \'О телефоне\' ниже.
+2. Нажмите 7 раз подряд на \'Номер сборки\'.
+3. Вернитесь в RecordYou, чтобы включить нажатия.</string>
+    <string name="open_about_phone">О телефоне</string>
+    <string name="show_touches_guide_desc">Чтобы отображать нажатия, включите настройку в Параметрах разработчика:
+
+В разделе \'Ввод\' включите \'%s\'.</string>
+    <string name="show_touches_label_samsung">Показывать нажатия</string>
+    <string name="show_touches_label_xiaomi">Отображать касания</string>
+    <string name="show_touches_label_huawei">Показывать нажатия</string>
+    <string name="show_touches_label_default">Показывать нажатия / касания</string>
 </resources>

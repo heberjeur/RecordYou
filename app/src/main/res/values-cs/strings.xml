@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Zvýraznit klepnutí a gesta během nahrávání obrazovky</string>
     <string name="show_touches_dev_desc">V této verzi Androidu systém omezuje automatickou změnu tohoto nastavení. Můžete zapnout \'Zobrazit klepnutí\' přímo v Možnostech pro vývojáře.</string>
     <string name="open_developer_options">Možnosti pro vývojáře</string>
+    <string name="developer_options_disabled_title">Možnosti pro vývojáře vypnuty</string>
+    <string name="developer_options_disabled_desc">Možnosti pro vývojáře ještě nejsou aktivovány.
+
+Pro aktivaci:
+1. Klepněte níže na \'O telefonu\'.
+2. Klepněte 7krát na \'Číslo sestavení\'.
+3. Vraťte se do RecordYou pro zapnutí dotyků.</string>
+    <string name="open_about_phone">O telefonu</string>
+    <string name="show_touches_guide_desc">Pro zobrazení dotyků zapněte volbu v Možnostech pro vývojáře:
+
+V sekci \'Zadávání\' zapněte \'%s\'.</string>
+    <string name="show_touches_label_samsung">Zobrazit dotyky</string>
+    <string name="show_touches_label_xiaomi">Zobrazit klepnutí</string>
+    <string name="show_touches_label_huawei">Zobrazit dotyky</string>
+    <string name="show_touches_label_default">Zobrazit dotyky / klepnutí</string>
 </resources>

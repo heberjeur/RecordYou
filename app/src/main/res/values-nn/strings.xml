@@ -62,4 +62,19 @@
     <string name="show_touches_desc">Framhev trykk og rørsler under skjermopptak</string>
     <string name="show_touches_dev_desc">På denne Android-versjonen avgrensar systemet automatisk endring av denne innstillinga. Du kan slå på \'Vis berøringar\' direkte i Utviklarval.</string>
     <string name="open_developer_options">Utviklarval</string>
+    <string name="developer_options_disabled_title">Utviklarval er slått av</string>
+    <string name="developer_options_disabled_desc">Utviklarval er ikkje slått på på eininga di enno.
+
+Slik slår du dei på:
+1. Trykk på \'Om telefonen\' nedanfor.
+2. Trykk på \'Byggnummer\' 7 gonger på rad.
+3. Gå tilbake til RecordYou for å slå på berøringar.</string>
+    <string name="open_about_phone">Om telefonen</string>
+    <string name="show_touches_guide_desc">For å visa berøringar, slå på valet i Utviklarval:
+
+I delen \'Inndata\', slå på \'%s\'.</string>
+    <string name="show_touches_label_samsung">Vis berøringar</string>
+    <string name="show_touches_label_xiaomi">Vis trykk</string>
+    <string name="show_touches_label_huawei">Vis berøringar</string>
+    <string name="show_touches_label_default">Vis berøringar</string>
 </resources>

@@ -37,4 +37,19 @@
     <string name="show_touches_desc">স্ক্রিন রেকর্ডিংয়ের সময় স্পর্শ এবং অঙ্গভঙ্গি হাইলাইট করুন</string>
     <string name="show_touches_dev_desc">এই অ্যান্ড্রয়েড সংস্করণে সিস্টেম এই সেটিং স্বয়ংক্রিয়ভাবে পরিবর্তন সীমাবদ্ধ করে। আপনি বিকাশকারী বিকল্পগুলিতে সরাসরি \'স্পর্শ দেখান\' সক্রিয় করতে পারেন।</string>
     <string name="open_developer_options">বিকাশকারী বিকল্প</string>
+    <string name="developer_options_disabled_title">বিকাশকারী বিকল্প অক্ষম</string>
+    <string name="developer_options_disabled_desc">আপনার ডিভাইসে বিকাশকারী বিকল্পগুলি এখনও সক্রিয় করা হয়নি।
+
+সক্রিয় করতে:
+১. নিচে \'ফোন সম্পর্কে\' চাপুন।
+২. পর পর ৭ বার \'বিল্ড নম্বর\' এ ট্যাপ করুন।
+৩. স্পর্শ সক্রিয় করতে RecordYou-এ ফিরে আসুন।</string>
+    <string name="open_about_phone">ফোন সম্পর্কে</string>
+    <string name="show_touches_guide_desc">স্ক্রিনে স্পর্শ দেখানোর জন্য, বিকাশকারী বিকল্পগুলিতে সক্রিয় করুন:
+
+\'ইনপুট\' বিভাগে, \'%s\' সক্রিয় করুন।</string>
+    <string name="show_touches_label_samsung">স্পর্শ দেখান</string>
+    <string name="show_touches_label_xiaomi">ট্যাপ দেখান</string>
+    <string name="show_touches_label_huawei">স্পর্শ দেখান</string>
+    <string name="show_touches_label_default">স্পর্শ দেখান</string>
 </resources>

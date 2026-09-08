@@ -21,4 +21,19 @@
     <string name="show_touches_desc">ସ୍କ୍ରିନ୍ ରେକର୍ଡିଂ ସମୟରେ ଟ୍ୟାପ୍ ଏବଂ ଇଙ୍ଗିତଗୁଡ଼ିକୁ ହାଇଲାଇଟ୍ କରନ୍ତୁ</string>
     <string name="show_touches_dev_desc">ଏହି ଆଣ୍ଡ୍ରଏଡ୍ ସଂସ୍କରଣରେ ସିଷ୍ଟମ୍ ଏହି ସେଟିଂକୁ ସ୍ୱୟଂଚାଳିତ ଭାବରେ ପରିବର୍ତ୍ତନ କରିବାକୁ ପ୍ରତିବନ୍ଧିତ କରେ। ଆପଣ ଡେଭଲପର୍ ବିକଳ୍ପଗୁଡ଼ିକରେ ସିଧାସଳଖ \'ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ\' ସକ୍ଷମ କରିପାରିବେ।</string>
     <string name="open_developer_options">ଡେଭଲପର୍ ବିକଳ୍ପ</string>
+    <string name="developer_options_disabled_title">ଡେଭଲପର୍ ବିକଳ୍ପ ଅକ୍ଷମ ଅଛି</string>
+    <string name="developer_options_disabled_desc">ଆପଣଙ୍କ ଡିଭାଇସରେ ଡେଭଲପର୍ ବିକଳ୍ପଗୁଡ଼ିକ ଏପର୍ଯ୍ୟନ୍ତ ସକ୍ଷମ ହୋଇନାହିଁ।
+
+ସକ୍ଷମ କରିବା ପାଇଁ:
+୧. ତଳେ \'ଫୋନ୍ ବିଷୟରେ\' ଟ୍ୟାପ୍ କରନ୍ତୁ।
+୨. ଲଗାତାର ୭ ଥର \'ବିଲ୍ଡ ନମ୍ବର\' ଟ୍ୟାପ୍ କରନ୍ତୁ।
+୩. ସ୍ପର୍ଶ ସକ୍ଷମ କରିବାକୁ RecordYou କୁ ଫେରନ୍ତୁ।</string>
+    <string name="open_about_phone">ଫୋନ୍ ବିଷୟରେ</string>
+    <string name="show_touches_guide_desc">ସ୍ପର୍ଶ ଦେଖାଇବା ପାଇଁ ଡେଭଲପର୍ ବିକଳ୍ପରେ ସକ୍ଷମ କରନ୍ତୁ:
+
+\'ଇନପୁଟ୍\' ବିଭାଗରେ, \'%s\' ସକ୍ଷମ କରନ୍ତୁ।</string>
+    <string name="show_touches_label_samsung">ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ</string>
+    <string name="show_touches_label_xiaomi">ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ</string>
+    <string name="show_touches_label_huawei">ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ</string>
+    <string name="show_touches_label_default">ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ</string>
 </resources>

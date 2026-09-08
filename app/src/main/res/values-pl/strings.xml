@@ -93,4 +93,19 @@
     <string name="show_touches_desc">Wyróżnij dotknięcia i gesty podczas nagrywania ekranu</string>
     <string name="show_touches_dev_desc">W tej wersji systemu Android system ogranicza automatyczną zmianę tego ustawienia. Możesz włączyć \'Pokaż dotknięcia\' bezpośrednio w Opcjach programisty.</string>
     <string name="open_developer_options">Opcje programisty</string>
+    <string name="developer_options_disabled_title">Opcje programisty są wyłączone</string>
+    <string name="developer_options_disabled_desc">Opcje programisty nie są jeszcze włączone na Twoim urządzeniu.
+
+Aby je włączyć:
+1. Dotknij \'Informacje o telefonie\' poniżej.
+2. Dotknij 7 razy z rzędu \'Numer kompilacji\'.
+3. Wróć do RecordYou, aby włączyć pokazywanie dotknięć.</string>
+    <string name="open_about_phone">Informacje o telefonie</string>
+    <string name="show_touches_guide_desc">Aby pokazywać dotknięcia, włącz opcję w Opcjach programisty:
+
+W sekcji \'Wprowadzanie\' włącz \'%s\'.</string>
+    <string name="show_touches_label_samsung">Pokaż dotknięcia</string>
+    <string name="show_touches_label_xiaomi">Pokaż dotknięcia</string>
+    <string name="show_touches_label_huawei">Pokaż dotknięcia</string>
+    <string name="show_touches_label_default">Pokaż dotknięcia</string>
 </resources>

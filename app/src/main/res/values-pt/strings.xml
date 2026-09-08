@@ -92,4 +92,19 @@
     <string name="show_touches_desc">Destacar toques e gestos durante a gravação do ecrã</string>
     <string name="show_touches_dev_desc">Nesta versão do Android, o sistema restringe a alteração automática desta definição. Pode ativar \'Mostrar toques\' diretamente nas Opções de programador.</string>
     <string name="open_developer_options">Opções de programador</string>
+    <string name="developer_options_disabled_title">Opções de programador desativadas</string>
+    <string name="developer_options_disabled_desc">As opções de programador ainda não estão ativadas.
+
+Para ativá-las:
+1. Toque em \'Acerca do telefone\' abaixo.
+2. Toque 7 vezes seguidas no \'Número de compilação\'.
+3. Volte ao RecordYou para ativar os toques.</string>
+    <string name="open_about_phone">Acerca do telefone</string>
+    <string name="show_touches_guide_desc">Para mostrar toques, ative a opção nas Opções de programador:
+
+Na secção \'Entrada\', ative \'%s\'.</string>
+    <string name="show_touches_label_samsung">Mostrar toques</string>
+    <string name="show_touches_label_xiaomi">Mostrar toques</string>
+    <string name="show_touches_label_huawei">Mostrar toques</string>
+    <string name="show_touches_label_default">Mostrar toques</string>
 </resources>

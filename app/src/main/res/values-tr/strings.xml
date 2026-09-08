@@ -95,4 +95,19 @@
     <string name="show_touches_desc">Ekran kaydı sırasında dokunmaları ve hareketleri vurgula</string>
     <string name="show_touches_dev_desc">Bu Android sürümünde sistem bu ayarın otomatik olarak değiştirilmesini kısıtlar. \'Dokunmaları göster\' seçeneğini doğrudan Geliştirici seçeneklerinden etkinleştirebilirsiniz.</string>
     <string name="open_developer_options">Geliştirici seçenekleri</string>
+    <string name="developer_options_disabled_title">Geliştirici seçenekleri devre dışı</string>
+    <string name="developer_options_disabled_desc">Geliştirici seçenekleri cihazınızda henüz etkinleştirilmedi.
+
+Etkinleştirmek için:
+1. Aşağıdaki \'Telefon hakkında\' seçeneğine dokunun.
+2. Arka arkaya 7 kez \'Derleme numarası\' üzerine dokunun.
+3. Dokunmaları etkinleştirmek için RecordYou\'ya dönün.</string>
+    <string name="open_about_phone">Telefon hakkında</string>
+    <string name="show_touches_guide_desc">Dokunmaları göstermek için Geliştirici seçeneklerinde etkinleştirin:
+
+\'Giriş\' bölümünde \'%s\' seçeneğini etkinleştirin.</string>
+    <string name="show_touches_label_samsung">Dokunmaları göster</string>
+    <string name="show_touches_label_xiaomi">Dokunmaları göster</string>
+    <string name="show_touches_label_huawei">Dokunmaları göster</string>
+    <string name="show_touches_label_default">Dokunmaları göster</string>
 </resources>

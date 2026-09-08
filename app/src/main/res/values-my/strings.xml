@@ -91,4 +91,19 @@
     <string name="show_touches_desc">မျက်နှာပြင် မှတ်တမ်းတင်နေစဉ် ထိတွေ့မှုများနှင့် အမူအရာများကို ပေါ်လွင်စေပါ</string>
     <string name="show_touches_dev_desc">ဤ Android ဗားရှင်းတွင် စနစ်သည် ဤဆက်တင်ကို အလိုအလျောက် ပြောင်းလဲခြင်းအား ကန့်သတ်ထားသည်။ ဆော့ဖ်ဝဲရေးသားသူ ရွေးချယ်စရာများတွင် \'ထိတွေ့မှုများ ပြသပါ\' ကို တိုက်ရိုက်ဖွင့်နိုင်ပါသည်။</string>
     <string name="open_developer_options">ဆော့ဖ်ဝဲရေးသားသူ ရွေးချယ်စရာများ</string>
+    <string name="developer_options_disabled_title">ဆော့ဖ်ဝဲရေးသားသူ ရွေးချယ်စရာများ ပိတ်ထားသည်</string>
+    <string name="developer_options_disabled_desc">သင့်စက်တွင် ဆော့ဖ်ဝဲရေးသားသူ ရွေးချယ်စရာများကို ဖွင့်မထားသေးပါ။
+
+ဖွင့်ရန် -
+၁။ အောက်ရှိ \'ဖုန်းအကြောင်း\' ကို နှိပ်ပါ။
+၂။ \'Build နံပါတ်\' ကို ၇ ကြိမ် ဆက်တိုက် နှိပ်ပါ။
+၃။ ထိတွေ့မှုများကို ဖွင့်ရန် RecordYou သို့ ပြန်သွားပါ။</string>
+    <string name="open_about_phone">ဖုန်းအကြောင်း</string>
+    <string name="show_touches_guide_desc">မျက်နှာပြင်ပေါ်တွင် ထိတွေ့မှုများ ပြသရန် ဆော့ဖ်ဝဲရေးသားသူ ရွေးချယ်စရာများတွင် ဖွင့်ပါ -
+
+\'ထည့်သွင်းမှု\' အပိုင်းတွင် \'%s\' ကို ဖွင့်ပါ။</string>
+    <string name="show_touches_label_samsung">ထိတွေ့မှုများ ပြသပါ</string>
+    <string name="show_touches_label_xiaomi">ထိတွေ့မှုများ ပြသပါ</string>
+    <string name="show_touches_label_huawei">ထိတွေ့မှုများ ပြသပါ</string>
+    <string name="show_touches_label_default">ထိတွေ့မှုများ ပြသပါ</string>
 </resources>

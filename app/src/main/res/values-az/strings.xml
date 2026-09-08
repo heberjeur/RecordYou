@@ -66,4 +66,19 @@
     <string name="show_touches_desc">Ekran qeydi zamanı toxunuşları və jestləri vurğula</string>
     <string name="show_touches_dev_desc">Bu Android versiyasında sistem bu parametri avtomatik dəyişməyi məhdudlaşdırır. Tərtibatçı seçimlərində \'Toxunuşları göstər\' seçimini birbaşa aktivləşdirə bilərsiniz.</string>
     <string name="open_developer_options">Tərtibatçı seçimləri</string>
+    <string name="developer_options_disabled_title">Tərtibatçı seçimləri deaktivdir</string>
+    <string name="developer_options_disabled_desc">Tərtibatçı seçimləri cihazınızda hələ aktivləşdirilməyib.
+
+Aktivləşdirmək üçün:
+1. Aşağıdakı \'Telefon haqqında\' bölməsinə toxunun.
+2. \'Quruluş nömrəsi\' üzərinə ardıcıl 7 dəfə vurun.
+3. Toxunuşları aktivləşdirmək üçün RecordYou-ya qayıdın.</string>
+    <string name="open_about_phone">Telefon haqqında</string>
+    <string name="show_touches_guide_desc">Ekranda toxunuşları göstərmək üçün Tərtibatçı seçimlərində aktivləşdirin:
+
+\'Daxiletmə\' bölməsində \'%s\' seçimini aktivləşdirin.</string>
+    <string name="show_touches_label_samsung">Toxunuşları göstər</string>
+    <string name="show_touches_label_xiaomi">Toxunuşları göstər</string>
+    <string name="show_touches_label_huawei">Toxunuşları göstər</string>
+    <string name="show_touches_label_default">Toxunuşları göstər</string>
 </resources>
