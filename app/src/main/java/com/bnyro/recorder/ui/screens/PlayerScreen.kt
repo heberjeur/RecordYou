@@ -122,20 +122,6 @@ fun PlayerScreen(
                                     }
                                 )
                             }
-                            DropdownMenuItem(
-                                text = {
-                                    Text(stringResource(R.string.reset_waveform_cache))
-                                },
-                                onClick = {
-                                    playerModel.resetAndReloadWaveforms()
-                                    android.widget.Toast.makeText(
-                                        context,
-                                        context.getString(R.string.reset_waveform_cache_done),
-                                        android.widget.Toast.LENGTH_SHORT
-                                    ).show()
-                                    showDropDown = false
-                                }
-                            )
                         }
                     }
                     if (playerModel.selectedFiles.isNotEmpty()) {

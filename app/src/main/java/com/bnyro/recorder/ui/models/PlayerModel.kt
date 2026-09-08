@@ -153,20 +153,44 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
         screenRecordingItems = screenRecordingItems.sortedBy(sortOrder)
     }
 
+    fun deleteFile(item: RecordingItemData) {
+        if (currentlyPlayingFile?.uri == item.recordingFile.uri) {
+            stopPlaying()
+        }
+        viewModelScope.launch {
+            fileRepository.deleteFiles(listOf(item.recordingFile))
+            withContext(Dispatchers.Main) {
+                audioRecordingItems = audioRecordingItems.filterNot { it.recordingFile.uri == item.recordingFile.uri }
+                screenRecordingItems = screenRecordingItems.filterNot { it.recordingFile.uri == item.recordingFile.uri }
+                selectedFiles = selectedFiles.filterNot { it.recordingFile.uri == item.recordingFile.uri }
+            }
+        }
+    }
+
     fun deleteFiles() {
+        if (selectedFiles.any { it.recordingFile.uri == currentlyPlayingFile?.uri }) {
+            stopPlaying()
+        }
         viewModelScope.launch {
             if (selectedFiles.isEmpty()) {
+                stopPlaying()
                 fileRepository.deleteAllFiles()
-                audioRecordingItems = emptyList()
-                screenRecordingItems = emptyList()
+                withContext(Dispatchers.Main) {
+                    audioRecordingItems = emptyList()
+                    screenRecordingItems = emptyList()
+                }
                 return@launch
             }
             val toDelete = selectedFiles
-            selectedFiles = emptyList()
+            withContext(Dispatchers.Main) {
+                selectedFiles = emptyList()
+            }
             fileRepository.deleteFiles(toDelete.map { it.recordingFile })
             val uris = toDelete.map { it.recordingFile.uri }.toSet()
-            audioRecordingItems = audioRecordingItems.filterNot { uris.contains(it.recordingFile.uri) }
-            screenRecordingItems = screenRecordingItems.filterNot { uris.contains(it.recordingFile.uri) }
+            withContext(Dispatchers.Main) {
+                audioRecordingItems = audioRecordingItems.filterNot { uris.contains(it.recordingFile.uri) }
+                screenRecordingItems = screenRecordingItems.filterNot { uris.contains(it.recordingFile.uri) }
+            }
         }
     }
 
@@ -195,6 +219,7 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
 
     fun stopPlaying() {
         player.stop()
+        player.clearMediaItems()
         currentlyPlayingFile = null
         isAudioPlaying = false
     }

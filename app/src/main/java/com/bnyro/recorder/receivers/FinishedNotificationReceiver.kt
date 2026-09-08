@@ -9,6 +9,9 @@ import com.bnyro.recorder.services.RecorderService
 import com.bnyro.recorder.ui.MainActivity
 import com.bnyro.recorder.util.IntentHelper
 import com.bnyro.recorder.util.NotificationHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FinishedNotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -35,7 +38,11 @@ class FinishedNotificationReceiver : BroadcastReceiver() {
                 context.startActivity(trimIntent)
             }
             RecorderService.SHARE_ACTION -> file?.let { IntentHelper.shareFile(context, it) }
-            RecorderService.DELETE_ACTION -> file?.delete()
+            RecorderService.DELETE_ACTION -> file?.let {
+                CoroutineScope(Dispatchers.IO).launch {
+                    repo.deleteFiles(listOf(it))
+                }
+            }
         }
         NotificationManagerCompat.from(context)
             .cancel(NotificationHelper.RECORDING_FINISHED_N_ID)

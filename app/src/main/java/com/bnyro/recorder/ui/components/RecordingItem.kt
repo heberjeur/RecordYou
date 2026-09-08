@@ -304,9 +304,7 @@ fun RecordingItem(
                 title = R.string.delete,
                 onDismissRequest = { showDeleteDialog = false }
             ) {
-                playerModel.stopPlaying()
-                recordingFile.delete()
-                playerModel.loadFiles()
+                playerModel.deleteFile(recordingItem)
             }
         }
 

@@ -1,6 +1,7 @@
 package com.bnyro.recorder.util
 
 import android.annotation.SuppressLint
+import android.content.ContentResolver
 import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.util.Log
@@ -328,8 +329,21 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
     override suspend fun deleteFiles(files: List<DocumentFile>) {
         withContext(Dispatchers.IO) {
             val uris = files.map { it.uri }.toSet()
-            files.forEach {
-                if (it.exists()) it.delete()
+            files.forEach { file ->
+                val deleted = runCatching { file.delete() }.getOrDefault(false)
+                if (!deleted && file.uri.scheme == ContentResolver.SCHEME_CONTENT) {
+                    runCatching {
+                        context.contentResolver.delete(file.uri, null, null)
+                    }
+                } else if (!deleted && file.uri.scheme == "file") {
+                    file.uri.path?.let { path ->
+                        runCatching { java.io.File(path).delete() }
+                    }
+                }
+            }
+            uris.forEach { uri ->
+                audioWaveformCache.remove(uri.toString())
+                videoThumbnailCache.remove(uri.toString())
             }
             cachedAudio = cachedAudio?.filterNot { uris.contains(it.recordingFile.uri) }
             cachedVideos = cachedVideos?.filterNot { uris.contains(it.recordingFile.uri) }
@@ -339,11 +353,22 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
 
     override suspend fun deleteAllFiles() {
         withContext(Dispatchers.IO) {
-            (getAudioOutputDirs() + getVideoOutputDirs() + getOutputDirs()).distinctBy { it.uri }.forEach { files ->
-                files.listFiles().forEach {
-                    if (it.isFile) it.delete()
+            (getAudioOutputDirs() + getVideoOutputDirs() + getOutputDirs()).distinctBy { it.uri }.forEach { dir ->
+                dir.listFiles().forEach { file ->
+                    val deleted = runCatching { file.delete() }.getOrDefault(false)
+                    if (!deleted && file.uri.scheme == ContentResolver.SCHEME_CONTENT) {
+                        runCatching {
+                            context.contentResolver.delete(file.uri, null, null)
+                        }
+                    } else if (!deleted && file.uri.scheme == "file") {
+                        file.uri.path?.let { path ->
+                            runCatching { java.io.File(path).delete() }
+                        }
+                    }
                 }
             }
+            audioWaveformCache.evictAll()
+            videoThumbnailCache.evictAll()
             cachedAudio = emptyList()
             cachedVideos = emptyList()
             writeCache()

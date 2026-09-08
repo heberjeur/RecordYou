@@ -1,8 +1,10 @@
 package com.bnyro.recorder.ui
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.media.projection.MediaProjectionManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -27,9 +29,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.documentfile.provider.DocumentFile
 import com.bnyro.recorder.App
+import com.bnyro.recorder.ui.common.FullscreenDialog
 import com.bnyro.recorder.ui.models.PlayerModel
 import com.bnyro.recorder.ui.screens.TrimmerScreen
+import com.bnyro.recorder.ui.views.VideoView
 import com.bnyro.recorder.util.LanguageHelper
 
 class MainActivity : ComponentActivity() {
@@ -37,6 +42,8 @@ class MainActivity : ComponentActivity() {
     private var exitAfterRecordingStart = false
     private var trimFileName by mutableStateOf<String?>(null)
     private var openRecordingName by mutableStateOf<String?>(null)
+    private var viewVideoUri by mutableStateOf<Uri?>(null)
+    private var openAudioFile by mutableStateOf<DocumentFile?>(null)
     private lateinit var mProjectionManager: MediaProjectionManager
     private val recorderModel: RecorderModel by viewModels()
     private val playerModel: PlayerModel by viewModels(factoryProducer = { PlayerModel.Factory })
@@ -92,6 +99,12 @@ class MainActivity : ComponentActivity() {
                     }
                     openRecordingName = null
                 }
+                LaunchedEffect(openAudioFile) {
+                    val file = openAudioFile ?: return@LaunchedEffect
+                    navController.navigateTo(Destination.RecordingPlayer(showVideo = false).route)
+                    playerModel.startPlayback(file)
+                    openAudioFile = null
+                }
                 Surface(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -115,6 +128,18 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }
+                if (viewVideoUri != null) {
+                    val uri = viewVideoUri!!
+                    val fileName = runCatching {
+                        DocumentFile.fromSingleUri(this, uri)?.name
+                    }.getOrNull() ?: uri.lastPathSegment ?: "Video"
+                    FullscreenDialog(
+                        title = fileName.substringBeforeLast("."),
+                        onDismissRequest = { viewVideoUri = null }
+                    ) {
+                        VideoView(videoUri = uri)
+                    }
+                }
             }
         }
     }
@@ -125,6 +150,30 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun processIntent(intent: Intent) {
+        val action = intent.action
+        val data = intent.data
+        if (action == Intent.ACTION_VIEW && data != null) {
+            val mimeType = intent.type ?: contentResolver.getType(data).orEmpty()
+            val path = data.path.orEmpty()
+            val isVideo = mimeType.startsWith("video/") ||
+                listOf(".mp4", ".mov", ".avi", ".mkv", ".webm", ".mpg").any { path.endsWith(it, ignoreCase = true) }
+            if (isVideo) {
+                viewVideoUri = data
+            } else {
+                val docFile = runCatching {
+                    if (data.scheme == ContentResolver.SCHEME_CONTENT) {
+                        DocumentFile.fromSingleUri(this, data)
+                    } else if (data.scheme == "file" && data.path != null) {
+                        DocumentFile.fromFile(java.io.File(data.path!!))
+                    } else {
+                        DocumentFile.fromSingleUri(this, data)
+                    }
+                }.getOrNull()
+                if (docFile != null) {
+                    openAudioFile = docFile
+                }
+            }
+        }
         val openName = intent.getStringExtra(EXTRA_OPEN_RECORDING_NAME)
         if (!openName.isNullOrBlank()) {
             openRecordingName = openName
