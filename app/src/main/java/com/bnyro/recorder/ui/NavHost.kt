@@ -6,8 +6,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.bnyro.recorder.enums.RecorderType
 import com.bnyro.recorder.ui.screens.HomeScreen
 import com.bnyro.recorder.ui.screens.PlayerScreen
@@ -54,18 +56,28 @@ fun AppNavHost(
             SettingsScreen(onNavigateUp = { navController.navigateUp() })
         }
 
-        composable(route = Destination.RecordingPlayer.route,
+        composable(
+            route = Destination.RecordingPlayer.ROUTE_PATTERN,
+            arguments = listOf(
+                navArgument("video") {
+                    type = NavType.BoolType
+                    defaultValue = false
+                }
+            ),
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Up,
                     initialOffset = { it / 4 }) + fadeIn()
             },
             exitTransition = {
-                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down,
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
                     targetOffset = { it / 4 }) + fadeOut()
-            }) {
+            }
+        ) { backStackEntry ->
+            val showVideo = backStackEntry.arguments?.getBoolean("video") ?: false
             PlayerScreen(
-                showVideoModeInitially = false,
+                showVideoModeInitially = showVideo,
                 onNavigateUp = { navController.navigateUp() }
             )
         }

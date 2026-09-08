@@ -59,7 +59,8 @@ fun HomeScreen(
                 imageVector = Icons.Default.VideoLibrary,
                 contentDescription = stringResource(R.string.recordings)
             ) {
-                onNavigate(Destination.RecordingPlayer)
+                val isVideoTab = pagerState.currentPage == 1
+                onNavigate(Destination.RecordingPlayer(showVideo = isVideoTab))
             }
         })
     }, bottomBar = {

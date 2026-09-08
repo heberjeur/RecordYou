@@ -22,11 +22,18 @@ import com.bnyro.recorder.enums.ThemeMode
 import com.bnyro.recorder.ui.models.RecorderModel
 import com.bnyro.recorder.ui.models.ThemeModel
 import com.bnyro.recorder.ui.theme.RecordYouTheme
+import android.os.Build
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import com.bnyro.recorder.App
+import com.bnyro.recorder.ui.screens.TrimmerScreen
 import com.bnyro.recorder.util.LanguageHelper
 
 class MainActivity : ComponentActivity() {
     private var initialRecorder = RecorderType.NONE
     private var exitAfterRecordingStart = false
+    private var trimFileName by mutableStateOf<String?>(null)
     private lateinit var mProjectionManager: MediaProjectionManager
     private val recorderModel: RecorderModel by viewModels()
     private lateinit var launcher: ActivityResultLauncher<Intent>
@@ -74,6 +81,18 @@ class MainActivity : ComponentActivity() {
                         initialRecorder = initialRecorder
                     )
                 }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && trimFileName != null) {
+                    val fileRepo = (application as App).fileRepository
+                    val file = fileRepo.getOutputDir().findFile(trimFileName!!)
+                        ?: fileRepo.getAudioOutputDir().findFile(trimFileName!!)
+                        ?: fileRepo.getVideoOutputDir().findFile(trimFileName!!)
+                    if (file != null) {
+                        TrimmerScreen(
+                            onDismissRequest = { trimFileName = null },
+                            inputFile = file
+                        )
+                    }
+                }
             }
         }
     }
@@ -84,6 +103,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun processIntent(intent: Intent) {
+        val trimName = intent.getStringExtra(EXTRA_TRIM_FILE_NAME)
+        if (!trimName.isNullOrBlank()) {
+            trimFileName = trimName
+            intent.removeExtra(EXTRA_TRIM_FILE_NAME)
+        }
         val initialRecorderType = intent.getStringExtra(EXTRA_ACTION_KEY)?.let {
             RecorderType.valueOf(it)
         } ?: RecorderType.NONE
@@ -116,5 +140,6 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         const val EXTRA_ACTION_KEY = "action"
+        const val EXTRA_TRIM_FILE_NAME = "trimFileName"
     }
 }

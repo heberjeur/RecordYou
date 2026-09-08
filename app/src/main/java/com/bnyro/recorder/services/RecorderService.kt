@@ -275,6 +275,28 @@ abstract class RecorderService : LifecycleService() {
     private fun createRecordingFinishedNotification() {
         if (outputFile == null) return
 
+        val openAction = NotificationCompat.Action.Builder(
+            null,
+            getString(R.string.open),
+            getPendingIntent(
+                Intent(this, FinishedNotificationReceiver::class.java).putExtra(
+                    FILE_NAME_EXTRA_KEY,
+                    outputFile?.name.toString()
+                ).putExtra(ACTION_EXTRA_KEY, OPEN_ACTION),
+                6
+            )
+        )
+        val trimAction = NotificationCompat.Action.Builder(
+            null,
+            getString(R.string.trim),
+            getPendingIntent(
+                Intent(this, FinishedNotificationReceiver::class.java).putExtra(
+                    FILE_NAME_EXTRA_KEY,
+                    outputFile?.name.toString()
+                ).putExtra(ACTION_EXTRA_KEY, TRIM_ACTION),
+                7
+            )
+        )
         val deleteAction = NotificationCompat.Action.Builder(
             null,
             getString(R.string.delete),
@@ -286,17 +308,6 @@ abstract class RecorderService : LifecycleService() {
                 4
             )
         )
-        val shareAction = NotificationCompat.Action.Builder(
-            null,
-            getString(R.string.share),
-            getPendingIntent(
-                Intent(this, FinishedNotificationReceiver::class.java).putExtra(
-                    FILE_NAME_EXTRA_KEY,
-                    outputFile?.name.toString()
-                ).putExtra(ACTION_EXTRA_KEY, SHARE_ACTION),
-                5
-            )
-        )
 
         val notification = NotificationCompat.Builder(
             this,
@@ -305,6 +316,8 @@ abstract class RecorderService : LifecycleService() {
             .setContentTitle(getString(R.string.recording_finished))
             .setContentText(outputFile?.name)
             .setSmallIcon(R.drawable.ic_notification)
+            .addAction(openAction.build())
+            .addAction(trimAction.build())
             .addAction(deleteAction.build())
             .setContentIntent(getActivityIntent())
             .setAutoCancel(true)
@@ -332,5 +345,7 @@ abstract class RecorderService : LifecycleService() {
         const val PAUSE_RESUME_ACTION = "PR"
         const val DELETE_ACTION = "DELETE"
         const val SHARE_ACTION = "SHARE"
+        const val OPEN_ACTION = "OPEN"
+        const val TRIM_ACTION = "TRIM"
     }
 }

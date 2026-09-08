@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.GraphicEq
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -163,13 +164,15 @@ fun RecordingItem(
                             )
                         }
                     }
+                    val isPlayingThis = isAudio && (playerModel.currentlyPlayingFile?.uri == recordingFile.uri) && playerModel.isAudioPlaying
                     ClickableIcon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = stringResource(R.string.play)
+                        imageVector = if (isPlayingThis) Icons.Default.Pause else Icons.Default.PlayArrow,
+                        contentDescription = stringResource(if (isPlayingThis) R.string.pause else R.string.play)
                     ) {
                         if (isVideo) {
                             showPlayer = true
                         } else {
+                            playerModel.playFile(recordingFile)
                             startPlayingAudio.invoke()
                         }
                     }

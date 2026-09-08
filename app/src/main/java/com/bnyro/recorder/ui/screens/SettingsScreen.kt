@@ -66,9 +66,7 @@ import com.bnyro.recorder.ui.common.CustomNumInputPref
 import com.bnyro.recorder.ui.common.SelectionDialog
 import com.bnyro.recorder.ui.components.NamingPatternPref
 import com.bnyro.recorder.ui.dialogs.AboutDialog
-import com.bnyro.recorder.ui.models.PlayerModel
 import com.bnyro.recorder.ui.models.ThemeModel
-import com.bnyro.recorder.util.findActivity
 import com.bnyro.recorder.util.PickFolderContract
 import com.bnyro.recorder.util.Preferences
 
@@ -388,35 +386,6 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                 title = stringResource(R.string.audio_visualizer_timestamps),
                 summary = stringResource(R.string.audio_visualizer_timestamps_description)
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            val currentContext = LocalContext.current
-            val playerModel: PlayerModel = run {
-                val activity = currentContext.findActivity()
-                if (activity != null) {
-                    viewModel(viewModelStoreOwner = activity, factory = PlayerModel.Factory)
-                } else {
-                    viewModel(factory = PlayerModel.Factory)
-                }
-            }
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    view.playSoundEffect(SoundEffectConstants.CLICK)
-                    playerModel.resetAndReloadWaveforms()
-                    android.widget.Toast.makeText(
-                        currentContext,
-                        currentContext.getString(R.string.reset_waveform_cache_done),
-                        android.widget.Toast.LENGTH_SHORT
-                    ).show()
-                }
-            ) {
-                Text(
-                    text = "📊 ${stringResource(R.string.reset_waveform_cache)}",
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
             Spacer(modifier = Modifier.height(10.dp))
             NamingPatternPref()
         }

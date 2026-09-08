@@ -1,6 +1,7 @@
 package com.bnyro.recorder.ui.components
 
 import android.view.SoundEffectConstants
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,13 +17,11 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
@@ -30,10 +29,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
 import com.bnyro.recorder.ui.models.PlayerModel
-
+import com.bnyro.recorder.util.TimeFormatHelper
 import com.bnyro.recorder.util.findActivity
 
 @Composable
@@ -50,15 +47,9 @@ fun MiniPlayer(
     onClose: (() -> Unit)? = null
 ) {
     val view = LocalView.current
-    DisposableEffect(inputFile) {
-        with(playerModel.player) {
-            val mediaItem = MediaItem.Builder().setUri(inputFile.uri).build()
-            setMediaItem(mediaItem)
-            playWhenReady = true
-            prepare()
-            onDispose {
-                stop()
-            }
+    LaunchedEffect(inputFile) {
+        if (playerModel.currentlyPlayingFile?.uri != inputFile.uri) {
+            playerModel.playFile(inputFile)
         }
     }
     val item = playerModel.audioRecordingItems.firstOrNull { it.recordingFile.uri == inputFile.uri }
@@ -97,37 +88,22 @@ fun MiniPlayer(
                         it.isNotBlank()
                     } ?: fileName
                 )
-                with(playerModel.player) {
-                    var playState by remember { mutableStateOf(false) }
-
-                    DisposableEffect(key1 = this) {
-                        val listener = object : Player.Listener {
-                            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                                playState = isPlaying
-                            }
-                        }
-                        addListener(listener)
-                        onDispose {
-                            removeListener(listener)
-                        }
+                FloatingActionButton(
+                    onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
+                        playerModel.playFile(inputFile)
                     }
-                    FloatingActionButton(
-                        onClick = {
-                            view.playSoundEffect(SoundEffectConstants.CLICK)
-                            playPause()
-                        }
-                    ) {
-                        if (playState) {
-                            Icon(
-                                Icons.Default.Pause,
-                                contentDescription = stringResource(id = com.bnyro.recorder.R.string.pause)
-                            )
-                        } else {
-                            Icon(
-                                Icons.Default.PlayArrow,
-                                contentDescription = stringResource(id = com.bnyro.recorder.R.string.play)
-                            )
-                        }
+                ) {
+                    if (playerModel.isAudioPlaying) {
+                        Icon(
+                            Icons.Default.Pause,
+                            contentDescription = stringResource(id = com.bnyro.recorder.R.string.pause)
+                        )
+                    } else {
+                        Icon(
+                            Icons.Default.PlayArrow,
+                            contentDescription = stringResource(id = com.bnyro.recorder.R.string.play)
+                        )
                     }
                 }
             }
@@ -149,9 +125,24 @@ fun MiniPlayer(
                     .height(60.dp)
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            PlayerController(exoPlayer = playerModel.player)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp, vertical = 2.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = TimeFormatHelper.formatDuration(posAndDur.first / 1000),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = posAndDur.second?.let { TimeFormatHelper.formatDuration(it / 1000) } ?: "",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }

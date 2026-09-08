@@ -59,6 +59,7 @@ object IntentHelper {
 
     private fun startActivity(context: Context, intent: Intent) {
         try {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         } catch (e: android.content.ActivityNotFoundException) {
             Toast.makeText(context, e.localizedMessage, Toast.LENGTH_SHORT).show()

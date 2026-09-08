@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import com.bnyro.recorder.App
@@ -32,6 +34,8 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
         .build()
 
     var selectedFiles by mutableStateOf(listOf<RecordingItemData>())
+    var currentlyPlayingFile by mutableStateOf<DocumentFile?>(null)
+    var isAudioPlaying by mutableStateOf(false)
 
     private var sortOrder = SortOrder.MODIFIED
 
@@ -41,6 +45,20 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
     private var loadJob: Job? = null
 
     init {
+        player.addListener(object : Player.Listener {
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                isAudioPlaying = isPlaying
+            }
+
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED) {
+                    isAudioPlaying = false
+                    if (playbackState == Player.STATE_IDLE) {
+                        currentlyPlayingFile = null
+                    }
+                }
+            }
+        })
         loadFiles()
     }
 
@@ -152,8 +170,29 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
         }
     }
 
+    fun playFile(file: DocumentFile) {
+        if (currentlyPlayingFile?.uri == file.uri) {
+            if (player.isPlaying) {
+                player.pause()
+            } else {
+                if (player.playbackState == Player.STATE_ENDED) {
+                    player.seekTo(0)
+                }
+                player.play()
+            }
+        } else {
+            currentlyPlayingFile = file
+            val mediaItem = MediaItem.Builder().setUri(file.uri).build()
+            player.setMediaItem(mediaItem)
+            player.playWhenReady = true
+            player.prepare()
+        }
+    }
+
     fun stopPlaying() {
         player.stop()
+        currentlyPlayingFile = null
+        isAudioPlaying = false
     }
 
     override fun onCleared() {

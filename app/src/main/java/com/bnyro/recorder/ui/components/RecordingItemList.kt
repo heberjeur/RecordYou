@@ -95,7 +95,7 @@ fun RecordingItemList(
                         inputFile = chosenFile!!,
                         playerModel = playerModel,
                         onClose = {
-                            playerModel.player.stop()
+                            playerModel.stopPlaying()
                             showMiniPlayer = false
                             chosenFile = null
                         }
