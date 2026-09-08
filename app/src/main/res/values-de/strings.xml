@@ -108,4 +108,21 @@ Aktivieren Sie im Bereich \'Eingabe\' die Option \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Tippen anzeigen</string>
     <string name="show_touches_label_huawei">Berührungen anzeigen</string>
     <string name="show_touches_label_default">Tippen anzeigen / Berührungen anzeigen</string>
+    <string name="trim_mode_keep">Behalten</string>
+    <string name="trim_mode_delete">Löschen</string>
+    <string name="move_to_start">An den Anfang</string>
+    <string name="move_to_end">Ans Ende</string>
+    <string name="trim_mode_mute">Stummschalten</string>
+    <string name="remove_silences">Pausen entfernen</string>
+    <string name="capture_snapshot">Schnappschuss</string>
+    <string name="snapshot_saved">Schnappschuss gespeichert</string>
+    <string name="undo">Rückgängig</string>
+    <string name="redo">Wiederholen</string>
+    <string name="preview_selection">Auswahl abspielen</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">MP3-Audio</string>
+    <string name="export_as_m4a">M4A-Audio</string>
+    <string name="audio_fade">Überblendung</string>
+    <string name="replace_original">Original ersetzen</string>
+    <string name="play_result">Abspielen</string>
 </resources>

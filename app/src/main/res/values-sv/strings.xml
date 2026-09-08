@@ -71,4 +71,21 @@ Aktivera \'%s\' i avsnittet \'Inmatning\'.</string>
     <string name="show_touches_label_xiaomi">Visa tryck</string>
     <string name="show_touches_label_huawei">Visa tryck</string>
     <string name="show_touches_label_default">Visa tryck</string>
+    <string name="trim_mode_keep">Behåll</string>
+    <string name="trim_mode_delete">Ta bort</string>
+    <string name="move_to_start">Till början</string>
+    <string name="move_to_end">Till slutet</string>
+    <string name="trim_mode_mute">Ljud av</string>
+    <string name="remove_silences">Klipp tystnad</string>
+    <string name="capture_snapshot">Ögonblicksbild</string>
+    <string name="snapshot_saved">Ögonblicksbild sparad</string>
+    <string name="undo">Ångra</string>
+    <string name="redo">Gör om</string>
+    <string name="preview_selection">Spela markering</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">MP3-ljud</string>
+    <string name="export_as_m4a">M4A-ljud</string>
+    <string name="audio_fade">Ljudtoning</string>
+    <string name="replace_original">Ersätt original</string>
+    <string name="play_result">Spela</string>
 </resources>

@@ -77,4 +77,21 @@ I delen \'Inndata\', slå på \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Vis trykk</string>
     <string name="show_touches_label_huawei">Vis berøringar</string>
     <string name="show_touches_label_default">Vis berøringar</string>
+    <string name="trim_mode_keep">Hald</string>
+    <string name="trim_mode_delete">Slett</string>
+    <string name="move_to_start">Til start</string>
+    <string name="move_to_end">Til slutt</string>
+    <string name="trim_mode_mute">Demp</string>
+    <string name="remove_silences">Klypp stille</string>
+    <string name="capture_snapshot">Augneblinksbilete</string>
+    <string name="snapshot_saved">Augneblinksbilete lagra</string>
+    <string name="undo">Angra</string>
+    <string name="redo">Gjer om</string>
+    <string name="preview_selection">Spel av utval</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">MP3-lyd</string>
+    <string name="export_as_m4a">M4A-lyd</string>
+    <string name="audio_fade">Lydtoning</string>
+    <string name="replace_original">Erstatt original</string>
+    <string name="play_result">Spel av</string>
 </resources>

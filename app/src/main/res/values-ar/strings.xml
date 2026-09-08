@@ -110,4 +110,21 @@
     <string name="show_touches_label_xiaomi">عرض النقرات</string>
     <string name="show_touches_label_huawei">إظهار اللمسات</string>
     <string name="show_touches_label_default">إظهار النقرات / اللمسات</string>
+    <string name="trim_mode_keep">إبقاء</string>
+    <string name="trim_mode_delete">حذف</string>
+    <string name="move_to_start">إلى البداية</string>
+    <string name="move_to_end">إلى النهاية</string>
+    <string name="trim_mode_mute">كتم الصوت</string>
+    <string name="remove_silences">قص الصمت</string>
+    <string name="capture_snapshot">لقطة</string>
+    <string name="snapshot_saved">تم حفظ اللقطة</string>
+    <string name="undo">تراجع</string>
+    <string name="redo">إعادة</string>
+    <string name="preview_selection">تشغيل التحديد</string>
+    <string name="export_video">فيديو</string>
+    <string name="export_as_mp3">صوت MP3</string>
+    <string name="export_as_m4a">صوت M4A</string>
+    <string name="audio_fade">تلاشي الصوت</string>
+    <string name="replace_original">استبدال الأصل</string>
+    <string name="play_result">تشغيل</string>
 </resources>

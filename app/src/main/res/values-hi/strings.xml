@@ -110,4 +110,21 @@
     <string name="show_touches_label_xiaomi">टैप दिखाएं</string>
     <string name="show_touches_label_huawei">टच दिखाएं</string>
     <string name="show_touches_label_default">टैप दिखाएं / टच दिखाएं</string>
+    <string name="trim_mode_keep">रखें</string>
+    <string name="trim_mode_delete">हटाएं</string>
+    <string name="move_to_start">शुरुआत में</string>
+    <string name="move_to_end">अंत में</string>
+    <string name="trim_mode_mute">म्यूट करें</string>
+    <string name="remove_silences">खामोशी काटें</string>
+    <string name="capture_snapshot">स्नैपशॉट</string>
+    <string name="snapshot_saved">स्नैपशॉट सहेजा गया</string>
+    <string name="undo">पूर्ववत करें</string>
+    <string name="redo">फिर से करें</string>
+    <string name="preview_selection">चयन चलाएं</string>
+    <string name="export_video">वीडियो</string>
+    <string name="export_as_mp3">MP3 ऑडियो</string>
+    <string name="export_as_m4a">M4A ऑडियो</string>
+    <string name="audio_fade">ऑडियो फेड</string>
+    <string name="replace_original">मूल बदलें</string>
+    <string name="play_result">चलाएं</string>
 </resources>

@@ -36,4 +36,21 @@
     <string name="show_touches_label_xiaomi">ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ</string>
     <string name="show_touches_label_huawei">ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ</string>
     <string name="show_touches_label_default">ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ</string>
+    <string name="trim_mode_keep">ରଖନ୍ତୁ</string>
+    <string name="trim_mode_delete">କାଟନ୍ତୁ</string>
+    <string name="move_to_start">ପ୍ରାରମ୍ଭକୁ</string>
+    <string name="move_to_end">ଶେଷକୁ</string>
+    <string name="trim_mode_mute">ମ୍ୟୁଟ୍</string>
+    <string name="remove_silences">ନୀରବତା କାଟନ୍ତୁ</string>
+    <string name="capture_snapshot">ସ୍ନାପସଟ୍</string>
+    <string name="snapshot_saved">ସ୍ନାପସଟ୍ ସାଇତାଗଲା</string>
+    <string name="undo">ପୂର୍ବବତ୍</string>
+    <string name="redo">ପୁନର୍ବାର</string>
+    <string name="preview_selection">ଚୟନ ଚଲାନ୍ତୁ</string>
+    <string name="export_video">ଭିଡିଓ</string>
+    <string name="export_as_mp3">MP3 ଅଡିଓ</string>
+    <string name="export_as_m4a">M4A ଅଡିଓ</string>
+    <string name="audio_fade">ଅଡିଓ ଫେଡ୍</string>
+    <string name="replace_original">ମୂଳ ବଦଳାନ୍ତୁ</string>
+    <string name="play_result">ଚଲାନ୍ତୁ</string>
 </resources>

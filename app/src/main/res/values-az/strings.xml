@@ -81,4 +81,21 @@ Aktivləşdirmək üçün:
     <string name="show_touches_label_xiaomi">Toxunuşları göstər</string>
     <string name="show_touches_label_huawei">Toxunuşları göstər</string>
     <string name="show_touches_label_default">Toxunuşları göstər</string>
+    <string name="trim_mode_keep">Saxla</string>
+    <string name="trim_mode_delete">Sil</string>
+    <string name="move_to_start">Əvvələ</string>
+    <string name="move_to_end">Sona</string>
+    <string name="trim_mode_mute">Səssiz et</string>
+    <string name="remove_silences">Sükutları kəs</string>
+    <string name="capture_snapshot">Kadr</string>
+    <string name="snapshot_saved">Kadr yadda saxlanıldı</string>
+    <string name="undo">Geri qaytar</string>
+    <string name="redo">Təkrar et</string>
+    <string name="preview_selection">Seçimi oxut</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">MP3 Səs</string>
+    <string name="export_as_m4a">M4A Səs</string>
+    <string name="audio_fade">Səs sönməsi</string>
+    <string name="replace_original">Orijinalı əvəz et</string>
+    <string name="play_result">Oxut</string>
 </resources>

@@ -110,4 +110,21 @@
     <string name="show_touches_label_xiaomi">顯示點按反饋</string>
     <string name="show_touches_label_huawei">顯示輕觸操作</string>
     <string name="show_touches_label_default">顯示輕觸操作</string>
+    <string name="trim_mode_keep">保留</string>
+    <string name="trim_mode_delete">刪除</string>
+    <string name="move_to_start">移至開頭</string>
+    <string name="move_to_end">移至結尾</string>
+    <string name="trim_mode_mute">靜音</string>
+    <string name="remove_silences">剪裁靜音</string>
+    <string name="capture_snapshot">截圖</string>
+    <string name="snapshot_saved">截圖已儲存</string>
+    <string name="undo">復原</string>
+    <string name="redo">重做</string>
+    <string name="preview_selection">播放所選範圍</string>
+    <string name="export_video">影片</string>
+    <string name="export_as_mp3">MP3 音訊</string>
+    <string name="export_as_m4a">M4A 音訊</string>
+    <string name="audio_fade">音訊淡入淡出</string>
+    <string name="replace_original">取代原始檔案</string>
+    <string name="play_result">播放</string>
 </resources>

@@ -79,4 +79,21 @@ Sa seksyong \'Input\', paganahin ang \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Ipakita ang mga pag-tap</string>
     <string name="show_touches_label_huawei">Ipakita ang mga pagpindot</string>
     <string name="show_touches_label_default">Ipakita ang mga pag-tap</string>
+    <string name="trim_mode_keep">Panatilihin</string>
+    <string name="trim_mode_delete">Tanggalin</string>
+    <string name="move_to_start">Sa Simula</string>
+    <string name="move_to_end">Sa Dulo</string>
+    <string name="trim_mode_mute">I-mute</string>
+    <string name="remove_silences">Gupitin ang Katahimikan</string>
+    <string name="capture_snapshot">Snapshot</string>
+    <string name="snapshot_saved">Nai-save ang snapshot</string>
+    <string name="undo">I-undo</string>
+    <string name="redo">I-redo</string>
+    <string name="preview_selection">I-play ang Pinili</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">MP3 Audio</string>
+    <string name="export_as_m4a">M4A Audio</string>
+    <string name="audio_fade">Audio Fade</string>
+    <string name="replace_original">Palitan ang Orihinal</string>
+    <string name="play_result">I-play</string>
 </resources>

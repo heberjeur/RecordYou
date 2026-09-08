@@ -108,4 +108,21 @@
     <string name="show_touches_label_xiaomi">نمایش ضربه‌ها</string>
     <string name="show_touches_label_huawei">نمایش لمس‌ها</string>
     <string name="show_touches_label_default">نمایش لمس‌ها</string>
+    <string name="trim_mode_keep">نگه‌داشتن</string>
+    <string name="trim_mode_delete">حذف</string>
+    <string name="move_to_start">به ابتدا</string>
+    <string name="move_to_end">به انتها</string>
+    <string name="trim_mode_mute">بی‌صدا</string>
+    <string name="remove_silences">برش سکوت‌ها</string>
+    <string name="capture_snapshot">عکس لحظه‌ای</string>
+    <string name="snapshot_saved">عکس ذخیره شد</string>
+    <string name="undo">واگرد</string>
+    <string name="redo">ازنو</string>
+    <string name="preview_selection">پخش انتخاب</string>
+    <string name="export_video">ویدیو</string>
+    <string name="export_as_mp3">صوتی MP3</string>
+    <string name="export_as_m4a">صوتی M4A</string>
+    <string name="audio_fade">محو شدن صدا</string>
+    <string name="replace_original">جایگزینی نسخه اصلی</string>
+    <string name="play_result">پخش</string>
 </resources>

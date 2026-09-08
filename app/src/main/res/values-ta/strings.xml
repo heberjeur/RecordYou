@@ -110,4 +110,21 @@
     <string name="show_touches_label_xiaomi">தட்டுகளைக் காட்டு</string>
     <string name="show_touches_label_huawei">தொடுதல்களைக் காட்டு</string>
     <string name="show_touches_label_default">தொடுதல்களைக் காட்டு</string>
+    <string name="trim_mode_keep">வைக்கவும்</string>
+    <string name="trim_mode_delete">நீக்கு</string>
+    <string name="move_to_start">தொடக்கத்திற்கு</string>
+    <string name="move_to_end">முடிவிற்கு</string>
+    <string name="trim_mode_mute">ஒலியடக்கு</string>
+    <string name="remove_silences">அமைதியை வெட்டு</string>
+    <string name="capture_snapshot">புகைப்படம்</string>
+    <string name="snapshot_saved">புகைப்படம் சேமிக்கப்பட்டது</string>
+    <string name="undo">செயல்தவிர்</string>
+    <string name="redo">மீண்டும் செய்</string>
+    <string name="preview_selection">தேர்வை இயக்கு</string>
+    <string name="export_video">வீடியோ</string>
+    <string name="export_as_mp3">MP3 ஆடியோ</string>
+    <string name="export_as_m4a">M4A ஆடியோ</string>
+    <string name="audio_fade">ஆடியோ மறைவு</string>
+    <string name="replace_original">அசலை மாற்றவும்</string>
+    <string name="play_result">இயக்கு</string>
 </resources>

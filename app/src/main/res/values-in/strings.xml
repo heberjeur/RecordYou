@@ -110,4 +110,21 @@ Di bagian \'Masukan\', aktifkan \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Tampilkan ketukan</string>
     <string name="show_touches_label_huawei">Tampilkan sentuhan</string>
     <string name="show_touches_label_default">Tampilkan ketukan / sentuhan</string>
+    <string name="trim_mode_keep">Simpan</string>
+    <string name="trim_mode_delete">Hapus</string>
+    <string name="move_to_start">Ke Awal</string>
+    <string name="move_to_end">Ke Akhir</string>
+    <string name="trim_mode_mute">Bisukan</string>
+    <string name="remove_silences">Potong Hening</string>
+    <string name="capture_snapshot">Tangkapan</string>
+    <string name="snapshot_saved">Tangkapan disimpan</string>
+    <string name="undo">Urungkan</string>
+    <string name="redo">Ulangi</string>
+    <string name="preview_selection">Putar Pilihan</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">Audio MP3</string>
+    <string name="export_as_m4a">Audio M4A</string>
+    <string name="audio_fade">Pudar Audio</string>
+    <string name="replace_original">Ganti Asli</string>
+    <string name="play_result">Putar</string>
 </resources>

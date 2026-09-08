@@ -110,4 +110,21 @@ Etkinleştirmek için:
     <string name="show_touches_label_xiaomi">Dokunmaları göster</string>
     <string name="show_touches_label_huawei">Dokunmaları göster</string>
     <string name="show_touches_label_default">Dokunmaları göster</string>
+    <string name="trim_mode_keep">Koru</string>
+    <string name="trim_mode_delete">Sil</string>
+    <string name="move_to_start">Başa taşı</string>
+    <string name="move_to_end">Sona taşı</string>
+    <string name="trim_mode_mute">Sesi kapat</string>
+    <string name="remove_silences">Sessizlikleri kes</string>
+    <string name="capture_snapshot">Kare yakala</string>
+    <string name="snapshot_saved">Kare kaydedildi</string>
+    <string name="undo">Geri al</string>
+    <string name="redo">Yinele</string>
+    <string name="preview_selection">Seçimi oynat</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">MP3 Ses</string>
+    <string name="export_as_m4a">M4A Ses</string>
+    <string name="audio_fade">Ses karartma</string>
+    <string name="replace_original">Orijinalin üzerine yaz</string>
+    <string name="play_result">Oynat</string>
 </resources>

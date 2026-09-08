@@ -110,4 +110,21 @@ Jaotises \'Sisend\' lubage \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Kuva puudutused</string>
     <string name="show_touches_label_huawei">Kuva puudutused</string>
     <string name="show_touches_label_default">Kuva puudutused</string>
+    <string name="trim_mode_keep">Säilita</string>
+    <string name="trim_mode_delete">Kustuta</string>
+    <string name="move_to_start">Algusesse</string>
+    <string name="move_to_end">Lõppu</string>
+    <string name="trim_mode_mute">Vaigista</string>
+    <string name="remove_silences">Lõika vaikused</string>
+    <string name="capture_snapshot">Kuvatõmmis</string>
+    <string name="snapshot_saved">Kuvatõmmis salvestatud</string>
+    <string name="undo">Võta tagasi</string>
+    <string name="redo">Tee uuesti</string>
+    <string name="preview_selection">Esita valik</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">MP3 heli</string>
+    <string name="export_as_m4a">M4A heli</string>
+    <string name="audio_fade">Heli hajumine</string>
+    <string name="replace_original">Asenda algne</string>
+    <string name="play_result">Esita</string>
 </resources>

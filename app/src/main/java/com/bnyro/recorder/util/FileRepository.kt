@@ -37,6 +37,7 @@ interface FileRepository {
     fun getOutputDirs(): List<DocumentFile>
     fun getAudioOutputDir(): DocumentFile
     fun getVideoOutputDir(): DocumentFile
+    fun addRecordedFile(file: DocumentFile, isVideo: Boolean, waveform: List<Float>? = null)
     fun getAudioOutputDirs(): List<DocumentFile>
     fun getVideoOutputDirs(): List<DocumentFile>
 
@@ -297,8 +298,40 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
                 it.copy(waveform = wave, size = currentSize, lastModified = currentModified)
             } else it
         }
+        cachedVideos = cachedVideos?.map {
+            if (it.recordingFile.uri == file.uri) {
+                it.copy(waveform = wave, size = currentSize, lastModified = currentModified)
+            } else it
+        }
         writeCache()
         return wave
+    }
+
+    override fun addRecordedFile(file: DocumentFile, isVideo: Boolean, waveform: List<Float>?) {
+        val uriStr = file.uri.toString()
+        val item = RecordingItemData(
+            recordingFile = file,
+            recorderType = if (isVideo) RecorderType.VIDEO else RecorderType.AUDIO,
+            name = file.name ?: "",
+            lastModified = file.lastModified(),
+            size = file.length(),
+            waveform = waveform
+        )
+        if (isVideo) {
+            val list = cachedVideos?.toMutableList() ?: mutableListOf()
+            list.removeAll { it.recordingFile.uri == file.uri }
+            list.add(0, item)
+            cachedVideos = list
+        } else {
+            val list = cachedAudio?.toMutableList() ?: mutableListOf()
+            list.removeAll { it.recordingFile.uri == file.uri }
+            list.add(0, item)
+            cachedAudio = list
+            if (waveform != null) {
+                audioWaveformCache.put(uriStr, waveform)
+            }
+        }
+        writeCache()
     }
 
     override fun resetWaveformCache() {

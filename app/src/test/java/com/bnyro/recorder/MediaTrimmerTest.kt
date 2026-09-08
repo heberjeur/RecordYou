@@ -33,4 +33,24 @@ class MediaTrimmerTest {
     fun testInvalidTrimRangeExceedsDuration() {
         assertFalse(MediaTrimmer.isValidTrimRange(0, 6000, 5000))
     }
+
+    @Test
+    fun testDetectSilencesWithLowAmplitudes() {
+        val amplitudes = listOf(0.01f, 0.01f, 0.01f, 0.01f, 0.8f, 0.9f, 0.01f, 0.01f, 0.01f, 0.01f)
+        val silences = MediaTrimmer.detectSilences(amplitudes, 10000L, threshold = 0.05f, minDurationMs = 2000L)
+        assertTrue(silences.isNotEmpty())
+    }
+
+    @Test
+    fun testDetectSilencesWithNoSilence() {
+        val amplitudes = listOf(0.5f, 0.6f, 0.8f, 0.7f, 0.9f)
+        val silences = MediaTrimmer.detectSilences(amplitudes, 5000L, threshold = 0.05f, minDurationMs = 1000L)
+        assertTrue(silences.isEmpty())
+    }
+
+    @Test
+    fun testMediaSegmentDuration() {
+        val seg = com.bnyro.recorder.obj.MediaSegment(1000L, 5000L, speed = 2.0f)
+        org.junit.Assert.assertEquals(2000L, seg.durationMs)
+    }
 }

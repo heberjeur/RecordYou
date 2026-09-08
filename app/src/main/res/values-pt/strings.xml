@@ -107,4 +107,21 @@ Na secção \'Entrada\', ative \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Mostrar toques</string>
     <string name="show_touches_label_huawei">Mostrar toques</string>
     <string name="show_touches_label_default">Mostrar toques</string>
+    <string name="trim_mode_keep">Manter</string>
+    <string name="trim_mode_delete">Eliminar</string>
+    <string name="move_to_start">Para o início</string>
+    <string name="move_to_end">Para o fim</string>
+    <string name="trim_mode_mute">Silenciar</string>
+    <string name="remove_silences">Cortar silêncios</string>
+    <string name="capture_snapshot">Captura</string>
+    <string name="snapshot_saved">Captura guardada</string>
+    <string name="undo">Desfazer</string>
+    <string name="redo">Refazer</string>
+    <string name="preview_selection">Reproduzir seleção</string>
+    <string name="export_video">Vídeo</string>
+    <string name="export_as_mp3">Áudio MP3</string>
+    <string name="export_as_m4a">Áudio M4A</string>
+    <string name="audio_fade">Desvanecimento</string>
+    <string name="replace_original">Substituir original</string>
+    <string name="play_result">Reproduzir</string>
 </resources>

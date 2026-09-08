@@ -106,4 +106,21 @@
     <string name="show_touches_label_xiaomi">ထိတွေ့မှုများ ပြသပါ</string>
     <string name="show_touches_label_huawei">ထိတွေ့မှုများ ပြသပါ</string>
     <string name="show_touches_label_default">ထိတွေ့မှုများ ပြသပါ</string>
+    <string name="trim_mode_keep">သိမ်းဆည်းပါ</string>
+    <string name="trim_mode_delete">ဖျက်ပါ</string>
+    <string name="move_to_start">အစသို့</string>
+    <string name="move_to_end">အဆုံးသို့</string>
+    <string name="trim_mode_mute">အသံပိတ်ပါ</string>
+    <string name="remove_silences">တိတ်ဆိတ်မှုဖြတ်ထုတ်ပါ</string>
+    <string name="capture_snapshot">ဓာတ်ပုံရိုက်ယူပါ</string>
+    <string name="snapshot_saved">ဓာတ်ပုံသိမ်းဆည်းပြီးပါပြီ</string>
+    <string name="undo">ပြန်ပြင်ပါ</string>
+    <string name="redo">ပြန်လုပ်ပါ</string>
+    <string name="preview_selection">ရွေးချယ်ထားသည်ကို ဖွင့်ပါ</string>
+    <string name="export_video">ဗီဒီယို</string>
+    <string name="export_as_mp3">MP3 အသံဖိုင်</string>
+    <string name="export_as_m4a">M4A အသံဖိုင်</string>
+    <string name="audio_fade">အသံအဝင်အထွက် အပျော့</string>
+    <string name="replace_original">မူရင်းကို အစားထိုးပါ</string>
+    <string name="play_result">ဖွင့်ပါ</string>
 </resources>

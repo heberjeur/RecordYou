@@ -117,4 +117,21 @@ In the \'Input\' section, enable \'%s\' (or use \'Quick settings developer tiles
     <string name="show_touches_label_xiaomi">Show taps</string>
     <string name="show_touches_label_huawei">Show touches</string>
     <string name="show_touches_label_default">Show taps / Show touches</string>
+    <string name="trim_mode_keep">Keep</string>
+    <string name="trim_mode_delete">Delete</string>
+    <string name="move_to_start">To Start</string>
+    <string name="move_to_end">To End</string>
+    <string name="trim_mode_mute">Mute</string>
+    <string name="remove_silences">Cut Silences</string>
+    <string name="capture_snapshot">Snapshot</string>
+    <string name="snapshot_saved">Snapshot saved</string>
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
+    <string name="preview_selection">Play Selection</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">MP3 Audio</string>
+    <string name="export_as_m4a">M4A Audio</string>
+    <string name="audio_fade">Fade In/Out</string>
+    <string name="replace_original">Replace Original</string>
+    <string name="play_result">Play</string>
 </resources>

@@ -110,4 +110,21 @@ V sekci \'Zadávání\' zapněte \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Zobrazit klepnutí</string>
     <string name="show_touches_label_huawei">Zobrazit dotyky</string>
     <string name="show_touches_label_default">Zobrazit dotyky / klepnutí</string>
+    <string name="trim_mode_keep">Ponechat</string>
+    <string name="trim_mode_delete">Smazat</string>
+    <string name="move_to_start">Na začátek</string>
+    <string name="move_to_end">Na konec</string>
+    <string name="trim_mode_mute">Ztlumit</string>
+    <string name="remove_silences">Vystřihnout ticha</string>
+    <string name="capture_snapshot">Snímek</string>
+    <string name="snapshot_saved">Snímek uložen</string>
+    <string name="undo">Zpět</string>
+    <string name="redo">Znovu</string>
+    <string name="preview_selection">Přehrát výběr</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">Zvuk MP3</string>
+    <string name="export_as_m4a">Zvuk M4A</string>
+    <string name="audio_fade">Prolínání zvuku</string>
+    <string name="replace_original">Nahradit původní</string>
+    <string name="play_result">Přehrát</string>
 </resources>

@@ -110,4 +110,21 @@
     <string name="show_touches_label_xiaomi">タップを表示</string>
     <string name="show_touches_label_huawei">タップを表示</string>
     <string name="show_touches_label_default">タップを表示</string>
+    <string name="trim_mode_keep">残す</string>
+    <string name="trim_mode_delete">消ちゅん</string>
+    <string name="move_to_start">最初かい</string>
+    <string name="move_to_end">最後かい</string>
+    <string name="trim_mode_mute">音消ちゅん</string>
+    <string name="remove_silences">無音切る</string>
+    <string name="capture_snapshot">写真</string>
+    <string name="snapshot_saved">写真保存さびたん</string>
+    <string name="undo">戻す</string>
+    <string name="redo">やり直す</string>
+    <string name="preview_selection">選んだばす再生</string>
+    <string name="export_video">動画</string>
+    <string name="export_as_mp3">MP3 音声</string>
+    <string name="export_as_m4a">M4A 音声</string>
+    <string name="audio_fade">音声フェード</string>
+    <string name="replace_original">元ぬファイル上書き</string>
+    <string name="play_result">再生</string>
 </resources>

@@ -104,4 +104,21 @@
     <string name="show_touches_label_xiaomi">הצגת לחיצות</string>
     <string name="show_touches_label_huawei">הצגת נגיעות</string>
     <string name="show_touches_label_default">הצגת נגיעות</string>
+    <string name="trim_mode_keep">השאר</string>
+    <string name="trim_mode_delete">מחק</string>
+    <string name="move_to_start">להתחלה</string>
+    <string name="move_to_end">לסוף</string>
+    <string name="trim_mode_mute">השתק</string>
+    <string name="remove_silences">חתוך שתיקות</string>
+    <string name="capture_snapshot">תמונת מצב</string>
+    <string name="snapshot_saved">תמונת מצב נשמרה</string>
+    <string name="undo">בטל</string>
+    <string name="redo">בצע שוב</string>
+    <string name="preview_selection">נגן בחירה</string>
+    <string name="export_video">וידאו</string>
+    <string name="export_as_mp3">שמע MP3</string>
+    <string name="export_as_m4a">שמע M4A</string>
+    <string name="audio_fade">עמעום שמע</string>
+    <string name="replace_original">החלף מקור</string>
+    <string name="play_result">נגן</string>
 </resources>

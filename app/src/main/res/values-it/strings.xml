@@ -110,4 +110,21 @@ Nella sezione \'Input\', attiva \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Mostra tocchi</string>
     <string name="show_touches_label_huawei">Mostra tocchi</string>
     <string name="show_touches_label_default">Mostra tocchi</string>
+    <string name="trim_mode_keep">Mantieni</string>
+    <string name="trim_mode_delete">Elimina</string>
+    <string name="move_to_start">All\'inizio</string>
+    <string name="move_to_end">Alla fine</string>
+    <string name="trim_mode_mute">Disattiva audio</string>
+    <string name="remove_silences">Taglia silenzi</string>
+    <string name="capture_snapshot">Istantanea</string>
+    <string name="snapshot_saved">Istantanea salvata</string>
+    <string name="undo">Annulla</string>
+    <string name="redo">Ripeti</string>
+    <string name="preview_selection">Riproduci selezione</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">Audio MP3</string>
+    <string name="export_as_m4a">Audio M4A</string>
+    <string name="audio_fade">Dissolvenza audio</string>
+    <string name="replace_original">Sostituisci originale</string>
+    <string name="play_result">Riproduci</string>
 </resources>

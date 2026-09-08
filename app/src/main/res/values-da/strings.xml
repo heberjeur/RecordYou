@@ -110,4 +110,21 @@ I afsnittet \'Input\' aktiveres \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Vis tryk</string>
     <string name="show_touches_label_huawei">Vis berøringer</string>
     <string name="show_touches_label_default">Vis berøringer</string>
+    <string name="trim_mode_keep">Behold</string>
+    <string name="trim_mode_delete">Slet</string>
+    <string name="move_to_start">Til start</string>
+    <string name="move_to_end">Til slut</string>
+    <string name="trim_mode_mute">Slå lyd fra</string>
+    <string name="remove_silences">Klip pauser</string>
+    <string name="capture_snapshot">Stillbillede</string>
+    <string name="snapshot_saved">Stillbillede gemt</string>
+    <string name="undo">Fortryd</string>
+    <string name="redo">Gendan</string>
+    <string name="preview_selection">Afspil markering</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">MP3-lyd</string>
+    <string name="export_as_m4a">M4A-lyd</string>
+    <string name="audio_fade">Lydudtoning</string>
+    <string name="replace_original">Erstat original</string>
+    <string name="play_result">Afspil</string>
 </resources>

@@ -39,4 +39,21 @@
     <string name="show_touches_label_xiaomi">ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ</string>
     <string name="show_touches_label_huawei">ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ</string>
     <string name="show_touches_label_default">ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ</string>
+    <string name="trim_mode_keep">ᱫᱚᱦᱚᱭ</string>
+    <string name="trim_mode_delete">ᱜᱮᱫ ᱜᱤᱰᱤ</string>
+    <string name="move_to_start">ᱮᱛᱚᱦᱚᱵ ᱛᱮ</string>
+    <string name="move_to_end">ᱢᱩᱪᱟᱹᱫ ᱛᱮ</string>
+    <string name="trim_mode_mute">ᱛᱷᱤᱨ</string>
+    <string name="remove_silences">ᱛᱷᱤᱨ ᱜᱮᱫ</string>
+    <string name="capture_snapshot">ᱪᱤᱛᱟᱹᱨ</string>
+    <string name="snapshot_saved">ᱪᱤᱛᱟᱹᱨ ᱥᱟᱸᱪᱟᱣ ᱮᱱᱟ</string>
+    <string name="undo">ᱨᱩᱣᱟᱹᱲ</string>
+    <string name="redo">ᱟᱨᱦᱚᱸ</string>
+    <string name="preview_selection">ᱵᱟᱪᱷᱟᱣ ᱪᱟᱞᱟᱣ</string>
+    <string name="export_video">ᱵᱷᱤᱰᱤᱭᱳ</string>
+    <string name="export_as_mp3">MP3 ᱟᱲᱟᱝ</string>
+    <string name="export_as_m4a">M4A ᱟᱲᱟᱝ</string>
+    <string name="audio_fade">ᱟᱲᱟᱝ ᱦᱩᱰᱤᱧ</string>
+    <string name="replace_original">ᱢᱩᱲᱩᱫ ᱵᱚᱫᱚᱞ</string>
+    <string name="play_result">ᱪᱟᱞᱟᱣ</string>
 </resources>

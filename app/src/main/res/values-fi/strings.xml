@@ -110,4 +110,21 @@ Ota \'Syöttö\'-osiossa käyttöön \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Näytä napautukset</string>
     <string name="show_touches_label_huawei">Näytä kosketukset</string>
     <string name="show_touches_label_default">Näytä kosketukset</string>
+    <string name="trim_mode_keep">Säilytä</string>
+    <string name="trim_mode_delete">Poista</string>
+    <string name="move_to_start">Alkuun</string>
+    <string name="move_to_end">Loppuun</string>
+    <string name="trim_mode_mute">Mykistä</string>
+    <string name="remove_silences">Leikkaa hiljaisuudet</string>
+    <string name="capture_snapshot">Tilannekuva</string>
+    <string name="snapshot_saved">Tilannekuva tallennettu</string>
+    <string name="undo">Kumoa</string>
+    <string name="redo">Tee uudelleen</string>
+    <string name="preview_selection">Toista valinta</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">MP3-ääni</string>
+    <string name="export_as_m4a">M4A-ääni</string>
+    <string name="audio_fade">Äänen häivytys</string>
+    <string name="replace_original">Korvaa alkuperäinen</string>
+    <string name="play_result">Toista</string>
 </resources>

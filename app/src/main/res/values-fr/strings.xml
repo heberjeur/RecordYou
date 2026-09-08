@@ -110,4 +110,21 @@ Dans la section « Saisie », activez « %s » (ou « Vignettes pour d
     <string name="show_touches_label_xiaomi">Afficher les contacts</string>
     <string name="show_touches_label_huawei">Afficher les contacts</string>
     <string name="show_touches_label_default">Afficher les appuis / Afficher les touches</string>
+    <string name="trim_mode_keep">Conserver</string>
+    <string name="trim_mode_delete">Supprimer</string>
+    <string name="move_to_start">Au début</string>
+    <string name="move_to_end">À la fin</string>
+    <string name="trim_mode_mute">Silence</string>
+    <string name="remove_silences">Couper silences</string>
+    <string name="capture_snapshot">Photo</string>
+    <string name="snapshot_saved">Photo enregistrée</string>
+    <string name="undo">Annuler</string>
+    <string name="redo">Rétablir</string>
+    <string name="preview_selection">Lire l\'extrait</string>
+    <string name="export_video">Vidéo</string>
+    <string name="export_as_mp3">Audio MP3</string>
+    <string name="export_as_m4a">Audio M4A</string>
+    <string name="audio_fade">Fondu sonore</string>
+    <string name="replace_original">Remplacer l\'original</string>
+    <string name="play_result">Lire</string>
 </resources>

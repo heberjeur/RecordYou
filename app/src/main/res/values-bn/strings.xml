@@ -52,4 +52,21 @@
     <string name="show_touches_label_xiaomi">ট্যাপ দেখান</string>
     <string name="show_touches_label_huawei">স্পর্শ দেখান</string>
     <string name="show_touches_label_default">স্পর্শ দেখান</string>
+    <string name="trim_mode_keep">রাখুন</string>
+    <string name="trim_mode_delete">মুছুন</string>
+    <string name="move_to_start">শুরুতে</string>
+    <string name="move_to_end">শেষে</string>
+    <string name="trim_mode_mute">নিঃশব্দ</string>
+    <string name="remove_silences">নীরবতা কাটুন</string>
+    <string name="capture_snapshot">স্ন্যাপশট</string>
+    <string name="snapshot_saved">স্ন্যাপশট সংরক্ষিত</string>
+    <string name="undo">পূর্বাবস্থা</string>
+    <string name="redo">পুনরায়</string>
+    <string name="preview_selection">নির্বাচন চালান</string>
+    <string name="export_video">ভিডিও</string>
+    <string name="export_as_mp3">MP3 অডিও</string>
+    <string name="export_as_m4a">M4A অডিও</string>
+    <string name="audio_fade">অডিও ফেড</string>
+    <string name="replace_original">আসল প্রতিস্থাপন</string>
+    <string name="play_result">চালান</string>
 </resources>

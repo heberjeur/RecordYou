@@ -110,4 +110,21 @@
     <string name="show_touches_label_xiaomi">Отображать касания</string>
     <string name="show_touches_label_huawei">Показывать нажатия</string>
     <string name="show_touches_label_default">Показывать нажатия / касания</string>
+    <string name="trim_mode_keep">Сохранить</string>
+    <string name="trim_mode_delete">Удалить</string>
+    <string name="move_to_start">В начало</string>
+    <string name="move_to_end">В конец</string>
+    <string name="trim_mode_mute">Заглушить</string>
+    <string name="remove_silences">Вырезать паузы</string>
+    <string name="capture_snapshot">Снимок</string>
+    <string name="snapshot_saved">Снимок сохранен</string>
+    <string name="undo">Отменить</string>
+    <string name="redo">Повторить</string>
+    <string name="preview_selection">Воспроизвести выбор</string>
+    <string name="export_video">Видео</string>
+    <string name="export_as_mp3">Аудио MP3</string>
+    <string name="export_as_m4a">Аудио M4A</string>
+    <string name="audio_fade">Затухание звука</string>
+    <string name="replace_original">Заменить оригинал</string>
+    <string name="play_result">Воспроизвести</string>
 </resources>

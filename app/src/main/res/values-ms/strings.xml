@@ -79,4 +79,21 @@ Di bahagian \'Input\', dayakan \'%s\'.</string>
     <string name="show_touches_label_xiaomi">Tunjukkan ketukan</string>
     <string name="show_touches_label_huawei">Tunjukkan sentuhan</string>
     <string name="show_touches_label_default">Tunjukkan ketukan / sentuhan</string>
+    <string name="trim_mode_keep">Simpan</string>
+    <string name="trim_mode_delete">Padam</string>
+    <string name="move_to_start">Ke Permulaan</string>
+    <string name="move_to_end">Ke Akhir</string>
+    <string name="trim_mode_mute">Senyapkan</string>
+    <string name="remove_silences">Potong Senyap</string>
+    <string name="capture_snapshot">Tangkapan</string>
+    <string name="snapshot_saved">Tangkapan disimpan</string>
+    <string name="undo">Nyahbuat</string>
+    <string name="redo">Buat semula</string>
+    <string name="preview_selection">Mainkan Pilihan</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">Audio MP3</string>
+    <string name="export_as_m4a">Audio M4A</string>
+    <string name="audio_fade">Pudar Audio</string>
+    <string name="replace_original">Gantikan Asal</string>
+    <string name="play_result">Main</string>
 </resources>

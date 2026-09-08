@@ -94,4 +94,21 @@ Pentru a le activa:
     <string name="show_touches_label_xiaomi">Afișează atingerile</string>
     <string name="show_touches_label_huawei">Afișează atingerile</string>
     <string name="show_touches_label_default">Afișează atingerile</string>
+    <string name="trim_mode_keep">Păstrează</string>
+    <string name="trim_mode_delete">Șterge</string>
+    <string name="move_to_start">La început</string>
+    <string name="move_to_end">La sfârșit</string>
+    <string name="trim_mode_mute">Mut</string>
+    <string name="remove_silences">Taie pauzele</string>
+    <string name="capture_snapshot">Instantaneu</string>
+    <string name="snapshot_saved">Instantaneu salvat</string>
+    <string name="undo">Anulează</string>
+    <string name="redo">Refă</string>
+    <string name="preview_selection">Redă selecția</string>
+    <string name="export_video">Video</string>
+    <string name="export_as_mp3">Audio MP3</string>
+    <string name="export_as_m4a">Audio M4A</string>
+    <string name="audio_fade">Atenuare audio</string>
+    <string name="replace_original">Înlocuiește originalul</string>
+    <string name="play_result">Redă</string>
 </resources>
