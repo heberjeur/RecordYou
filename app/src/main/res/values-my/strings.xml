@@ -87,4 +87,6 @@
     <string name="close">ပိတ်ရန်</string>
     <string name="waveform_generating">ထုတ်လုပ်နေသည်…</string>
     <string name="waveform_ready">လှိုင်းပုံစံ အသင့်ဖြစ်ပါပြီ</string>
+    <string name="show_touches">ထိတွေ့မှုများကို ပြသပါ</string>
+    <string name="show_touches_desc">မျက်နှာပြင် မှတ်တမ်းတင်နေစဉ် ထိတွေ့မှုများနှင့် အမူအရာများကို ပေါ်လွင်စေပါ</string>
 </resources>

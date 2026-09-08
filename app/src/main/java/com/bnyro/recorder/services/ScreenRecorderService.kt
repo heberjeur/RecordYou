@@ -9,6 +9,7 @@ import android.media.MediaRecorder
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
+import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Display
@@ -33,6 +34,8 @@ class ScreenRecorderService : RecorderService() {
     private var mediaProjection: MediaProjection? = null
     private var activityResult: ActivityResult? = null
     private var displayManager: DisplayManager? = null
+    private var touchesEnabled = false
+    private var previousShowTouches = 0
     private val displayListener = object : DisplayManager.DisplayListener {
         override fun onDisplayAdded(displayId: Int) {}
         override fun onDisplayRemoved(displayId: Int) {}
@@ -87,6 +90,13 @@ class ScreenRecorderService : RecorderService() {
     }
 
     override fun start() {
+        val showTouches = Preferences.prefs.getBoolean(Preferences.showTouchesKey, false)
+        if (showTouches && Settings.System.canWrite(this)) {
+            previousShowTouches = Settings.System.getInt(contentResolver, "show_touches", 0)
+            Settings.System.putInt(contentResolver, "show_touches", 1)
+            touchesEnabled = true
+        }
+
         val audioSource = AudioSource.fromInt(
             Preferences.prefs.getInt(Preferences.audioSourceKey, 0)
         )
@@ -230,12 +240,30 @@ class ScreenRecorderService : RecorderService() {
     }
 
     override fun stopRecording() {
+        if (touchesEnabled) {
+            if (Settings.System.canWrite(this)) {
+                Settings.System.putInt(contentResolver, "show_touches", previousShowTouches)
+            }
+            touchesEnabled = false
+        }
         displayManager?.unregisterDisplayListener(displayListener)
         virtualDisplay?.release()
         virtualDisplay = null
         mediaProjection?.stop()
         mediaProjection = null
         super.stopRecording()
+    }
+
+    override fun onDestroy() {
+        if (touchesEnabled) {
+            runCatching {
+                if (Settings.System.canWrite(this)) {
+                    Settings.System.putInt(contentResolver, "show_touches", previousShowTouches)
+                }
+            }
+            touchesEnabled = false
+        }
+        super.onDestroy()
     }
 
     override fun getCurrentAmplitude() = recorder?.maxAmplitude

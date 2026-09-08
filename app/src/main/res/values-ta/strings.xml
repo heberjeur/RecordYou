@@ -91,4 +91,6 @@
     <string name="close">மூடு</string>
     <string name="waveform_generating">உருவாக்குகிறது…</string>
     <string name="waveform_ready">அலைவரிசை தயார்</string>
+    <string name="show_touches">தொடுதல்களைக் காட்டு</string>
+    <string name="show_touches_desc">திரைப் பதிவின் போது தட்டுகள் மற்றும் சைகைகளை முன்னிலைப்படுத்தவும்</string>
 </resources>

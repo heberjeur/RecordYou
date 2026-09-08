@@ -91,4 +91,6 @@
     <string name="close">Luk</string>
     <string name="waveform_generating">Genererer…</string>
     <string name="waveform_ready">Spektrum klar</string>
+    <string name="show_touches">Vis berøringer</string>
+    <string name="show_touches_desc">Fremhæv tryk og bevægelser under skærmoptagelse</string>
 </resources>

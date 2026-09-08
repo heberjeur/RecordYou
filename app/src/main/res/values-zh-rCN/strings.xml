@@ -91,4 +91,6 @@
     <string name="close">关闭</string>
     <string name="waveform_generating">生成中…</string>
     <string name="waveform_ready">频谱就绪</string>
+    <string name="show_touches">显示触摸操作</string>
+    <string name="show_touches_desc">在屏幕录制过程中突出显示点按和手势</string>
 </resources>

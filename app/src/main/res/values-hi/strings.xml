@@ -91,4 +91,6 @@
     <string name="close">बंद करें</string>
     <string name="waveform_generating">बनाया जा रहा है…</string>
     <string name="waveform_ready">स्पेक्ट्रम तैयार है</string>
+    <string name="show_touches">टच दिखाएं</string>
+    <string name="show_touches_desc">स्क्रीन रिकॉर्डिंग के दौरान टैप और जेस्चर हाइलाइट करें</string>
 </resources>

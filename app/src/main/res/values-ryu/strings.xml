@@ -91,4 +91,6 @@
     <string name="close">閉じる</string>
     <string name="waveform_generating">作いくぃ中…</string>
     <string name="waveform_ready">波形準備完了</string>
+    <string name="show_touches">タッチば表示</string>
+    <string name="show_touches_desc">画面録画中にタッチば強調表示</string>
 </resources>

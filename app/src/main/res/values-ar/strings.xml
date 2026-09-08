@@ -91,4 +91,6 @@
     <string name="close">إغلاق</string>
     <string name="waveform_generating">جارٍ التوليد…</string>
     <string name="waveform_ready">الطيف جاهز</string>
+    <string name="show_touches">إظهار النقرات</string>
+    <string name="show_touches_desc">تمييز النقرات والإيماءات أثناء تسجيل الشاشة</string>
 </resources>

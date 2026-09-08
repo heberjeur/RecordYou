@@ -62,4 +62,6 @@
     <string name="close">Bağla</string>
     <string name="waveform_generating">Yaradılır…</string>
     <string name="waveform_ready">Spektr hazırdır</string>
+    <string name="show_touches">Toxunuşları göstər</string>
+    <string name="show_touches_desc">Ekran qeydi zamanı toxunuşları və jestləri vurğula</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.bnyro.recorder.ui.screens
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.view.SoundEffectConstants
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -73,7 +75,8 @@ import com.bnyro.recorder.util.Preferences
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
-    val themeModel: ThemeModel = viewModel(LocalContext.current as ComponentActivity)
+    val context = LocalContext.current
+    val themeModel: ThemeModel = viewModel(context as ComponentActivity)
     var audioFormat by remember {
         mutableStateOf(AudioFormat.getCurrent())
     }
@@ -380,6 +383,21 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                     summary = stringResource(R.string.screen_recorder_annotation_desc)
                 )
             }
+            Spacer(modifier = Modifier.height(10.dp))
+            CheckboxPref(
+                prefKey = Preferences.showTouchesKey,
+                title = stringResource(R.string.show_touches),
+                summary = stringResource(R.string.show_touches_desc),
+                onCheckedChange = { isChecked ->
+                    if (isChecked && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.System.canWrite(context)) {
+                        val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
+                            data = Uri.parse("package:${context.packageName}")
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        }
+                        context.startActivity(intent)
+                    }
+                }
+            )
             Spacer(modifier = Modifier.height(10.dp))
             CheckboxPref(
                 prefKey = Preferences.showVisualizerTimestamps,

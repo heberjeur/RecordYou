@@ -95,4 +95,6 @@
     <string name="close">Затвори</string>
     <string name="waveform_generating">Генерисање…</string>
     <string name="waveform_ready">Спектар је спреман</string>
+    <string name="show_touches">Прикажи додире</string>
+    <string name="show_touches_desc">Истакни додире и покрете током снимања екрана</string>
 </resources>

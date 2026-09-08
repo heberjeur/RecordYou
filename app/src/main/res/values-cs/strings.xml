@@ -91,4 +91,6 @@
     <string name="close">Zavřít</string>
     <string name="waveform_generating">Generování…</string>
     <string name="waveform_ready">Spektrum připraveno</string>
+    <string name="show_touches">Zobrazit dotyky</string>
+    <string name="show_touches_desc">Zvýraznit klepnutí a gesta během nahrávání obrazovky</string>
 </resources>

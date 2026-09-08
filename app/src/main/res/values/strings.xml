@@ -98,4 +98,6 @@
     <string name="close">Close</string>
     <string name="waveform_generating">Generating…</string>
     <string name="waveform_ready">Spectrum ready</string>
+    <string name="show_touches">Show touches</string>
+    <string name="show_touches_desc">Highlight taps and gestures during screen recording</string>
 </resources>

@@ -85,4 +85,6 @@
     <string name="close">Lukk</string>
     <string name="waveform_generating">Genererer…</string>
     <string name="waveform_ready">Spektrum klart</string>
+    <string name="show_touches">Vis berøringer</string>
+    <string name="show_touches_desc">Uthev trykk og bevegelser under skjermopptak</string>
 </resources>

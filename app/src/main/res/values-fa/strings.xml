@@ -89,4 +89,6 @@
     <string name="close">بستن</string>
     <string name="waveform_generating">در حال تولید…</string>
     <string name="waveform_ready">طیف آماده است</string>
+    <string name="show_touches">نمایش لمس‌ها</string>
+    <string name="show_touches_desc">برجسته‌سازی لمس‌ها و حرکات هنگام ضبط صفحه</string>
 </resources>

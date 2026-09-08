@@ -91,4 +91,6 @@
     <string name="close">Закрити</string>
     <string name="waveform_generating">Генерація…</string>
     <string name="waveform_ready">Спектр готовий</string>
+    <string name="show_touches">Показувати натискання</string>
+    <string name="show_touches_desc">Виділяти натискання та жести під час запису екрана</string>
 </resources>

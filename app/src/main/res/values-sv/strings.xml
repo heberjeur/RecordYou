@@ -52,4 +52,6 @@
     <string name="close">Stäng</string>
     <string name="waveform_generating">Genererar…</string>
     <string name="waveform_ready">Spektrum redo</string>
+    <string name="show_touches">Visa tryck</string>
+    <string name="show_touches_desc">Markera tryck och gester under skärminspelning</string>
 </resources>

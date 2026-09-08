@@ -91,4 +91,6 @@
     <string name="close">Fechar</string>
     <string name="waveform_generating">Gerando…</string>
     <string name="waveform_ready">Espectro pronto</string>
+    <string name="show_touches">Mostrar toques</string>
+    <string name="show_touches_desc">Destacar toques e gestos durante a gravação de tela</string>
 </resources>

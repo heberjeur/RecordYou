@@ -91,4 +91,6 @@
     <string name="close">Sule</string>
     <string name="waveform_generating">Genereerimine…</string>
     <string name="waveform_ready">Spekter valmis</string>
+    <string name="show_touches">Kuva puudutused</string>
+    <string name="show_touches_desc">Tõsta ekraanisalvestuse ajal esile puudutused ja žestid</string>
 </resources>

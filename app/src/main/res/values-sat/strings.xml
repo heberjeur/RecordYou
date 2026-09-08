@@ -20,4 +20,6 @@
     <string name="close">ᱵᱚᱸᱫᱽ</string>
     <string name="waveform_generating">ᱵᱮᱱᱟᱣᱜ ᱠᱟᱱᱟ…</string>
     <string name="waveform_ready">ᱥᱯᱮᱠᱴᱨᱚᱢ ᱛᱮᱭᱟᱨ ᱢᱮᱱᱟᱜᱼᱟ</string>
+    <string name="show_touches">ᱡᱚᱴᱮᱫ ᱩᱫᱩᱜᱽ</string>
+    <string name="show_touches_desc">ᱥᱠᱨᱤᱱ ᱨᱮᱠᱚᱨᱰᱤᱝ ᱚᱠᱛᱚ ᱡᱚᱴᱮᱫ ᱟᱨ ᱤᱥᱟᱹᱨᱟ ᱩᱫᱩᱜᱽ ᱢᱮ</string>
 </resources>

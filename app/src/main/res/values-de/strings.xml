@@ -89,4 +89,6 @@
     <string name="close">Schließen</string>
     <string name="waveform_generating">Wird generiert…</string>
     <string name="waveform_ready">Spektrum bereit</string>
+    <string name="show_touches">Berührungen anzeigen</string>
+    <string name="show_touches_desc">Tippen und Gesten während der Bildschirmaufnahme hervorheben</string>
 </resources>

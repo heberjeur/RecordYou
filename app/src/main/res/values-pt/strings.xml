@@ -88,4 +88,6 @@
     <string name="close">Fechar</string>
     <string name="waveform_generating">A gerar…</string>
     <string name="waveform_ready">Espetro pronto</string>
+    <string name="show_touches">Mostrar toques</string>
+    <string name="show_touches_desc">Destacar toques e gestos durante a gravação do ecrã</string>
 </resources>

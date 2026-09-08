@@ -50,6 +50,7 @@ fun CheckboxPref(
                 view.playSoundEffect(SoundEffectConstants.CLICK)
                 checked = !checked
                 Preferences.edit { putBoolean(prefKey, checked) }
+                onCheckedChange.invoke(checked)
             },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

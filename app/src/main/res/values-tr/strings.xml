@@ -91,4 +91,6 @@
     <string name="close">Kapat</string>
     <string name="waveform_generating">Oluşturuluyor…</string>
     <string name="waveform_ready">Spektrum hazır</string>
+    <string name="show_touches">Dokunmaları göster</string>
+    <string name="show_touches_desc">Ekran kaydı sırasında dokunmaları ve hareketleri vurgula</string>
 </resources>

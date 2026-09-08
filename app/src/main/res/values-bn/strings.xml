@@ -33,4 +33,6 @@
     <string name="close">বন্ধ করুন</string>
     <string name="waveform_generating">তৈরি হচ্ছে…</string>
     <string name="waveform_ready">স্পেকট্রাম প্রস্তুত</string>
+    <string name="show_touches">স্পর্শ দেখান</string>
+    <string name="show_touches_desc">স্ক্রিন রেকর্ডিংয়ের সময় স্পর্শ এবং অঙ্গভঙ্গি হাইলাইট করুন</string>
 </resources>

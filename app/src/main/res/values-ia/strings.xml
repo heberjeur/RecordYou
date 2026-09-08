@@ -91,4 +91,6 @@
     <string name="close">Clauder</string>
     <string name="waveform_generating">Generante…</string>
     <string name="waveform_ready">Spectro preste</string>
+    <string name="show_touches">Monstrar toccamentos</string>
+    <string name="show_touches_desc">Evidentiar toccamentos e gestos durante le registration del schermo</string>
 </resources>

@@ -91,4 +91,6 @@
     <string name="close">Tutup</string>
     <string name="waveform_generating">Membuat…</string>
     <string name="waveform_ready">Spektrum siap</string>
+    <string name="show_touches">Tampilkan sentuhan</string>
+    <string name="show_touches_desc">Sorot ketukan dan gestur selama perekaman layar</string>
 </resources>

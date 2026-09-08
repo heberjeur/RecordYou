@@ -60,4 +60,6 @@
     <string name="close">Isara</string>
     <string name="waveform_generating">Bumubuo…</string>
     <string name="waveform_ready">Handa na ang spectrum</string>
+    <string name="show_touches">Ipakita ang mga pagpindot</string>
+    <string name="show_touches_desc">I-highlight ang mga pag-tap at kilos habang nagre-record ng screen</string>
 </resources>

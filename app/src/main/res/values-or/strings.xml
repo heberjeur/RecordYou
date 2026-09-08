@@ -17,4 +17,6 @@
     <string name="close">ବନ୍ଦ କରନ୍ତୁ</string>
     <string name="waveform_generating">ସୃଷ୍ଟି ହେଉଛି…</string>
     <string name="waveform_ready">ସ୍ପେକ୍ଟ୍ରମ୍ ପ୍ରସ୍ତୁତ</string>
+    <string name="show_touches">ସ୍ପର୍ଶ ଦେଖାନ୍ତୁ</string>
+    <string name="show_touches_desc">ସ୍କ୍ରିନ୍ ରେକର୍ଡିଂ ସମୟରେ ଟ୍ୟାପ୍ ଏବଂ ଇଙ୍ଗିତଗୁଡ଼ିକୁ ହାଇଲାଇଟ୍ କରନ୍ତୁ</string>
 </resources>

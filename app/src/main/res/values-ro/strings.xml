@@ -75,4 +75,6 @@
     <string name="close">Închide</string>
     <string name="waveform_generating">Se generează…</string>
     <string name="waveform_ready">Spectru pregătit</string>
+    <string name="show_touches">Afișează atingerile</string>
+    <string name="show_touches_desc">Evidențiază atingerile și gesturile în timpul înregistrării ecranului</string>
 </resources>

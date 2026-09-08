@@ -91,4 +91,6 @@
     <string name="close">Sulje</string>
     <string name="waveform_generating">Luodaan…</string>
     <string name="waveform_ready">Spektri valmis</string>
+    <string name="show_touches">Näytä kosketukset</string>
+    <string name="show_touches_desc">Korosta napautukset ja eleet näytön tallennuksen aikana</string>
 </resources>

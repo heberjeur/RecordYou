@@ -87,4 +87,6 @@
     <string name="close">Tanca</string>
     <string name="waveform_generating">Generant…</string>
     <string name="waveform_ready">Espectre a punt</string>
+    <string name="show_touches">Mostra els tocs</string>
+    <string name="show_touches_desc">Ressalta els tocs i gestos durant la gravació de la pantalla</string>
 </resources>

@@ -87,4 +87,6 @@
     <string name="close">Закрыць</string>
     <string name="waveform_generating">Стварэнне…</string>
     <string name="waveform_ready">Спектр гатовы</string>
+    <string name="show_touches">Паказваць націсканні</string>
+    <string name="show_touches_desc">Вылучаць дотыкі і жэсты падчас запісу экрана</string>
 </resources>

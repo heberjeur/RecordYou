@@ -85,4 +85,6 @@
     <string name="close">סגור</string>
     <string name="waveform_generating">מייצר…</string>
     <string name="waveform_ready">ספקטרום מוכן</string>
+    <string name="show_touches">הצגת נגיעות</string>
+    <string name="show_touches_desc">הדגשת לחיצות ומחוות במהלך הקלטת מסך</string>
 </resources>

@@ -91,4 +91,6 @@
     <string name="close">Fermer</string>
     <string name="waveform_generating">Génération…</string>
     <string name="waveform_ready">Spectre prêt</string>
+    <string name="show_touches">Afficher les touches</string>
+    <string name="show_touches_desc">Mettre en surbrillance les gestes et appuis lors de l\'enregistrement de l\'écran</string>
 </resources>
