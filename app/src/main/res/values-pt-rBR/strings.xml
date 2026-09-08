@@ -106,7 +106,7 @@ Para ativá-las:
     <string name="show_touches_guide_desc">Para exibir toques, ative a opção nas Opções do desenvolvedor:
 
 Na seção \'Entrada\', ative \'%s\'.</string>
-    <string name="show_touches_label_samsung">Mostrar toques</string>
+    <string name="show_touches_label_samsung">Feedback visual</string>
     <string name="show_touches_label_xiaomi">Mostrar toques</string>
     <string name="show_touches_label_huawei">Mostrar toques</string>
     <string name="show_touches_label_default">Mostrar toques</string>

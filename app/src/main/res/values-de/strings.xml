@@ -104,7 +104,7 @@ So aktivieren Sie sie:
     <string name="show_touches_guide_desc">Um Berührungen anzuzeigen, aktivieren Sie die Option in den Entwickleroptionen:
 
 Aktivieren Sie im Bereich \'Eingabe\' die Option \'%s\'.</string>
-    <string name="show_touches_label_samsung">Berührungen anzeigen</string>
+    <string name="show_touches_label_samsung">Visuelles Feedback</string>
     <string name="show_touches_label_xiaomi">Tippen anzeigen</string>
     <string name="show_touches_label_huawei">Berührungen anzeigen</string>
     <string name="show_touches_label_default">Tippen anzeigen / Berührungen anzeigen</string>

@@ -106,7 +106,7 @@
     <string name="show_touches_guide_desc">لإظهار النقرات على الشاشة، قم بتفعيل الخيار في خيارات المطور:
 
 في قسم \'الإدخال\'، فعل \'%s\' (أو استخدم \'مربعات مطور الإعدادات السريعة\' للوصول السريع).</string>
-    <string name="show_touches_label_samsung">إظهار النقرات</string>
+    <string name="show_touches_label_samsung">مؤشرات بصرية</string>
     <string name="show_touches_label_xiaomi">عرض النقرات</string>
     <string name="show_touches_label_huawei">إظهار اللمسات</string>
     <string name="show_touches_label_default">إظهار النقرات / اللمسات</string>

@@ -106,7 +106,7 @@ Pour les activer :
     <string name="show_touches_guide_desc">Pour afficher vos gestes sur l\'écran, activez l\'option dans les Options de développement :
 
 Dans la section « Saisie », activez « %s » (ou « Vignettes pour développeurs » pour un accès direct depuis le volet rapide).</string>
-    <string name="show_touches_label_samsung">Afficher touches</string>
+    <string name="show_touches_label_samsung">Indicateurs visuels</string>
     <string name="show_touches_label_xiaomi">Afficher les contacts</string>
     <string name="show_touches_label_huawei">Afficher les contacts</string>
     <string name="show_touches_label_default">Afficher les appuis / Afficher les touches</string>

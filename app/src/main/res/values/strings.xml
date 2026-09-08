@@ -113,7 +113,7 @@ To enable them:
     <string name="show_touches_guide_desc">To show touches on your screen, enable the option in Developer options:
 
 In the \'Input\' section, enable \'%s\' (or use \'Quick settings developer tiles\' for quick access in your notification panel).</string>
-    <string name="show_touches_label_samsung">Show touches</string>
+    <string name="show_touches_label_samsung">Show visual feedback</string>
     <string name="show_touches_label_xiaomi">Show taps</string>
     <string name="show_touches_label_huawei">Show touches</string>
     <string name="show_touches_label_default">Show taps / Show touches</string>

@@ -106,7 +106,7 @@
     <string name="show_touches_guide_desc">Чтобы отображать нажатия, включите настройку в Параметрах разработчика:
 
 В разделе \'Ввод\' включите \'%s\'.</string>
-    <string name="show_touches_label_samsung">Показывать нажатия</string>
+    <string name="show_touches_label_samsung">Визуальный отклик</string>
     <string name="show_touches_label_xiaomi">Отображать касания</string>
     <string name="show_touches_label_huawei">Показывать нажатия</string>
     <string name="show_touches_label_default">Показывать нажатия / касания</string>

@@ -423,72 +423,22 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                 summary = stringResource(R.string.show_touches_desc),
                 externalChecked = isTouchesActiveOnSystem.value,
                 onCheckedChange = { isChecked ->
-                    if (isChecked) {
-                        var canWriteDirectly = false
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (!Settings.System.canWrite(context)) {
-                                val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
-                                    data = Uri.parse("package:${context.packageName}")
-                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                }
-                                context.startActivity(intent)
-                            } else {
-                                canWriteDirectly = runCatching {
-                                    Settings.System.putInt(context.contentResolver, "show_touches", 1)
-                                }.getOrDefault(false)
-                            }
-                        } else {
-                            canWriteDirectly = runCatching {
-                                Settings.System.putInt(context.contentResolver, "show_touches", 1)
-                            }.getOrDefault(false)
-                        }
+                    val targetValue = if (isChecked) 1 else 0
+                    val hasRoot = runCatching {
+                        val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "settings put system show_touches $targetValue"))
+                        process.waitFor() == 0
+                    }.getOrDefault(false)
 
-                        if (canWriteDirectly) {
-                            isTouchesActiveOnSystem.value = true
-                        } else {
-                            val hasRoot = runCatching {
-                                val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "settings put system show_touches 1"))
-                                process.waitFor() == 0
-                            }.getOrDefault(false)
-
-                            if (hasRoot) {
-                                isTouchesActiveOnSystem.value = true
-                            } else {
-                                isTouchesActiveOnSystem.value = false
-                                Preferences.edit { putBoolean(Preferences.showTouchesKey, false) }
-                                if (!isDeveloperModeEnabled(context)) {
-                                    showDevModeDisabledDialog = true
-                                } else {
-                                    showTouchesDevDialog = true
-                                }
-                            }
-                        }
+                    if (hasRoot) {
+                        isTouchesActiveOnSystem.value = isChecked
+                        Preferences.edit { putBoolean(Preferences.showTouchesKey, isChecked) }
                     } else {
-                        val canWriteDirectly = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.System.canWrite(context)) {
-                            runCatching {
-                                Settings.System.putInt(context.contentResolver, "show_touches", 0)
-                            }.getOrDefault(false)
-                        } else false
-
-                        if (canWriteDirectly) {
-                            isTouchesActiveOnSystem.value = false
+                        isTouchesActiveOnSystem.value = Settings.System.getInt(context.contentResolver, "show_touches", 0) == 1
+                        Preferences.edit { putBoolean(Preferences.showTouchesKey, isTouchesActiveOnSystem.value) }
+                        if (!isDeveloperModeEnabled(context)) {
+                            showDevModeDisabledDialog = true
                         } else {
-                            val hasRoot = runCatching {
-                                val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "settings put system show_touches 0"))
-                                process.waitFor() == 0
-                            }.getOrDefault(false)
-
-                            if (hasRoot) {
-                                isTouchesActiveOnSystem.value = false
-                            } else {
-                                isTouchesActiveOnSystem.value = Settings.System.getInt(context.contentResolver, "show_touches", 0) == 1
-                                Preferences.edit { putBoolean(Preferences.showTouchesKey, isTouchesActiveOnSystem.value) }
-                                if (!isDeveloperModeEnabled(context)) {
-                                    showDevModeDisabledDialog = true
-                                } else {
-                                    showTouchesDevDialog = true
-                                }
-                            }
+                            showTouchesDevDialog = true
                         }
                     }
                 }

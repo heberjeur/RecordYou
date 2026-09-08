@@ -264,17 +264,6 @@ class ScreenRecorderService : RecorderService() {
     }
 
     private fun trySetShowTouches(value: Int): Boolean {
-        try {
-            if (Settings.System.canWrite(this)) {
-                return Settings.System.putInt(contentResolver, "show_touches", value)
-            }
-        } catch (e: Exception) {
-            Log.w("ScreenRecorderService", "Settings.System.putInt failed: ${e.message}")
-        }
-        return tryRootSetShowTouches(value)
-    }
-
-    private fun tryRootSetShowTouches(value: Int): Boolean {
         return try {
             val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "settings put system show_touches $value"))
             process.waitFor() == 0
