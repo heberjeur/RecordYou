@@ -48,6 +48,12 @@ fun PlayerView(
         }
         val view = LocalView.current
         val scope = rememberCoroutineScope()
+        LaunchedEffect(showVideoModeInitially) {
+            val targetPage = if (showVideoModeInitially) 1 else 0
+            if (pagerState.currentPage != targetPage) {
+                pagerState.scrollToPage(targetPage)
+            }
+        }
         TabRow(selectedTabIndex = pagerState.currentPage, Modifier.fillMaxWidth()) {
             Tab(
                 selected = pagerState.currentPage == 0,

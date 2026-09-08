@@ -17,9 +17,15 @@ class FinishedNotificationReceiver : BroadcastReceiver() {
         val file = repo.getOutputDir().findFile(fileName)
             ?: repo.getAudioOutputDir().findFile(fileName)
             ?: repo.getVideoOutputDir().findFile(fileName)
-
         when (intent.getStringExtra(RecorderService.ACTION_EXTRA_KEY)) {
-            RecorderService.OPEN_ACTION -> file?.let { IntentHelper.openFile(context, it) }
+            RecorderService.OPEN_ACTION -> {
+                val openIntent = Intent(context, MainActivity::class.java).apply {
+                    action = Intent.ACTION_VIEW
+                    putExtra(MainActivity.EXTRA_OPEN_RECORDING_NAME, fileName)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                }
+                context.startActivity(openIntent)
+            }
             RecorderService.TRIM_ACTION -> {
                 val trimIntent = Intent(context, MainActivity::class.java).apply {
                     action = Intent.ACTION_VIEW

@@ -85,14 +85,16 @@ fun RecordingItemList(
                     }
                 }
             }
-            if (!isVideoList && chosenFile != null) {
+            val activeFile = playerModel.currentlyPlayingFile ?: chosenFile
+            val isMiniPlayerVisible = (showMiniPlayer || playerModel.currentlyPlayingFile != null) && activeFile != null
+            if (!isVideoList && activeFile != null) {
                 AnimatedVisibility(
                     modifier = Modifier
                         .padding(bottom = 10.dp),
-                    visible = showMiniPlayer
+                    visible = isMiniPlayerVisible
                 ) {
                     MiniPlayer(
-                        inputFile = chosenFile!!,
+                        inputFile = activeFile,
                         playerModel = playerModel,
                         onClose = {
                             playerModel.stopPlaying()

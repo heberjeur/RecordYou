@@ -212,7 +212,7 @@ class FileRepositoryImpl(val context: Context) : FileRepository {
             try {
                 retriever.setDataSource(context, file.uri)
                 val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-                    retriever.getScaledFrameAtTime(-1, MediaMetadataRetriever.OPTION_CLOSEST_SYNC, 320, 320)
+                    retriever.getScaledFrameAtTime(-1, MediaMetadataRetriever.OPTION_CLOSEST_SYNC, 480, 480)
                         ?: retriever.frameAtTime
                 } else {
                     retriever.frameAtTime

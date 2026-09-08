@@ -112,15 +112,20 @@ fun RecordingItem(
             Column() {
                 if (isVideo) {
                     thumbnail?.let { thumbnail ->
+                        val ratio = if (thumbnail.height > 0 && thumbnail.width > 0) {
+                            thumbnail.width.toFloat() / thumbnail.height.toFloat()
+                        } else {
+                            16f / 9f
+                        }
                         Image(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .aspectRatio(0.8f)
                                 .padding(8.dp)
+                                .aspectRatio(ratio)
                                 .clip(RoundedCornerShape(8.dp)),
                             bitmap = thumbnail.asImageBitmap(),
                             contentDescription = null,
-                            contentScale = ContentScale.Crop,
+                            contentScale = ContentScale.Fit,
                             alignment = Alignment.Center
                         )
                     }

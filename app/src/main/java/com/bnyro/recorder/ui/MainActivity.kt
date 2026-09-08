@@ -23,10 +23,12 @@ import com.bnyro.recorder.ui.models.RecorderModel
 import com.bnyro.recorder.ui.models.ThemeModel
 import com.bnyro.recorder.ui.theme.RecordYouTheme
 import android.os.Build
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.bnyro.recorder.App
+import com.bnyro.recorder.ui.models.PlayerModel
 import com.bnyro.recorder.ui.screens.TrimmerScreen
 import com.bnyro.recorder.util.LanguageHelper
 
@@ -34,8 +36,10 @@ class MainActivity : ComponentActivity() {
     private var initialRecorder = RecorderType.NONE
     private var exitAfterRecordingStart = false
     private var trimFileName by mutableStateOf<String?>(null)
+    private var openRecordingName by mutableStateOf<String?>(null)
     private lateinit var mProjectionManager: MediaProjectionManager
     private val recorderModel: RecorderModel by viewModels()
+    private val playerModel: PlayerModel by viewModels(factoryProducer = { PlayerModel.Factory })
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
     override fun attachBaseContext(newBase: Context) {
@@ -70,6 +74,24 @@ class MainActivity : ComponentActivity() {
                 amoledDark = themeModel.themeMode == ThemeMode.AMOLED
             ) {
                 val navController = rememberNavController()
+                LaunchedEffect(openRecordingName) {
+                    val targetName = openRecordingName ?: return@LaunchedEffect
+                    val fileRepo = (application as App).fileRepository
+                    val file = fileRepo.getOutputDir().findFile(targetName)
+                        ?: fileRepo.getAudioOutputDir().findFile(targetName)
+                        ?: fileRepo.getVideoOutputDir().findFile(targetName)
+                    if (file != null) {
+                        val isVideo = file.type?.startsWith("video/") == true ||
+                            listOf(".mp4", ".mov", ".avi", ".mkv", ".webm", ".mpg").any {
+                                file.name.orEmpty().endsWith(it, ignoreCase = true)
+                            }
+                        navController.navigateTo(Destination.RecordingPlayer(showVideo = isVideo).route)
+                        if (!isVideo) {
+                            playerModel.startPlayback(file)
+                        }
+                    }
+                    openRecordingName = null
+                }
                 Surface(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -103,6 +125,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun processIntent(intent: Intent) {
+        val openName = intent.getStringExtra(EXTRA_OPEN_RECORDING_NAME)
+        if (!openName.isNullOrBlank()) {
+            openRecordingName = openName
+            intent.removeExtra(EXTRA_OPEN_RECORDING_NAME)
+        }
         val trimName = intent.getStringExtra(EXTRA_TRIM_FILE_NAME)
         if (!trimName.isNullOrBlank()) {
             trimFileName = trimName
@@ -141,5 +168,6 @@ class MainActivity : ComponentActivity() {
     companion object {
         const val EXTRA_ACTION_KEY = "action"
         const val EXTRA_TRIM_FILE_NAME = "trimFileName"
+        const val EXTRA_OPEN_RECORDING_NAME = "openRecordingName"
     }
 }

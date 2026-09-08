@@ -170,22 +170,26 @@ class PlayerModel(context: Context, private val fileRepository: FileRepository) 
         }
     }
 
-    fun playFile(file: DocumentFile) {
+    fun startPlayback(file: DocumentFile) {
         if (currentlyPlayingFile?.uri == file.uri) {
-            if (player.isPlaying) {
-                player.pause()
-            } else {
-                if (player.playbackState == Player.STATE_ENDED) {
-                    player.seekTo(0)
-                }
-                player.play()
+            if (player.playbackState == Player.STATE_ENDED) {
+                player.seekTo(0)
             }
+            player.play()
         } else {
             currentlyPlayingFile = file
             val mediaItem = MediaItem.Builder().setUri(file.uri).build()
             player.setMediaItem(mediaItem)
             player.playWhenReady = true
             player.prepare()
+        }
+    }
+
+    fun playFile(file: DocumentFile) {
+        if (currentlyPlayingFile?.uri == file.uri && player.isPlaying) {
+            player.pause()
+        } else {
+            startPlayback(file)
         }
     }
 
