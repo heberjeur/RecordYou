@@ -251,7 +251,7 @@ class TrimmerModel(context: Context) : ViewModel() {
     }
 
     fun zoomOut() {
-        zoomFactor = (zoomFactor / 1.35f).coerceAtLeast(1.0f)
+        zoomFactor = (zoomFactor / 1.35f).coerceAtLeast(0.25f)
     }
 
     fun copySelectedSegment(): Boolean {
@@ -290,32 +290,53 @@ class TrimmerModel(context: Context) : ViewModel() {
         currentPositionMs = 0L
     }
 
-    fun selectPartAtCurrentPosition(windowMs: Long = 5000L) {
+    fun selectPartAtCurrentPosition() {
         if (totalDurationMs <= 0L) return
         pushUndoState()
-        val index = selectedSegmentIndex.coerceIn(0, (segments.size - 1).coerceAtLeast(0))
-        val curSeg = segments.getOrNull(index)
-        val minBound = if (segments.size > 1 && index > 0) segments[index - 1].endMs else 0L
-        val maxBound = if (segments.size > 1 && index < segments.size - 1) segments[index + 1].startMs else totalDurationMs
-        val available = (maxBound - minBound).coerceAtLeast(500L)
-        val span = windowMs.coerceIn(500L, available)
-        val half = span / 2
-        val targetStart = (currentPositionMs - half).coerceIn(minBound, (maxBound - span).coerceAtLeast(minBound))
-        val targetEnd = (targetStart + span).coerceAtMost(maxBound)
-        val updated = segments.toMutableList()
-        if (updated.isNotEmpty()) {
-            updated[index] = (curSeg ?: MediaSegment(startMs = targetStart, endMs = targetEnd)).copy(
-                startMs = targetStart,
-                endMs = targetEnd
-            )
+        val pos = currentPositionMs
+
+        val inSegIndex = segments.indexOfFirst { pos in it.startMs..it.endMs }
+        if (inSegIndex >= 0) {
+            val seg = segments[inSegIndex]
+            val remainingAfter = seg.endMs - pos
+            val remainingBefore = pos - seg.startMs
+
+            val (newStart, newEnd) = when {
+                remainingAfter >= 1000L && remainingBefore >= 1000L -> {
+                    pos to seg.endMs
+                }
+                remainingAfter >= 1000L -> {
+                    val dynamicSpan = ((seg.endMs - seg.startMs) / 2).coerceAtLeast(1000L)
+                    seg.startMs to (seg.startMs + dynamicSpan).coerceAtMost(seg.endMs)
+                }
+                else -> {
+                    seg.startMs to pos
+                }
+            }
+            val updated = segments.toMutableList()
+            updated[inSegIndex] = seg.copy(startMs = newStart, endMs = newEnd)
+            segments = updated
+            selectedSegmentIndex = inSegIndex
+            syncSelectionTimes()
         } else {
-            updated.add(MediaSegment(startMs = targetStart, endMs = targetEnd))
+            val prevEnd = segments.filter { it.endMs <= pos }.maxOfOrNull { it.endMs } ?: 0L
+            val nextStart = segments.filter { it.startMs >= pos }.minOfOrNull { it.startMs } ?: totalDurationMs
+            val gapRemaining = nextStart - pos
+            val (newStart, newEnd) = if (gapRemaining >= 1000L) {
+                pos to nextStart
+            } else {
+                prevEnd to nextStart
+            }
+            if (newEnd > newStart) {
+                val newSeg = MediaSegment(startMs = newStart, endMs = newEnd)
+                val insertIndex = segments.indexOfFirst { it.startMs > newStart }.let { if (it < 0) segments.size else it }
+                val updated = segments.toMutableList()
+                updated.add(insertIndex, newSeg)
+                segments = updated
+                selectedSegmentIndex = insertIndex
+                syncSelectionTimes()
+            }
         }
-        segments = updated
-        startTimeStamp = targetStart
-        endTimeStamp = targetEnd
-        player.seekTo(targetStart)
-        currentPositionMs = targetStart
     }
 
     fun updateSelectedSegmentStart(newStartMs: Long) {
@@ -434,22 +455,51 @@ class TrimmerModel(context: Context) : ViewModel() {
         if (index !in segments.indices) return
         val seg = segments[index]
         val dur = seg.endMs - seg.startMs
-        val minStart = if (index > 0) segments[index - 1].endMs else 0L
-        val maxStart = if (index < segments.size - 1) {
-            (segments[index + 1].startMs - dur).coerceAtLeast(minStart)
-        } else {
-            (totalDurationMs - dur).coerceAtLeast(0L)
+        if (dur <= 0L) return
+
+        if (segments.size == 1) {
+            val minStart = 0L
+            val maxStart = (totalDurationMs - dur).coerceAtLeast(0L)
+            val newStart = (seg.startMs + deltaMs).coerceIn(minStart, maxStart)
+            val newEnd = newStart + dur
+            if (newStart == seg.startMs && newEnd == seg.endMs) return
+            val updated = segments.toMutableList()
+            updated[index] = seg.copy(startMs = newStart, endMs = newEnd)
+            segments = updated
+            startTimeStamp = newStart
+            endTimeStamp = newEnd
+            return
         }
+
+        val updated = segments.toMutableList()
+        val prevSeg = if (index > 0) updated[index - 1] else null
+        val nextSeg = if (index < updated.size - 1) updated[index + 1] else null
+
+        if (deltaMs < 0 && prevSeg != null && (seg.startMs + deltaMs) < (prevSeg.startMs + (prevSeg.endMs - prevSeg.startMs) / 2)) {
+            val item = updated.removeAt(index)
+            updated.add(index - 1, item)
+            segments = updated
+            selectedSegmentIndex = index - 1
+            syncSelectionTimes()
+            return
+        } else if (deltaMs > 0 && nextSeg != null && (seg.endMs + deltaMs) > (nextSeg.startMs + (nextSeg.endMs - nextSeg.startMs) / 2)) {
+            val item = updated.removeAt(index)
+            updated.add(index + 1, item)
+            segments = updated
+            selectedSegmentIndex = index + 1
+            syncSelectionTimes()
+            return
+        }
+
+        val minStart = prevSeg?.endMs ?: 0L
+        val maxStart = if (nextSeg != null) (nextSeg.startMs - dur).coerceAtLeast(minStart) else (totalDurationMs - dur).coerceAtLeast(0L)
         val newStart = (seg.startMs + deltaMs).coerceIn(minStart, maxStart)
         val newEnd = newStart + dur
         if (newStart == seg.startMs && newEnd == seg.endMs) return
-        val updated = segments.toMutableList()
         updated[index] = seg.copy(startMs = newStart, endMs = newEnd)
         segments = updated
         startTimeStamp = newStart
         endTimeStamp = newEnd
-        player.seekTo(newStart)
-        currentPositionMs = newStart
     }
 
     fun previousSegment() {

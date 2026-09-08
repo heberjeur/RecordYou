@@ -130,7 +130,8 @@ fun RangeWaveformTimeline(
                     val down = awaitFirstDown(requireUnconsumed = false)
                     val w = size.width.toFloat()
                     val totalVirtualW = w * updatedZoom
-                    val handleTolerance = 36.dp.toPx()
+                    val maxScroll = (totalVirtualW - w).coerceAtLeast(0f)
+                    val contentOffset = if (totalVirtualW < w) (w - totalVirtualW) / 2f else -scrollOffsetX.coerceIn(0f, maxScroll)
 
                     var dragMode = 0
                     var initialDistance = 0f
@@ -140,24 +141,38 @@ fun RangeWaveformTimeline(
                     val curSafeStart = activeSeg?.startMs ?: 0L
                     val curSafeEnd = activeSeg?.endMs ?: updatedDuration
 
-                    val startX = (curSafeStart.toFloat() / updatedDuration) * totalVirtualW - scrollOffsetX
-                    val endX = (curSafeEnd.toFloat() / updatedDuration) * totalVirtualW - scrollOffsetX
-                    val playheadScreenX = (currentPositionMs.toFloat() / updatedDuration) * totalVirtualW - scrollOffsetX
+                    val startX = (curSafeStart.toFloat() / updatedDuration) * totalVirtualW + contentOffset
+                    val endX = (curSafeEnd.toFloat() / updatedDuration) * totalVirtualW + contentOffset
+                    val playheadScreenX = (currentPositionMs.toFloat() / updatedDuration) * totalVirtualW + contentOffset
                     val touchX = down.position.x
-                    val touchVirtualX = (touchX + scrollOffsetX).coerceIn(0f, totalVirtualW)
+                    val touchVirtualX = (touchX - contentOffset).coerceIn(0f, totalVirtualW)
                     val touchMs = ((touchVirtualX / totalVirtualW) * updatedDuration).toLong()
 
                     var lastDragVirtualX = touchVirtualX
-                    val distStart = abs(touchX - startX)
-                    val distEnd = abs(touchX - endX)
-                    val distPlayhead = abs(touchX - playheadScreenX)
+                    val segWidthPx = abs(endX - startX)
+                    val handleTolerance = minOf(16.dp.toPx(), segWidthPx * 0.22f).coerceAtLeast(6.dp.toPx())
 
-                    if (distStart <= handleTolerance || distEnd <= handleTolerance) {
-                        dragMode = if (distStart <= distEnd) 1 else 2
-                    } else if (distPlayhead <= 18.dp.toPx()) {
-                        dragMode = 3
-                    } else if (touchMs in curSafeStart..curSafeEnd) {
+                    val isInsideActive = touchX >= (startX + handleTolerance) && touchX <= (endX - handleTolerance)
+                    val nearStart = abs(touchX - startX) <= handleTolerance || (touchX in (startX - 18.dp.toPx())..startX)
+                    val nearEnd = abs(touchX - endX) <= handleTolerance || (touchX in endX..(endX + 18.dp.toPx()))
+
+                    if (isInsideActive) {
                         dragMode = 4
+                    } else if (nearStart && !nearEnd) {
+                        dragMode = 1
+                    } else if (nearEnd && !nearStart) {
+                        dragMode = 2
+                    } else if (nearStart && nearEnd) {
+                        val mid = (startX + endX) / 2f
+                        if (abs(touchX - mid) < 6.dp.toPx()) {
+                            dragMode = 4
+                        } else if (touchX < mid) {
+                            dragMode = 1
+                        } else {
+                            dragMode = 2
+                        }
+                    } else if (abs(touchX - playheadScreenX) <= 16.dp.toPx()) {
+                        dragMode = 3
                     } else {
                         val hitIndex = updatedSegments.indexOfFirst { touchMs in it.startMs..it.endMs }
                         if (hitIndex >= 0) {
@@ -190,7 +205,7 @@ fun RangeWaveformTimeline(
 
                             if (initialDistance > 0f && dist > 10f) {
                                 val scale = dist / initialDistance
-                                val newZoom = (updatedZoom * scale).coerceIn(1.0f, 20.0f)
+                                val newZoom = (updatedZoom * scale).coerceIn(0.25f, 20.0f)
                                 updatedOnZoomChange(newZoom)
                             }
                             initialDistance = dist
@@ -198,7 +213,7 @@ fun RangeWaveformTimeline(
                         } else if (activePointers.size == 1) {
                             val change = activePointers[0]
                             val curX = change.position.x
-                            val curVirtualX = (curX + scrollOffsetX).coerceIn(0f, totalVirtualW)
+                            val curVirtualX = (curX - contentOffset).coerceIn(0f, totalVirtualW)
                             val curMs = ((curVirtualX / totalVirtualW) * updatedDuration).toLong()
 
                             val curSeg = updatedSegments.getOrNull(updatedSelectedIndex)
@@ -245,6 +260,7 @@ fun RangeWaveformTimeline(
             val totalVirtualW = w * zoomFactor
             val maxScroll = (totalVirtualW - w).coerceAtLeast(0f)
             val currentScroll = scrollOffsetX.coerceIn(0f, maxScroll)
+            val contentOffset = if (totalVirtualW < w) (w - totalVirtualW) / 2f else -currentScroll
 
             fun drawCutHatch(left: Float, right: Float) {
                 if (right <= left) return
@@ -275,7 +291,7 @@ fun RangeWaveformTimeline(
             if (filmstrip.isNotEmpty()) {
                 val frameW = totalVirtualW / filmstrip.size
                 for (i in filmstrip.indices) {
-                    val frameScreenX = i * frameW - currentScroll
+                    val frameScreenX = i * frameW + contentOffset
                     if (frameScreenX + frameW >= 0 && frameScreenX <= w) {
                         val bmp = filmstrip[i].asImageBitmap()
                         drawImage(
@@ -295,8 +311,8 @@ fun RangeWaveformTimeline(
             var coveredUntilMs = 0L
             for (seg in segments) {
                 if (seg.startMs > coveredUntilMs) {
-                    val gapStartX = (coveredUntilMs.toFloat() / duration) * totalVirtualW - currentScroll
-                    val gapEndX = (seg.startMs.toFloat() / duration) * totalVirtualW - currentScroll
+                    val gapStartX = (coveredUntilMs.toFloat() / duration) * totalVirtualW + contentOffset
+                    val gapEndX = (seg.startMs.toFloat() / duration) * totalVirtualW + contentOffset
                     val visibleGapStart = gapStartX.coerceAtLeast(0f)
                     val visibleGapEnd = gapEndX.coerceAtMost(w)
                     if (visibleGapEnd > visibleGapStart) {
@@ -306,16 +322,18 @@ fun RangeWaveformTimeline(
                 coveredUntilMs = seg.endMs
             }
             if (coveredUntilMs < duration) {
-                val gapStartX = (coveredUntilMs.toFloat() / duration) * totalVirtualW - currentScroll
+                val gapStartX = (coveredUntilMs.toFloat() / duration) * totalVirtualW + contentOffset
+                val gapEndX = totalVirtualW + contentOffset
                 val visibleGapStart = gapStartX.coerceAtLeast(0f)
-                if (w > visibleGapStart) {
-                    drawCutHatch(visibleGapStart, w)
+                val visibleGapEnd = gapEndX.coerceAtMost(w)
+                if (visibleGapEnd > visibleGapStart) {
+                    drawCutHatch(visibleGapStart, visibleGapEnd)
                 }
             }
 
             segments.forEachIndexed { index, seg ->
-                val segStartX = (seg.startMs.toFloat() / duration) * totalVirtualW - currentScroll
-                val segEndX = (seg.endMs.toFloat() / duration) * totalVirtualW - currentScroll
+                val segStartX = (seg.startMs.toFloat() / duration) * totalVirtualW + contentOffset
+                val segEndX = (seg.endMs.toFloat() / duration) * totalVirtualW + contentOffset
                 val isSelected = (index == selectedSegmentIndex)
 
                 if (segEndX >= 0f && segStartX <= w) {
@@ -345,7 +363,7 @@ fun RangeWaveformTimeline(
 
             for (i in 0 until barCount) {
                 val barVirtualX = i * barSpacing
-                val barScreenX = barVirtualX - currentScroll
+                val barScreenX = barVirtualX + contentOffset
                 if (barScreenX < -5f || barScreenX > w + 5f) continue
 
                 val barMs = ((barVirtualX / totalVirtualW) * duration).toLong()
@@ -370,8 +388,8 @@ fun RangeWaveformTimeline(
             }
 
             segments.forEachIndexed { index, seg ->
-                val segStartX = (seg.startMs.toFloat() / duration) * totalVirtualW - currentScroll
-                val segEndX = (seg.endMs.toFloat() / duration) * totalVirtualW - currentScroll
+                val segStartX = (seg.startMs.toFloat() / duration) * totalVirtualW + contentOffset
+                val segEndX = (seg.endMs.toFloat() / duration) * totalVirtualW + contentOffset
                 val isSelected = (index == selectedSegmentIndex)
 
                 if (segEndX >= 0f && segStartX <= w) {
@@ -388,6 +406,23 @@ fun RangeWaveformTimeline(
                             end = Offset(segEndX, h - 2f),
                             strokeWidth = 3f
                         )
+
+                        val segCenterX = (segStartX + segEndX) / 2f
+                        if (segCenterX in 0f..w && (segEndX - segStartX) >= 28f) {
+                            val gripColor = cyanColor.copy(alpha = 0.7f)
+                            drawRoundRect(
+                                color = gripColor,
+                                topLeft = Offset(segCenterX - 10f, 4f),
+                                size = Size(20f, 3f),
+                                cornerRadius = CornerRadius(1.5f, 1.5f)
+                            )
+                            drawRoundRect(
+                                color = gripColor,
+                                topLeft = Offset(segCenterX - 10f, h - 7f),
+                                size = Size(20f, 3f),
+                                cornerRadius = CornerRadius(1.5f, 1.5f)
+                            )
+                        }
 
                         val handleWidth = 14f
                         drawRoundRect(
@@ -430,7 +465,7 @@ fun RangeWaveformTimeline(
                 }
             }
 
-            val playheadScreenX = (currentPositionMs.toFloat() / duration) * totalVirtualW - currentScroll
+            val playheadScreenX = (currentPositionMs.toFloat() / duration) * totalVirtualW + contentOffset
             if (playheadScreenX in 0f..w) {
                 drawLine(
                     color = playheadColor,

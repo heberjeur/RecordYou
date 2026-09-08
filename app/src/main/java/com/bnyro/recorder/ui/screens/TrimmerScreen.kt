@@ -299,7 +299,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                 canUndo = trimmerModel.undoStack.isNotEmpty(),
                 canRedo = trimmerModel.redoStack.isNotEmpty(),
                 canZoomIn = trimmerModel.zoomFactor < 20.0f,
-                canZoomOut = trimmerModel.zoomFactor > 1.0f,
+                canZoomOut = trimmerModel.zoomFactor > 0.25f,
                 isVideo = isVideo,
                 isSegmentMuted = curSeg?.isMuted == true,
                 selectedSpeed = trimmerModel.selectedSpeed,
