@@ -218,7 +218,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                 totalDurationMs = trimmerModel.totalDurationMs,
                 segments = trimmerModel.segments,
                 selectedSegmentIndex = trimmerModel.selectedSegmentIndex,
-                currentSequencePositionMs = trimmerModel.currentSequencePositionMs,
+                currentPositionMs = trimmerModel.currentPositionMs,
                 waveform = trimmerModel.waveform,
                 filmstrip = trimmerModel.filmstrip,
                 zoomFactor = trimmerModel.zoomFactor,
@@ -227,16 +227,18 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                 onZoomIn = { trimmerModel.zoomIn() },
                 onZoomOut = { trimmerModel.zoomOut() },
                 onSelectSegment = { trimmerModel.selectSegment(it) },
-                onSwapSegments = { from, to -> trimmerModel.swapSegments(from, to) },
                 onStartChanged = { trimmerModel.updateSelectedSegmentStart(it) },
                 onEndChanged = { trimmerModel.updateSelectedSegmentEnd(it) },
-                onSeekSequence = { trimmerModel.seekToSequenceMs(it) }
+                onSeek = {
+                    trimmerModel.player.seekTo(it)
+                    trimmerModel.currentPositionMs = it
+                }
             )
 
-            val curSeqPosFormatted = TimeFormatHelper.formatDuration(trimmerModel.currentSequencePositionMs / 1000)
+            val curPosFormatted = TimeFormatHelper.formatDuration(trimmerModel.currentPositionMs / 1000)
             val selectedDur = trimmerModel.selectedSegment?.durationMs ?: 0L
             val selDurFormatted = TimeFormatHelper.formatDuration(selectedDur / 1000)
-            val totalSeqDurFormatted = TimeFormatHelper.formatDuration(trimmerModel.totalSequenceDurationMs / 1000)
+            val totalDurFormatted = TimeFormatHelper.formatDuration(trimmerModel.totalDurationMs / 1000)
             val segIndex = (trimmerModel.selectedSegmentIndex + 1).coerceAtLeast(1)
             val segTotal = trimmerModel.segments.size.coerceAtLeast(1)
 
@@ -253,7 +255,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = curSeqPosFormatted,
+                        text = curPosFormatted,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -267,7 +269,7 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                     )
 
                     Text(
-                        text = totalSeqDurFormatted,
+                        text = totalDurFormatted,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
