@@ -7,14 +7,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ZoomOutMap
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,7 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
@@ -35,6 +41,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -56,6 +63,8 @@ fun RangeWaveformTimeline(
     zoomFactor: Float = 1.0f,
     onZoomChange: (Float) -> Unit = {},
     onResetZoom: () -> Unit = {},
+    onZoomIn: () -> Unit = {},
+    onZoomOut: () -> Unit = {},
     onSelectSegment: (Int) -> Unit,
     onStartChanged: (Long) -> Unit,
     onEndChanged: (Long) -> Unit,
@@ -65,9 +74,11 @@ fun RangeWaveformTimeline(
     val duration = totalDurationMs.coerceAtLeast(1L)
     val cyanColor = Color(0xFF00E5C0)
     val cyanGlow = Color(0x3300E5C0)
-    val bgDark = Color(0xFF0F1216)
-    val dimOverlay = Color(0xAA0A0D10)
-    val otherSegmentColor = Color(0xFF267368)
+    val otherClipColor = Color(0xFF38BDF8)
+    val otherClipBg = Color(0x1F38BDF8)
+    val bgDark = Color(0xFF0D1117)
+    val cutHatchColor = Color(0x38FF5252)
+    val cutBgColor = Color(0x8C090C10)
     val playheadColor = Color.White
     val handleColor = Color(0xFF00E5C0)
 
@@ -108,15 +119,14 @@ fun RangeWaveformTimeline(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(88.dp)
-            .clip(RoundedCornerShape(10.dp))
+            .height(92.dp)
+            .clip(RoundedCornerShape(12.dp))
             .background(bgDark)
             .pointerInput(Unit) {
                 awaitEachGesture {
                     val down = awaitFirstDown(requireUnconsumed = false)
                     val w = size.width.toFloat()
                     val totalVirtualW = w * updatedZoom
-                    val maxScroll = (totalVirtualW - w).coerceAtLeast(0f)
                     val handleTolerance = 44.dp.toPx()
 
                     var dragMode = 0
@@ -204,6 +214,32 @@ fun RangeWaveformTimeline(
             val maxScroll = (totalVirtualW - w).coerceAtLeast(0f)
             val currentScroll = scrollOffsetX.coerceIn(0f, maxScroll)
 
+            fun drawCutHatch(left: Float, right: Float) {
+                if (right <= left) return
+                drawRect(
+                    color = cutBgColor,
+                    topLeft = Offset(left, 0f),
+                    size = Size(right - left, h)
+                )
+                val step = 14f
+                var x = left - h
+                while (x < right) {
+                    val startX = x.coerceIn(left, right)
+                    val startY = if (x < left) (left - x) else 0f
+                    val endX = (x + h).coerceIn(left, right)
+                    val endY = if (x + h > right) h - (x + h - right) else h
+                    if (startX < endX && startY < endY) {
+                        drawLine(
+                            color = cutHatchColor,
+                            start = Offset(startX, startY),
+                            end = Offset(endX, endY),
+                            strokeWidth = 1.5f
+                        )
+                    }
+                    x += step
+                }
+            }
+
             if (filmstrip.isNotEmpty()) {
                 val frameW = totalVirtualW / filmstrip.size
                 for (i in filmstrip.indices) {
@@ -224,6 +260,53 @@ fun RangeWaveformTimeline(
                 )
             }
 
+            var coveredUntilMs = 0L
+            for (seg in segments) {
+                if (seg.startMs > coveredUntilMs) {
+                    val gapStartX = (coveredUntilMs.toFloat() / duration) * totalVirtualW - currentScroll
+                    val gapEndX = (seg.startMs.toFloat() / duration) * totalVirtualW - currentScroll
+                    val visibleGapStart = gapStartX.coerceAtLeast(0f)
+                    val visibleGapEnd = gapEndX.coerceAtMost(w)
+                    if (visibleGapEnd > visibleGapStart) {
+                        drawCutHatch(visibleGapStart, visibleGapEnd)
+                    }
+                }
+                coveredUntilMs = seg.endMs
+            }
+            if (coveredUntilMs < duration) {
+                val gapStartX = (coveredUntilMs.toFloat() / duration) * totalVirtualW - currentScroll
+                val visibleGapStart = gapStartX.coerceAtLeast(0f)
+                if (w > visibleGapStart) {
+                    drawCutHatch(visibleGapStart, w)
+                }
+            }
+
+            segments.forEachIndexed { index, seg ->
+                val segStartX = (seg.startMs.toFloat() / duration) * totalVirtualW - currentScroll
+                val segEndX = (seg.endMs.toFloat() / duration) * totalVirtualW - currentScroll
+                val isSelected = (index == selectedSegmentIndex)
+
+                if (segEndX >= 0f && segStartX <= w) {
+                    val visibleStart = segStartX.coerceAtLeast(0f)
+                    val visibleEnd = segEndX.coerceAtMost(w)
+                    val fillWidth = (visibleEnd - visibleStart).coerceAtLeast(0f)
+
+                    if (isSelected) {
+                        drawRect(
+                            color = cyanGlow,
+                            topLeft = Offset(visibleStart, 0f),
+                            size = Size(fillWidth, h)
+                        )
+                    } else {
+                        drawRect(
+                            color = otherClipBg,
+                            topLeft = Offset(visibleStart, 0f),
+                            size = Size(fillWidth, h)
+                        )
+                    }
+                }
+            }
+
             val barCount = bars.size
             val barSpacing = totalVirtualW / barCount.toFloat()
             val centerY = h / 2f
@@ -239,12 +322,12 @@ fun RangeWaveformTimeline(
 
                 val barColor = when {
                     isSelected -> cyanColor
-                    isInAnySegment -> otherSegmentColor
-                    else -> Color(0x30556677)
+                    isInAnySegment -> otherClipColor
+                    else -> Color(0x35667788)
                 }
 
                 val amp = bars[i].coerceIn(0.05f, 0.95f)
-                val barH = amp * (h * 0.72f)
+                val barH = amp * (h * 0.70f)
 
                 drawRoundRect(
                     color = barColor,
@@ -254,35 +337,6 @@ fun RangeWaveformTimeline(
                 )
             }
 
-            var coveredUntilMs = 0L
-            for (seg in segments) {
-                if (seg.startMs > coveredUntilMs) {
-                    val gapStartX = (coveredUntilMs.toFloat() / duration) * totalVirtualW - currentScroll
-                    val gapEndX = (seg.startMs.toFloat() / duration) * totalVirtualW - currentScroll
-                    val visibleGapStart = gapStartX.coerceAtLeast(0f)
-                    val visibleGapEnd = gapEndX.coerceAtMost(w)
-                    if (visibleGapEnd > visibleGapStart) {
-                        drawRect(
-                            color = dimOverlay,
-                            topLeft = Offset(visibleGapStart, 0f),
-                            size = Size(visibleGapEnd - visibleGapStart, h)
-                        )
-                    }
-                }
-                coveredUntilMs = seg.endMs
-            }
-            if (coveredUntilMs < duration) {
-                val gapStartX = (coveredUntilMs.toFloat() / duration) * totalVirtualW - currentScroll
-                val visibleGapStart = gapStartX.coerceAtLeast(0f)
-                if (w > visibleGapStart) {
-                    drawRect(
-                        color = dimOverlay,
-                        topLeft = Offset(visibleGapStart, 0f),
-                        size = Size(w - visibleGapStart, h)
-                    )
-                }
-            }
-
             segments.forEachIndexed { index, seg ->
                 val segStartX = (seg.startMs.toFloat() / duration) * totalVirtualW - currentScroll
                 val segEndX = (seg.endMs.toFloat() / duration) * totalVirtualW - currentScroll
@@ -290,21 +344,16 @@ fun RangeWaveformTimeline(
 
                 if (segEndX >= 0f && segStartX <= w) {
                     if (isSelected) {
-                        drawRect(
-                            color = cyanGlow,
-                            topLeft = Offset(segStartX.coerceAtLeast(0f), 0f),
-                            size = Size((segEndX - segStartX).coerceAtLeast(0f), h)
-                        )
                         drawLine(
                             color = cyanColor,
-                            start = Offset(segStartX, 1.5f),
-                            end = Offset(segEndX, 1.5f),
+                            start = Offset(segStartX, 2f),
+                            end = Offset(segEndX, 2f),
                             strokeWidth = 3f
                         )
                         drawLine(
                             color = cyanColor,
-                            start = Offset(segStartX, h - 1.5f),
-                            end = Offset(segEndX, h - 1.5f),
+                            start = Offset(segStartX, h - 2f),
+                            end = Offset(segEndX, h - 2f),
                             strokeWidth = 3f
                         )
 
@@ -334,13 +383,13 @@ fun RangeWaveformTimeline(
                         )
                     } else {
                         drawLine(
-                            color = Color(0x66FFFFFF),
+                            color = otherClipColor,
                             start = Offset(segStartX, 0f),
                             end = Offset(segStartX, h),
                             strokeWidth = 2f
                         )
                         drawLine(
-                            color = Color(0x66FFFFFF),
+                            color = otherClipColor,
                             start = Offset(segEndX, 0f),
                             end = Offset(segEndX, h),
                             strokeWidth = 2f
@@ -365,32 +414,51 @@ fun RangeWaveformTimeline(
             }
         }
 
-        if (zoomFactor > 1.05f) {
-            Surface(
-                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(6.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .clickable { onResetZoom() }
+        Surface(
+            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.88f),
+            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(6.dp)
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                androidx.compose.foundation.layout.Row(
-                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                IconButton(
+                    onClick = onZoomOut,
+                    modifier = Modifier.size(22.dp)
                 ) {
-                    Text(
-                        text = String.format(Locale.US, "%.1fx", zoomFactor),
-                        fontSize = 10.sp,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
-                    )
-                    androidx.compose.foundation.layout.Spacer(modifier = Modifier.padding(horizontal = 2.dp))
                     Icon(
-                        imageVector = Icons.Default.ZoomOutMap,
+                        imageVector = Icons.Default.Remove,
                         contentDescription = null,
-                        modifier = Modifier.height(12.dp),
-                        tint = MaterialTheme.colorScheme.onSurface
+                        modifier = Modifier.size(14.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(2.dp))
+
+                Text(
+                    text = String.format(Locale.US, "%.1fx", zoomFactor),
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .clickable { onResetZoom() }
+                        .padding(horizontal = 4.dp, vertical = 2.dp)
+                )
+
+                Spacer(modifier = Modifier.width(2.dp))
+
+                IconButton(
+                    onClick = onZoomIn,
+                    modifier = Modifier.size(22.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp)
                     )
                 }
             }

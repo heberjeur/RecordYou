@@ -130,4 +130,11 @@
     <string name="move_right">انتقال به راست</string>
     <string name="reset_zoom">بازنشانی بزرگ‌نمایی</string>
     <string name="segment_label">بخش %1$d/%2$d</string>
+    <string name="cut">برش</string>
+    <string name="copy">کپی</string>
+    <string name="paste">چسباندن</string>
+    <string name="segment_copied">بخش کپی شد</string>
+    <string name="zoom_in">بزرگ‌نمایی</string>
+    <string name="zoom_out">کوچک‌نمایی</string>
+    <string name="select_all">انتخاب همه</string>
 </resources>

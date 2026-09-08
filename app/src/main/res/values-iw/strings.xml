@@ -126,4 +126,11 @@
     <string name="move_right">הזז ימינה</string>
     <string name="reset_zoom">אפס מרחק</string>
     <string name="segment_label">מקטע %1$d/%2$d</string>
+    <string name="cut">גזור</string>
+    <string name="copy">העתק</string>
+    <string name="paste">הדבק</string>
+    <string name="segment_copied">המקטע הועתק</string>
+    <string name="zoom_in">התקרב</string>
+    <string name="zoom_out">התרחק</string>
+    <string name="select_all">בחר הכל</string>
 </resources>

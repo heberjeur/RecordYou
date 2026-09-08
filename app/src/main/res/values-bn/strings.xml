@@ -74,4 +74,11 @@
     <string name="move_right">ডানে সরান</string>
     <string name="reset_zoom">জুম রিসেট</string>
     <string name="segment_label">সেগমেন্ট %1$d/%2$d</string>
+    <string name="cut">কাটুন</string>
+    <string name="copy">কপি করুন</string>
+    <string name="paste">পেস্ট করুন</string>
+    <string name="segment_copied">সেগমেন্ট কপি করা হয়েছে</string>
+    <string name="zoom_in">জুম ইন</string>
+    <string name="zoom_out">জুম আউট</string>
+    <string name="select_all">সব নির্বাচন করুন</string>
 </resources>

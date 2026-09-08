@@ -224,6 +224,8 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
                 zoomFactor = trimmerModel.zoomFactor,
                 onZoomChange = { trimmerModel.zoomFactor = it },
                 onResetZoom = { trimmerModel.resetZoom() },
+                onZoomIn = { trimmerModel.zoomIn() },
+                onZoomOut = { trimmerModel.zoomOut() },
                 onSelectSegment = { trimmerModel.selectSegment(it) },
                 onStartChanged = { trimmerModel.updateSelectedSegmentStart(it) },
                 onEndChanged = { trimmerModel.updateSelectedSegmentEnd(it) },
@@ -279,23 +281,46 @@ fun TrimmerScreen(onDismissRequest: () -> Unit, inputFile: DocumentFile) {
             val canSplit = curSeg != null &&
                     trimmerModel.currentPositionMs > curSeg.startMs + 150L &&
                     trimmerModel.currentPositionMs < curSeg.endMs - 150L
+            val canCut = curSeg != null
+            val canCopy = curSeg != null
+            val canPaste = trimmerModel.clipboardSegment != null
 
             TrimmerControlBar(
                 canSplit = canSplit,
+                canCut = canCut,
+                canCopy = canCopy,
+                canPaste = canPaste,
                 canDelete = trimmerModel.segments.size > 1,
+                canSelectAll = trimmerModel.totalDurationMs > 0L,
                 canMoveLeft = trimmerModel.selectedSegmentIndex > 0,
                 canMoveRight = trimmerModel.selectedSegmentIndex < trimmerModel.segments.size - 1,
                 canUndo = trimmerModel.undoStack.isNotEmpty(),
                 canRedo = trimmerModel.redoStack.isNotEmpty(),
+                canZoomIn = trimmerModel.zoomFactor < 20.0f,
+                canZoomOut = trimmerModel.zoomFactor > 1.0f,
                 isVideo = isVideo,
                 isSegmentMuted = curSeg?.isMuted == true,
                 selectedSpeed = trimmerModel.selectedSpeed,
                 onSplit = { trimmerModel.splitAtCurrentPosition() },
+                onCut = {
+                    if (trimmerModel.cutSelectedSegment()) {
+                        Toast.makeText(context, context.getString(R.string.segment_copied), Toast.LENGTH_SHORT).show()
+                    }
+                },
+                onCopy = {
+                    if (trimmerModel.copySelectedSegment()) {
+                        Toast.makeText(context, context.getString(R.string.segment_copied), Toast.LENGTH_SHORT).show()
+                    }
+                },
+                onPaste = { trimmerModel.pasteSegment() },
                 onDelete = { trimmerModel.deleteSelectedSegment() },
+                onSelectAll = { trimmerModel.selectAllOrReset() },
                 onMoveLeft = { trimmerModel.moveSelectedSegmentLeft() },
                 onMoveRight = { trimmerModel.moveSelectedSegmentRight() },
                 onUndo = { trimmerModel.undo() },
                 onRedo = { trimmerModel.redo() },
+                onZoomIn = { trimmerModel.zoomIn() },
+                onZoomOut = { trimmerModel.zoomOut() },
                 onToggleMute = { trimmerModel.toggleMuteSelection() },
                 onCycleSpeed = { trimmerModel.cycleSpeed() },
                 onAutoCutSilences = { trimmerModel.autoCutSilences() },

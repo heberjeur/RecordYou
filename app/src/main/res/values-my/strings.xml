@@ -128,4 +128,11 @@
     <string name="move_right">ညာဘက်သို့ရွှေ့ပါ</string>
     <string name="reset_zoom">ဇူးမ်ပြန်လည်သတ်မှတ်ပါ</string>
     <string name="segment_label">အပိုင်း %1$d/%2$d</string>
+    <string name="cut">ဖြတ်ယူပါ</string>
+    <string name="copy">ကူးယူပါ</string>
+    <string name="paste">ကူးထည့်ပါ</string>
+    <string name="segment_copied">အပိုင်းကူးယူပြီးပါပြီ</string>
+    <string name="zoom_in">ချဲ့ပါ</string>
+    <string name="zoom_out">ချုံ့ပါ</string>
+    <string name="select_all">အားလုံးရွေးပါ</string>
 </resources>

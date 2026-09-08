@@ -132,4 +132,11 @@ In le section \'Entrata\', activa \'%s\'.</string>
     <string name="move_right">Mover a dextra</string>
     <string name="reset_zoom">Reinitialisar zoom</string>
     <string name="segment_label">Segmento %1$d/%2$d</string>
+    <string name="cut">Taliar</string>
+    <string name="copy">Copiar</string>
+    <string name="paste">Collar</string>
+    <string name="segment_copied">Segmento copiate</string>
+    <string name="zoom_in">Ingrandir</string>
+    <string name="zoom_out">Diminuer</string>
+    <string name="select_all">Seliger toto</string>
 </resources>

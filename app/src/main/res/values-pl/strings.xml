@@ -130,4 +130,11 @@ W sekcji \'Wprowadzanie\' włącz \'%s\'.</string>
     <string name="move_right">Przesuń w prawo</string>
     <string name="reset_zoom">Resetuj powiększenie</string>
     <string name="segment_label">Segment %1$d/%2$d</string>
+    <string name="cut">Wytnij</string>
+    <string name="copy">Kopiuj</string>
+    <string name="paste">Wklej</string>
+    <string name="segment_copied">Segment skopiowany</string>
+    <string name="zoom_in">Powiększ</string>
+    <string name="zoom_out">Pomniejsz</string>
+    <string name="select_all">Zaznacz wszystko</string>
 </resources>

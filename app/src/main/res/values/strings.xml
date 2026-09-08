@@ -139,4 +139,11 @@ In the \'Input\' section, enable \'%s\' (or use \'Quick settings developer tiles
     <string name="move_right">Move Right</string>
     <string name="reset_zoom">Reset zoom</string>
     <string name="segment_label">Segment %1$d/%2$d</string>
+    <string name="cut">Cut</string>
+    <string name="copy">Copy</string>
+    <string name="paste">Paste</string>
+    <string name="segment_copied">Segment copied</string>
+    <string name="zoom_in">Zoom in</string>
+    <string name="zoom_out">Zoom out</string>
+    <string name="select_all">Select all</string>
 </resources>

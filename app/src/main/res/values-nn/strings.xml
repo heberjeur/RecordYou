@@ -99,4 +99,11 @@ I delen \'Inndata\', slå på \'%s\'.</string>
     <string name="move_right">Flytt til høgre</string>
     <string name="reset_zoom">Nullstill zoom</string>
     <string name="segment_label">Segment %1$d/%2$d</string>
+    <string name="cut">Klipp ut</string>
+    <string name="copy">Kopier</string>
+    <string name="paste">Lim inn</string>
+    <string name="segment_copied">Segment kopiert</string>
+    <string name="zoom_in">Zoom inn</string>
+    <string name="zoom_out">Zoom ut</string>
+    <string name="select_all">Vel alt</string>
 </resources>

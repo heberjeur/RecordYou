@@ -75,4 +75,27 @@ class MediaTrimmerTest {
         org.junit.Assert.assertEquals(seg2, list[0])
         org.junit.Assert.assertEquals(seg1, list[1])
     }
+
+    @Test
+    fun testSegmentClipboard() {
+        val seg = com.bnyro.recorder.obj.MediaSegment(1000L, 3000L, speed = 1.5f)
+        val copied = seg.copy(id = 9999L)
+        org.junit.Assert.assertEquals(seg.startMs, copied.startMs)
+        org.junit.Assert.assertEquals(seg.endMs, copied.endMs)
+        org.junit.Assert.assertEquals(seg.speed, copied.speed, 0.01f)
+        org.junit.Assert.assertNotEquals(seg.id, copied.id)
+
+        val list = mutableListOf(seg)
+        list.add(copied)
+        org.junit.Assert.assertEquals(2, list.size)
+    }
+
+    @Test
+    fun testZoomBounds() {
+        var zoom = 1.0f
+        zoom = (zoom * 1.35f).coerceAtMost(20.0f)
+        org.junit.Assert.assertEquals(1.35f, zoom, 0.01f)
+        zoom = (zoom / 1.35f).coerceAtLeast(1.0f)
+        org.junit.Assert.assertEquals(1.0f, zoom, 0.01f)
+    }
 }

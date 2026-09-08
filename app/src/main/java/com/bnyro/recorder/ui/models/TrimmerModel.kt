@@ -60,6 +60,7 @@ class TrimmerModel(context: Context) : ViewModel() {
     var selectedSpeed by mutableFloatStateOf(1.0f)
 
     var isPreviewingSelection by mutableStateOf(false)
+    var clipboardSegment by mutableStateOf<MediaSegment?>(null)
     var lastExportedFile by mutableStateOf<DocumentFile?>(null)
     var snapshotUri by mutableStateOf<Uri?>(null)
     var detectedSilencesCount by mutableStateOf(0)
@@ -201,6 +202,50 @@ class TrimmerModel(context: Context) : ViewModel() {
 
     fun resetZoom() {
         zoomFactor = 1.0f
+    }
+
+    fun zoomIn() {
+        zoomFactor = (zoomFactor * 1.35f).coerceAtMost(20.0f)
+    }
+
+    fun zoomOut() {
+        zoomFactor = (zoomFactor / 1.35f).coerceAtLeast(1.0f)
+    }
+
+    fun copySelectedSegment(): Boolean {
+        val seg = selectedSegment ?: return false
+        clipboardSegment = seg.copy(id = System.nanoTime())
+        return true
+    }
+
+    fun cutSelectedSegment(): Boolean {
+        val seg = selectedSegment ?: return false
+        clipboardSegment = seg.copy(id = System.nanoTime())
+        deleteSelectedSegment()
+        return true
+    }
+
+    fun pasteSegment(): Boolean {
+        val clip = clipboardSegment ?: return false
+        pushUndoState()
+        val newSeg = clip.copy(id = System.nanoTime())
+        val index = (selectedSegmentIndex + 1).coerceIn(0, segments.size)
+        val updated = segments.toMutableList()
+        updated.add(index, newSeg)
+        segments = updated
+        selectedSegmentIndex = index
+        syncSelectionTimes()
+        return true
+    }
+
+    fun selectAllOrReset() {
+        if (totalDurationMs <= 0L) return
+        pushUndoState()
+        segments = listOf(MediaSegment(startMs = 0L, endMs = totalDurationMs))
+        selectedSegmentIndex = 0
+        syncSelectionTimes()
+        player.seekTo(0L)
+        currentPositionMs = 0L
     }
 
     fun updateSelectedSegmentStart(newStartMs: Long) {

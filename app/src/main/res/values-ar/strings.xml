@@ -132,4 +132,11 @@
     <string name="move_right">تحريك لليمين</string>
     <string name="reset_zoom">إعادة ضبط التكبير</string>
     <string name="segment_label">مقطع %1$d/%2$d</string>
+    <string name="cut">قص</string>
+    <string name="copy">نسخ</string>
+    <string name="paste">لصق</string>
+    <string name="segment_copied">تم نسخ المقطع</string>
+    <string name="zoom_in">تكبير</string>
+    <string name="zoom_out">تصغير</string>
+    <string name="select_all">تحديد الكل</string>
 </resources>

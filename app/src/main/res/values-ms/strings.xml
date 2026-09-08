@@ -101,4 +101,11 @@ Di bahagian \'Input\', dayakan \'%s\'.</string>
     <string name="move_right">Gerak ke kanan</string>
     <string name="reset_zoom">Tetapkan semula zum</string>
     <string name="segment_label">Segmen %1$d/%2$d</string>
+    <string name="cut">Potong</string>
+    <string name="copy">Salin</string>
+    <string name="paste">Tampal</string>
+    <string name="segment_copied">Segmen disalin</string>
+    <string name="zoom_in">Zum masuk</string>
+    <string name="zoom_out">Zum keluar</string>
+    <string name="select_all">Pilih semua</string>
 </resources>

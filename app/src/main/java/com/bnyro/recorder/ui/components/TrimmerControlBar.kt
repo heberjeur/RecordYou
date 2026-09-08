@@ -17,12 +17,17 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ContentCut
+import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.VolumeMute
 import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material.icons.filled.ZoomIn
+import androidx.compose.material.icons.filled.ZoomOut
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ButtonDefaults
@@ -43,20 +48,32 @@ import com.bnyro.recorder.R
 @Composable
 fun TrimmerControlBar(
     canSplit: Boolean,
+    canCut: Boolean,
+    canCopy: Boolean,
+    canPaste: Boolean,
     canDelete: Boolean,
+    canSelectAll: Boolean,
     canMoveLeft: Boolean,
     canMoveRight: Boolean,
     canUndo: Boolean,
     canRedo: Boolean,
+    canZoomIn: Boolean,
+    canZoomOut: Boolean,
     isVideo: Boolean,
     isSegmentMuted: Boolean,
     selectedSpeed: Float,
     onSplit: () -> Unit,
+    onCut: () -> Unit,
+    onCopy: () -> Unit,
+    onPaste: () -> Unit,
     onDelete: () -> Unit,
+    onSelectAll: () -> Unit,
     onMoveLeft: () -> Unit,
     onMoveRight: () -> Unit,
     onUndo: () -> Unit,
     onRedo: () -> Unit,
+    onZoomIn: () -> Unit,
+    onZoomOut: () -> Unit,
     onToggleMute: () -> Unit,
     onCycleSpeed: () -> Unit,
     onAutoCutSilences: () -> Unit,
@@ -72,46 +89,108 @@ fun TrimmerControlBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                verticalAlignment = Alignment.CenterVertically
+            FilledTonalButton(
+                onClick = onSplit,
+                enabled = canSplit,
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
             ) {
-                FilledTonalButton(
-                    onClick = onSplit,
-                    enabled = canSplit,
-                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ContentCut,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.split),
-                        fontSize = 12.sp,
-                        modifier = Modifier.padding(start = 4.dp)
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Default.ContentCut,
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
+                Text(
+                    text = stringResource(R.string.split),
+                    fontSize = 11.sp,
+                    modifier = Modifier.padding(start = 3.dp)
+                )
+            }
 
-                OutlinedButton(
-                    onClick = onDelete,
-                    enabled = canDelete,
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    ),
-                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.trim_mode_delete),
-                        fontSize = 12.sp,
-                        modifier = Modifier.padding(start = 4.dp)
-                    )
-                }
+            OutlinedButton(
+                onClick = onCut,
+                enabled = canCut,
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ContentCut,
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
+                Text(
+                    text = stringResource(R.string.cut),
+                    fontSize = 11.sp,
+                    modifier = Modifier.padding(start = 3.dp)
+                )
+            }
+
+            OutlinedButton(
+                onClick = onCopy,
+                enabled = canCopy,
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ContentCopy,
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
+                Text(
+                    text = stringResource(R.string.copy),
+                    fontSize = 11.sp,
+                    modifier = Modifier.padding(start = 3.dp)
+                )
+            }
+
+            OutlinedButton(
+                onClick = onPaste,
+                enabled = canPaste,
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ContentPaste,
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
+                Text(
+                    text = stringResource(R.string.paste),
+                    fontSize = 11.sp,
+                    modifier = Modifier.padding(start = 3.dp)
+                )
+            }
+
+            IconButton(
+                onClick = onDelete,
+                enabled = canDelete,
+                modifier = Modifier.size(34.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(R.string.trim_mode_delete),
+                    tint = if (canDelete) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedButton(
+                onClick = onSelectAll,
+                enabled = canSelectAll,
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.SelectAll,
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
+                Text(
+                    text = stringResource(R.string.select_all),
+                    fontSize = 11.sp,
+                    modifier = Modifier.padding(start = 3.dp)
+                )
             }
 
             Row(
@@ -121,48 +200,72 @@ fun TrimmerControlBar(
                 IconButton(
                     onClick = onMoveLeft,
                     enabled = canMoveLeft,
-                    modifier = Modifier.size(34.dp)
+                    modifier = Modifier.size(32.dp)
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.move_left),
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(16.dp)
                     )
                 }
 
                 IconButton(
                     onClick = onMoveRight,
                     enabled = canMoveRight,
-                    modifier = Modifier.size(34.dp)
+                    modifier = Modifier.size(32.dp)
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = stringResource(R.string.move_right),
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(16.dp)
                     )
                 }
 
                 IconButton(
                     onClick = onUndo,
                     enabled = canUndo,
-                    modifier = Modifier.size(34.dp)
+                    modifier = Modifier.size(32.dp)
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Undo,
                         contentDescription = stringResource(R.string.undo),
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(16.dp)
                     )
                 }
 
                 IconButton(
                     onClick = onRedo,
                     enabled = canRedo,
-                    modifier = Modifier.size(34.dp)
+                    modifier = Modifier.size(32.dp)
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Redo,
                         contentDescription = stringResource(R.string.redo),
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+
+                IconButton(
+                    onClick = onZoomOut,
+                    enabled = canZoomOut,
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ZoomOut,
+                        contentDescription = stringResource(R.string.zoom_out),
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+
+                IconButton(
+                    onClick = onZoomIn,
+                    enabled = canZoomIn,
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ZoomIn,
+                        contentDescription = stringResource(R.string.zoom_in),
+                        modifier = Modifier.size(16.dp)
                     )
                 }
             }

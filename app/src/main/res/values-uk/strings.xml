@@ -132,4 +132,11 @@
     <string name="move_right">Перемістити праворуч</string>
     <string name="reset_zoom">Скинути масштаб</string>
     <string name="segment_label">Сегмент %1$d/%2$d</string>
+    <string name="cut">Вирізати</string>
+    <string name="copy">Копіювати</string>
+    <string name="paste">Вставити</string>
+    <string name="segment_copied">Сегмент скопійовано</string>
+    <string name="zoom_in">Наблизити</string>
+    <string name="zoom_out">Віддалити</string>
+    <string name="select_all">Вибрати все</string>
 </resources>

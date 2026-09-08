@@ -132,4 +132,11 @@ I afsnittet \'Input\' aktiveres \'%s\'.</string>
     <string name="move_right">Flyt til højre</string>
     <string name="reset_zoom">Nulstil zoom</string>
     <string name="segment_label">Segment %1$d/%2$d</string>
+    <string name="cut">Klip</string>
+    <string name="copy">Kopier</string>
+    <string name="paste">Sæt ind</string>
+    <string name="segment_copied">Segment kopieret</string>
+    <string name="zoom_in">Zoom ind</string>
+    <string name="zoom_out">Zoom ud</string>
+    <string name="select_all">Vælg alle</string>
 </resources>

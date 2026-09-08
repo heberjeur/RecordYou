@@ -132,4 +132,11 @@ Ota \'Syöttö\'-osiossa käyttöön \'%s\'.</string>
     <string name="move_right">Siirrä oikealle</string>
     <string name="reset_zoom">Nollaa zoomaus</string>
     <string name="segment_label">Segmentti %1$d/%2$d</string>
+    <string name="cut">Leikkaa</string>
+    <string name="copy">Kopioi</string>
+    <string name="paste">Liitä</string>
+    <string name="segment_copied">Segmentti kopioitu</string>
+    <string name="zoom_in">Lähennä</string>
+    <string name="zoom_out">Loitonna</string>
+    <string name="select_all">Valitse kaikki</string>
 </resources>

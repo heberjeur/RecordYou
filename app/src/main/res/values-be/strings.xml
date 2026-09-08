@@ -128,4 +128,11 @@
     <string name="move_right">Перамясціць управа</string>
     <string name="reset_zoom">Скінуць маштаб</string>
     <string name="segment_label">Сегмент %1$d/%2$d</string>
+    <string name="cut">Выразаць</string>
+    <string name="copy">Капіяваць</string>
+    <string name="paste">Уставіць</string>
+    <string name="segment_copied">Сегмент скапіяваны</string>
+    <string name="zoom_in">Наблізіць</string>
+    <string name="zoom_out">Аддаліць</string>
+    <string name="select_all">Выбраць усё</string>
 </resources>

@@ -132,4 +132,11 @@ Di bagian \'Masukan\', aktifkan \'%s\'.</string>
     <string name="move_right">Pindah ke kanan</string>
     <string name="reset_zoom">Atur ulang zoom</string>
     <string name="segment_label">Segmen %1$d/%2$d</string>
+    <string name="cut">Potong</string>
+    <string name="copy">Salin</string>
+    <string name="paste">Tempel</string>
+    <string name="segment_copied">Segmen disalin</string>
+    <string name="zoom_in">Perbesar</string>
+    <string name="zoom_out">Perkecil</string>
+    <string name="select_all">Pilih semua</string>
 </resources>
