@@ -514,6 +514,11 @@ fun SettingsScreen(onNavigateUp: (() -> Unit)? = null) {
                         showTouchesDevDialog = false
                         runCatching {
                             val intent = Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS).apply {
+                                putExtra(":settings:fragment_args_key", "show_touches")
+                                putExtra(":settings:show_fragment_args", android.os.Bundle().apply {
+                                    putString(":settings:fragment_args_key", "show_touches")
+                                })
+                                putExtra("extra_fragment_arg_key", "show_touches")
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
                             }
                             context.startActivity(intent)
